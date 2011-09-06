@@ -88,7 +88,8 @@ STAT_file_example (ftp://ftp.metagenomics.anl.gov/DRISEE/STAT_file_example)
 includes the complete STAT file for the example excerpted above.
 Note that counts that correspond to mismatches are not observed until the first 
 non-prefix base, base 51 (line 54 of the file): 
-"2100	3196	4147	5247	0	15	10	19	7	5	0	13"
+	
+	"2100	3196	4147	5247	0	15	10	19	7	5	0	13"
     
 
 DRISEE also produces a detailed log of all processes performed (*LOG) 
