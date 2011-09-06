@@ -16,33 +16,18 @@ DRISEE is a tool that allows for platform independent assessment of sequencing e
 in metagenomic (or genomic) data.  DRISEE is designed to consider shotgun data.
 It is not appropriate for amplicon data. 
 
-Download DRISEE.tgz from ftp://ftp.metagenomics.anl.gov/DRISEE/
-
-Unzip DRISEE:
-tar -zxf /your_path/DRISEE.tgz
-cd /your_path/DRISEE
-
-Installation
-==
-
-Download DRISEE.tgz from ftp://ftp.metagenomics.anl.gov/DRISEE/
-
-Unzip DRISEE:
-tar -zxf /your_path/DRISEE.tgz
-cd /your_path/DRISEE
-
 Using DRISEE
 ==
 
 To run
->DRISEE.sh <fasta_file> <fasta_dir> <prefix_length> <output_dir>
+>drisee <fasta_file> <fasta_dir> <prefix_length> <output_dir>
 
      fasta_file:    the name of the fasta file you want DRISEE'd
      fasta_dir:     the path for the fasta_file
      prefix_length: prefix length you want to use for DRISEE analysis
 
 example
->DRISEE.sh my.FASTA /data/location/ 50
+>drisee my.FASTA /data/location/ 50
 
 Will perform a DRISEE style analysis on /data/location/my.FASTA
 using a prefix length of 50 bp
