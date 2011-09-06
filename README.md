@@ -110,7 +110,6 @@ DRISEE also produces a detailed log of all processes performed (*LOG)
 and several intermediary files that contain sequence files in various 
 stages of DRISEE processing (*length*, *filtered*, *fasta* & *seed) 
 A detailed description of each file type is beyond the scope of this document.
-Please contact Kevin Keegan (kkeegan@anl.gov) for questions/ any additional information.
 
 Modifying DRISEE
 ==
