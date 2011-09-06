@@ -122,9 +122,6 @@ that a typical DRISEE analysis will use.
 The accessory scripts that DRISEE uses have additional 
 variables that users may want to modify.
 
-If you would like to have more detailed information, please contact
-Kevin Keegan (kkeegan@anl.gov). 
-
 Changelog
 ==
 
