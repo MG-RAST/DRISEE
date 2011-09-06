@@ -1,0 +1,459 @@
+#!/usr/bin/env perl
+
+# adapted directly from seq_err_calc, not sec_err_calc_5-17-11.pl
+use strict;
+use warnings;
+use Getopt::Long;
+use List::Util qw(max min sum);
+use Cwd;
+    
+my ($fasta_file, $derep_file, $stat_file, $tmp_dir, $log_file) = ('','','','','');
+my $num_max  = 1000;
+my $bin_max  = 1000;
+my $bin_min  = 20;
+my $allowed_err = 1.0;
+my $bin_sub  = 0;
+my $max_iter = 10;
+my $min_cvg  = 3;
+my $verbose  = 0;
+my $nodelete  = 0;
+my $filter_bin_lengths = 0; #(0, "min", "avg")
+
+
+if ( (@ARGV > 0) && ($ARGV[0] =~ /-h/) ) { &usage(); }
+if ( ! GetOptions ("fasta_file=s"         => \$fasta_file,
+		   "derep_file=s"         => \$derep_file,
+		   "stat_file=s"          => \$stat_file,
+		   "tmp_dir:s"            => \$tmp_dir,
+		   "log_file:s"           => \$log_file,
+		   "bin_num_max:i"        => \$num_max,
+		   "bin_read_max:i"       => \$bin_max,
+		   "bin_read_min:i"       => \$bin_min,
+		   "allowed_err:f"        => \$allowed_err,
+		   "subsample_bin!"       => \$bin_sub,
+		   "max_iter:i"           => \$max_iter,
+		   "min_converge:i"       => \$min_cvg,
+		   "verbose!"             => \$verbose,
+                   "nodelete!"            => \$nodelete,
+		   "filter_bin_lengths:s" => \$filter_bin_lengths,
+		  )
+   ) { &usage(); }
+
+unless ($fasta_file && (-s $fasta_file)) { &usage("Please provide valid input fasta file."); }
+unless ($derep_file && (-s $derep_file)) { &usage("Please provide valid input sorted dereplication file."); }
+unless ($stat_file)                      { &usage("Please provide valid output file."); }
+unless ($bin_min <= $bin_max)            { &usage("bin_read_min ($bin_min) can not be greater than bin_read_max ($bin_max)"); }
+unless ($tmp_dir && (-d $tmp_dir))       { print STDOUT "Using /tmp as tmp_dir\n" if ($verbose); $tmp_dir = "/tmp"; }
+
+if ($verbose){
+  if ($verbose && (-f $fasta_file)) {
+    open(LOG, '>>', $log_file);
+    print LOG qq(
+  fasta_file:         $fasta_file
+  derep_file:         $derep_file
+  stat_file:          $stat_file
+  tmp_dir:            $tmp_dir
+  bin_num_max:        $num_max
+  bin_read_max:       $bin_max
+  bin_read_min:       $bin_min
+  allowed_err:        $allowed_err
+  subsample_bin:      $bin_sub
+  max_iter:           $max_iter
+  min_converge:       $min_cvg
+  filter_bin_lengths: $filter_bin_lengths
+  verbose:            $verbose
+  nodelete:           $nodelete
+  
+  );                     
+                       
+  }else{
+    print STDOUT qq(
+    CANNOT FIND: $fasta_file FILE 
+    );
+      exit 1; 
+  }
+}
+
+
+unless ((-s "$fasta_file.nsd") || (-s "$fasta_file.00.nsd")) {
+  print LOG "Running formatdb on fasta file ... " if ($verbose);
+  system("formatdb -p F -o T -i $fasta_file -v 1000 -l /dev/null");
+  print LOG "Done"."\n" if ($verbose);
+}
+
+my ($bases, $match, $error) = ([], [], []);
+my $bnum  = 0;
+my $curr  = '';
+my @bin   = ();
+my $bins  = {};
+my $bnums = {};
+my @md5s  = ();
+
+srand(time ^ $$ ^ unpack("%L*", `ps axww | gzip -f`));
+srand(42);
+
+## make sure the derep_file name contains the prefix length used to perform the binning - extract prefix length from file name into a variable
+my $prefix_length = "NA";
+if ($derep_file =~ /prefix_(.*)\.sorted/){
+  $prefix_length = $1;
+} else { 
+  print STDERR "derep_file: $derep_file"."\n"."does not follow naming convention *.prefix_n.prefix_sorted (where n = prefix_length)"."\n";
+  exit;
+}
+
+## identify bins
+foreach my $md5 (`cut -f1 $derep_file`) {
+  chomp $md5;
+  $bins->{$md5} += 1;
+}
+
+## subsample bins
+map { $bnums->{$_} += 1 } values %$bins;
+if ($bin_sub) {
+  @md5s = grep { $bins->{$_} >= $bin_min } keys %$bins;
+} else {
+  @md5s = grep { ($bins->{$_} >= $bin_min) && ($bins->{$_} <= $bin_max) } keys %$bins;
+}
+my %md5s = map { $_, 1 } &truncate_array(\@md5s, $num_max);
+
+if (scalar(keys %md5s) == 0) {
+  print LOG "No available bins >= $bin_min to process, quiting\n"; exit 0;
+}
+print LOG "  Processing " . scalar(keys %md5s) . " out of " . scalar(@md5s) . " bins with >= $bin_min reads\n\n" if ($verbose);
+
+## process bins
+open(DEREP, "<$derep_file") || &usage("Can not open $derep_file for reading: $!");
+while ( my $line = <DEREP> ) {
+
+  chomp $line;
+  my ($md5, $id, @rest) = split("\t", $line);
+  unless ( $md5 && $id && exists($md5s{$md5}) ) { next; }
+  if ($curr eq '')   { $curr = $md5; }
+  if ($md5 ne $curr) {
+    if ($bin_sub && (@bin > $bin_max)) {
+      @bin = &truncate_array(\@bin, $bin_max);
+    }
+    my $bin_fasta = "$tmp_dir/$curr.fasta";
+    my $bin_num   = scalar @bin;
+    
+    if($verbose){print LOG "  ______________________________________________________________________________"."\n";}
+    if($verbose){print LOG "  Processing (NON FINAL) bin $curr ($bin_num reads used)\n";}
+    my $has_file  = &create_fasta_file(\@bin, $fasta_file, $bin_fasta);                                
+  
+    if ($has_file) {
+      $bnum += 1;
+          
+      my $data;
+      if($filter_bin_lengths){
+	my $truncated_fasta = &filter_bin_lengths($bin_fasta, "$bin_fasta.truncated", $filter_bin_lengths); 
+	unlink "$bin_fasta" unless $nodelete;
+	$data = &process_bin("$bin_fasta.truncated", $curr, $tmp_dir, $max_iter, $min_cvg, $filter_bin_lengths, $verbose);
+      }else{
+	$data = &process_bin("$bin_fasta", $curr, $tmp_dir, $max_iter, $min_cvg, $filter_bin_lengths, $verbose);
+      }
+
+      if ($data && (@$data > 0)) {
+	($bases, $match, $error) = &process_data($data, $match, $error, $curr);
+      }
+    }
+    $curr = $md5;
+    @bin  = ();
+  }
+  push @bin, $id;
+}
+close DEREP;
+
+# process final bin
+if ( (@bin > 0) && exists($md5s{$curr}) ) {
+  if ((@bin > $bin_max) && ($bin_max > $bin_min)) {
+    @bin = &truncate_array(\@bin, $bin_max);
+  }
+  my $bin_fasta = "$tmp_dir/$curr.fasta";
+  my $bin_num   = scalar @bin;
+  if($verbose){print LOG "  ______________________________________________________________________________"."\n";}
+  if($verbose){print LOG "  Processing (FINAL) bin $curr ($bin_num reads used)\n";}
+  my $has_file  = &create_fasta_file(\@bin, $fasta_file, $bin_fasta);
+  
+  if ($has_file) {
+    $bnum += 1;
+   
+    my $data;
+    if($filter_bin_lengths){
+      my $truncated_fasta = &filter_bin_lengths($bin_fasta, "$bin_fasta.truncated", $filter_bin_lengths);
+      unlink "$bin_fasta" unless $nodelete;
+      $data = &process_bin("$bin_fasta.truncated", $curr, $tmp_dir, $max_iter, $min_cvg, $filter_bin_lengths, $verbose); # Will's original
+    }else{
+      $data = &process_bin("$bin_fasta", $curr, $tmp_dir, $max_iter, $min_cvg, $filter_bin_lengths, $verbose); # Will's original
+    }
+
+    if ($data && (@$data > 0)) {
+      ($bases, $match, $error) = &process_data($data, $match, $error);
+    }
+  }
+}
+
+
+my $total = 0;
+my $e_sum = 0;
+my %errs  = map {$_, 0} @$bases;
+
+my $stext = join("\t", @$bases) . "\t" . join("\t", @$bases) . "\n";
+for (my $i=0; $i<@$match; $i++) {
+#	print STDERR "I:$i\n";
+  my @row = ();
+  foreach my $b (@$bases) {
+    push @row, $match->[$i]->{$b};
+    if ($i>($prefix_length-1)){       # if added 2-23-11 -- only count the non prefix bases 
+      $total += $match->[$i]->{$b};   # 
+    }                                 #
+  }
+  foreach my $b (@$bases) {
+    push @row, $error->[$i]->{$b};
+    if ($i>($prefix_length-1)){         # if added 2-23-11 -- only count the non prefix bases
+      $total += $error->[$i]->{$b};     # 
+      $errs{$b} += $error->[$i]->{$b};  # 
+    }                                   #
+  }
+  $stext .= join("\t", @row) . "\n";
+}
+
+map { $e_sum += $_ } values %errs;
+$stext = join("\t", map {"${_}_err"} @$bases) . "\tbp_err\tprefix_length = " . $prefix_length . "\n" .
+         join("\t", map { sprintf("%.4f", ($errs{$_}/$total) * 100) } @$bases) . "\t" .
+         sprintf("%.4f", ($e_sum/$total) * 100) . "\n$stext";
+&write_file($stat_file, $stext);
+
+if($verbose){print LOG "  ______________________________________________________________________________"."\n";}
+print LOG "  Done processing $bnum bins\n" if ($verbose);
+
+
+sub truncate_array {
+  my ($array, $max) = @_;
+
+  if (($max < 1) || (scalar(@$array) <= $max)) { return @$array; }
+
+  # randomize array (fisher yates shuffle)
+  my $i = @$array;
+  while ($i--) {
+    my $j = int rand ($i+1);
+    @$array[$i, $j] = @$array[$j, $i];
+  }
+
+  my @trunc = @$array[0..($max-1)];
+  return @trunc;
+}
+
+sub create_fasta_file {
+  my ($names, $db, $file) = @_;
+  
+  my $text = "";
+  while ( my @subset = splice(@$names, 0, 1000) ) {
+    my $ids = join(",", @subset);
+    
+    print LOG "  IDS     "."\n";
+
+    foreach (@subset){
+      print LOG "    ".$_."\n";
+    }
+ 
+    my @rec = `fastacmd -d $db -s "$ids" -l 0 -p F 2>&1`;
+    print LOG "    running fastacmd ...";
+
+    if ($rec[0] =~ /^\[fastacmd\] ERROR:/) {
+      my $lcls = join(",", map {"lcl|$_"} @$names);
+      my @lcl  = `fastacmd -d $db -s "$lcls" -l 0 -p F 2>&1`;
+      print LOG "    running fastacmd ...";
+ 
+      if ($lcl[0] =~ /^\[fastacmd\] ERROR:/) {
+	print STDERR $lcl[0] . "\n";
+	next;
+      }
+      $text .= join("", @lcl);
+    }
+    $text .= join("", @rec);
+    print LOG " DONE"."\n";
+  }
+  &write_file($file, $text);
+}
+
+sub filter_bin_lengths {
+  my ($infile, $outfile, $filter_bin_lengths) =@_;
+  my %table=();
+  my @fastain = &read_file($infile);
+  my $totallen=0; my $avglen=0; my $n=0;
+  foreach my $line (@fastain)
+    {
+      if($line !~ /^>/ && $line !~ /^\s*$/ )
+	{ my $l = length($line);
+	  if(defined($table{$l})) {$table{$l}++;} else {$table{$l}=1;}
+	  $totallen += $l; $n++;
+	  print LOG "    LENGTH: $l\n";
+	}
+    }
+  my @lengths = sort {$a <=> $b} keys %table;
+  if ($n >0)  {$avglen = $totallen /($n);}
+  
+  my $minlinelength = $lengths[0];
+  my $trimlinelength;
+  my $prevline ="";
+  
+  if($filter_bin_lengths eq "avg") {
+    $trimlinelength = int($avglen);
+  }else{
+    $trimlinelength=$minlinelength;
+  }
+
+  print LOG "  TRIMLINELENGTH $trimlinelength"."\n" if ($verbose);
+  
+  my $text;
+  foreach my $line (@fastain)
+    {
+      if($line !~ /^>/)
+	{
+	  $line = substr($line, 0, $trimlinelength)."\n";
+	  if(length($line)-1 == $trimlinelength)
+	    {   $text .= $prevline."\n".$line;}
+	} else {$prevline = $line;}
+      
+    }
+  &write_file($outfile, $text);
+}
+
+sub process_bin {
+  my ($fasta, $md5, $tdir, $max_iter, $min_cvg, $mult, $filter_bin_lengths, $verbose) = @_;
+  my @data  = ();
+  my $outf  = "$tdir/$md5.data";
+  my $seedf = "$tdir/$md5.seed";
+  my $logf  = "$tdir/$md5.log";
+  my $verb  = $verbose ? "--log_file $logf " : "";
+  my $filt  = $filter_bin_lengths ? "--filter_bin_lengths " : "";
+  if($verbose) {
+    print LOG qq(
+  run_find_steiner.pl 
+    $verb
+    --fasta_file $fasta 
+    --out_file $outf
+    --seed_file $seedf
+    --tmp_dir $tdir 
+    --max_iter $max_iter 
+    --min_converge $min_cvg"
+  );
+  }
+  my $run = system("./run_find_steiner.pl $verb --fasta_file $fasta --out_file $outf --seed_file $seedf --md5 $md5 --tmp_dir $tdir --max_iter $max_iter --min_converge $min_cvg");
+  unlink $fasta unless $nodelete;
+  unless ($run == 0) { print STDERR "Error running run_find_steiner.pl\n"; exit 1; }
+  
+  if ($verbose && (-s $logf)) {
+    my $out = &read_file($logf);
+    print STDOUT $out;
+    unlink $logf unless $nodelete;
+  }
+  if (-s $outf) {
+    @data = &read_file($outf);
+    unlink $outf unless $nodelete;
+  }
+  
+  return \@data;
+}
+
+sub process_data {
+  my ($data, $match, $error, $curr) = @_;   # data is new, $match and $error are running tally tables
+  
+  my $head = shift @$data;
+  my @bps  = split(/\t/, $head);
+  my $summatch = 0;
+  my $sumerr   = 0;
+  my $errfrac  = 0;
+  for (my $i=0; $i<@$data; $i++) {  # loop through data table, calc error
+    my @counts = split(/\t/, $data->[$i]);
+    unless (@counts == 6) { next; }
+    if (scalar(@$match) <= $i) { $match->[$i] = { map {$_, 0} @bps }; }
+    if (scalar(@$error) <= $i) { $error->[$i] = { map {$_, 0} @bps }; }
+    my $max_bp = max @counts;
+    for (my $j=0; $j<@counts; $j++) {
+      if    ($counts[$j] == $max_bp && $counts[$j]>1) { $summatch += $counts[$j]; }
+      elsif ($counts[$j] <= $max_bp)                  { $sumerr   += $counts[$j]; }
+    }
+  }
+  $errfrac = $sumerr / ($summatch+$sumerr) ;
+  print LOG ("  BIN ERRS        : $sumerr"."\n".
+	     "  TOTAL BIN BASES : ".($sumerr+$summatch)."\n".
+	     "  ERR BASE FRAC   : $errfrac\n" 
+	    ) if ($verbose);
+
+  if($errfrac <= $allowed_err){
+    for (my $i=0; $i<@$data; $i++) {  # loop through lines of data table, update summary table
+      my @counts = split(/\t/, $data->[$i]);
+      unless (@counts == 6) { next; }
+      if (scalar(@$match) <= $i) { $match->[$i] = { map {$_, 0} @bps }; }
+      if (scalar(@$error) <= $i) { $error->[$i] = { map {$_, 0} @bps }; }
+      my $max_bp = max @counts;
+      for (my $j=0; $j<@counts; $j++) {
+	if    ($counts[$j] == $max_bp && $counts[$j]>1) { $match->[$i]->{$bps[$j]} += $counts[$j]; }
+	elsif ($counts[$j] <= $max_bp)  { $error->[$i]->{$bps[$j]} += $counts[$j]; }
+	}
+    }
+    if($verbose){print LOG "  ACCEPTED: bin_err = ".$errfrac." (-allowed_err <= ".$allowed_err.")"."\n\n";}
+  }else{
+    
+    if($verbose){print LOG "\n"."  REJECTED: bin_err = ".$errfrac." (-allowed_err <= ".$allowed_err.")"."\n\n";}
+  }
+  return (\@bps, $match, $error);
+}
+
+sub read_file {
+  my ($file) = @_;
+  
+  my $string = "";
+  local( *FH );
+  if ( sysopen( FH, $file, 0 ) ) {
+    unless ( sysread( FH, $string, -s FH ) ) {
+      die "Can not read file $file: $!\n";
+    }
+  } else {
+    die "Can not open file $file: $!\n";
+  }
+  return wantarray() ? split(/\n/, $string) : $string;
+}
+
+sub write_file {
+  my ($file, $text) = @_;
+  
+  local( *FH );
+  system("touch $file");
+  if ( sysopen( FH, $file, 1 ) ) {
+    unless ( syswrite( FH, $text ) ) {
+      die "Can not write file $file: $!\n";
+    }
+  } else {
+    die "Can not open file $file: $!\n";
+  }
+}
+
+sub usage {
+  my ($err) = @_;
+  
+  print STDERR ($err ? "ERROR: $err" : '') . qq(
+$0
+This is the master script to perform sequencing error calculations for a fasta file
+
+USAGE:
+    --fasta_file         (string,  required)         Fasta file to process.  Must have a blast db (formatdb) already created.
+    --derep_file         (string,  required)         Dereplication file (sorted: md5, id, length, seq) 
+    --stat_file          (string,  required)         File to place uclust stat results
+    --tmp_dir            (string,  default = /tmp)   Directory where individual bin processing will take place
+    --bin_num_max        (integer, default = 1000)   Maximum number of bins to process (chosen randomly from full set)
+    --bin_read_max       (integer, default = 10000)  Maximum number of reads in a bin for it to be considered
+    --bin_read_min       (integer, default = 20)     Minimum number of reads in a bin for it to be considered
+    --allowed_err        (float,   default = 0.1)    Maximum amount of allowed sequence error for a bin to be considered
+    --subsample_bin      (boolean, default = false)  Instead of skipping bins larger than 'bin_read_max', randomly subsample from bin
+    --max_iter           (integer, default = 10)     Maximum number of uclust iterations if alignment does not converge
+    --min_converge       (integer, default = 3)      Minimum number of iterations to identify convergence (and stop uclust)
+    --stddev_mult        (float,   default = 2)      if filtering lengths, multiplier of stddev to trim by
+    --filter_bin_lengths (string,  default = false)  (false, min, avg) option to filter lengths - by min(min length in bin) or by avg (avg length in bin)
+    --verbose            (boolean, default = false)  Stuff goes to STDOUT
+    --nodelete           (boolean, default = false)  Preserve temporary files
+
+);
+  exit 1;
+}

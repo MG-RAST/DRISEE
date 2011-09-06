@@ -1,0 +1,207 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use Data::Dumper;
+use Getopt::Long;
+
+# read in parameters
+my $fasta_in     = '';
+my $fasta_out    = '';
+my $fasta_reject = '';
+my $filter_ln    = '';
+my $filter_ambig = '';
+my $min_ln       = '';
+my $max_ln       = '';
+my $max_ambig    = '';
+my $per_ambig    = '';
+
+GetOptions ( 
+	     'i=s'          => \$fasta_in ,
+	     'o=s'          => \$fasta_out,
+	     'r=s'          => \$fasta_reject,
+	     'filter_ln'    => \$filter_ln,
+	     'filter_ambig' => \$filter_ambig,
+	     'min_ln:i'     => \$min_ln,
+	     'max_ln:i'     => \$max_ln,
+	     'max_ambig:i'  => \$max_ambig,
+	     'per_ambig:i'  => \$per_ambig
+	   );
+
+my $usage = "
+  usage:  filter_sequences -i input_fasta -o output_fasta [-r reject_fasta] [-filter_ln -min_ln=XXX -max_ln=XXX] [-filter_ambig -max_ambig=XXX -per_ambig=XXX]
+
+  filter fasta file based on sequence length and/or on number of ambiguity characters (Ns)
+  skipping both filters is equivalent to copying the file, but slower
+  
+  -i             input fasta file
+  -o             output fasta file
+  -r             reject fasta file, optional, sequences which are filtered out will get written to the specified file
+  -filter_ln     flag to request filtering on sequence length
+  -min_ln        minimum sequence length that is not rejected
+  -max_ln        maximum sequence length that is not rejected
+  -filter_ambig  flag to request filtering on ambiguity characters
+  -max_ambig     maximum number of ambiguity characters (Ns) in a sequence which will not be rejected
+  -per_ambig     percent number of ambiguity characters (Ns) in a sequence which will not be rejected
+
+";
+
+# check that input arguments are OK
+&check_filenames($usage, $fasta_in, $fasta_out, $fasta_reject);
+&check_length_args($usage, $filter_ln, $min_ln, $max_ln);
+&check_ambig_args($usage, $filter_ambig, $max_ambig, $per_ambig);
+
+my $old_eol = $/;
+$/ = "\n>";
+
+open(IN,  "<$fasta_in") or die "could not open file '$fasta_in': $!";
+open(OUT, ">$fasta_out") or die "could not open file '$fasta_out': $!";
+
+if ( $fasta_reject )
+{
+    open(REJECT, ">$fasta_reject") or die "could not open file '$fasta_reject': $!";
+}
+
+my $rec;
+while ( defined($rec = <IN>) )
+{
+    $rec =~ s/^>*//;
+    chomp $rec;
+    
+    my($id_line, @seq_lines) = split("\n", $rec);
+
+    my $seq = \join('', @seq_lines);  # scalar reference to the sequence string
+
+    my $ln_ok    = &length_is_ok($filter_ln, $seq, $min_ln, $max_ln);
+    my $ambig_ok = &ambig_chars_is_ok($filter_ambig, $seq, $max_ambig, $per_ambig);
+
+    if ( $ln_ok and $ambig_ok )
+    {
+	print OUT join("\n", ">$id_line", @seq_lines), "\n";
+    }
+    else
+    {
+	if ( $fasta_reject )
+	{
+	    print REJECT join("\n", ">$id_line", @seq_lines), "\n";
+	}
+    }
+}
+
+if ( $fasta_reject )
+{
+    close(REJECT) or die "could not close file '$fasta_reject': $!";
+}
+
+close(OUT) or die "could not close file '$fasta_out': $!";
+close(IN) or die "could not close file '$fasta_in': $!";
+
+$/ = $old_eol;
+
+
+sub length_is_ok {
+    my($filter_ln, $seq, $min_ln, $max_ln) = @_;
+
+    my $ln_ok = 0;
+
+    if ( $filter_ln )
+    {
+	my $seq_ln = length($$seq);
+	if ( $min_ln <= $seq_ln and $seq_ln <= $max_ln )
+	{
+	    # length is OK
+	    $ln_ok = 1;
+	}
+	else
+	{
+	    # length is not OK
+	    $ln_ok = 0;
+	}
+    }
+    else
+    {
+	# no filtering on length
+	$ln_ok = 1;
+    }
+
+    return $ln_ok;
+}
+    
+sub ambig_chars_is_ok {
+    my($filter_ambig, $seq, $max_ambig, $per_ambig) = @_;
+
+    my $ambig_ok = 1;
+
+    if ( $filter_ambig ) {
+      my $n_ambig = ($$seq =~ tr/[nN]/N/);
+
+      if ($max_ambig ne '') {
+	if ($n_ambig > $max_ambig) { $ambig_ok = 0; }
+      }
+      if ($per_ambig ne '') {
+	my $seq_ln = length($$seq);
+	if ((100 * ($n_ambig / $seq_ln)) > $per_ambig) { $ambig_ok = 0; }
+      }
+      if (($max_ambig eq '') && ($per_ambig eq '')) {
+	if ($n_ambig > 0) { $ambig_ok = 0; }
+      }
+    }
+    
+    return $ambig_ok;
+}
+
+sub check_filenames {
+    my($usage, $fasta_in, $fasta_out, $fasta_reject) = @_;
+
+    if ( ! $fasta_in )
+    {
+	die "input file not specified\n$usage";
+    }
+    
+    if ( ! $fasta_out )
+    {
+	die "output file not specified\n$usage";
+    }
+    
+    if ( ! -e $fasta_in )
+    {
+	die "input file not found -- $fasta_in\n$usage";
+    }
+    
+    my %files = map {$_ => 1} ($fasta_in, $fasta_out, $fasta_reject);
+    if ( scalar keys %files != 3 )
+    {
+	die "filenames are not distinct -- in = $fasta_in, out = $fasta_out, reject = $fasta_reject\n$usage";
+    }
+}
+
+sub check_length_args {
+    my($usage, $filter_ln, $min_ln, $max_ln) = @_;
+
+    if ( $filter_ln )
+    {
+	if ( $min_ln =~ /^\d+$/ and $max_ln =~ /^\d+$/ )
+	{
+	    if ( $min_ln > $max_ln )
+	    {
+		die "min_ln ($min_ln) must be less than or equal to max_ln ($max_ln)\n$usage";
+	    }
+	}
+	else
+	{
+	    die "min_ln ($min_ln) and max_ln ($max_ln) must be integers\n$usage";
+	}
+    }
+}
+    
+sub check_ambig_args {
+    my($usage, $filter_ambig, $max_ambig, $per_ambig) = @_;
+    
+    if ( $filter_ambig )
+    {
+      if (($max_ambig ne '') && ($max_ambig !~ /^\d+$/)) { die "max_ambig ($max_ambig) must be an integer\n$usage"; }
+      if (($per_ambig ne '') && ($per_ambig !~ /^\d+$/)) { die "per_ambig ($per_ambig) must be a integer\n$usage"; }
+      if (($max_ambig eq '') && ($per_ambig eq ''))      { print STDERR "No max_num or max_per inputed, all sequences with Ns will removed\n"; }
+    }
+}

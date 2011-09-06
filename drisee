@@ -1,0 +1,235 @@
+#!/bin/sh
+# This is the main/driver shell script to perform DRISEE
+# (Duplicate Read Inferred Sequencing Error Estimation)
+# anlysis on an input fasta file.
+# This script establishes the parameter values for several 
+# accessory scripts; however, some scripts are called with 
+# their default arguments -- you'll need to look at the 
+# usage for each accessory script to determine if there are
+# values that can be changed in addition to those called in
+# this driver shell script. 
+
+echo
+echo "     Running DRISEE"
+echo
+
+# capture input arguments into variables
+current=`pwd`/scripts;
+num_args=$#;
+echo "     num_args:      "$num_args;
+filename=$1;
+echo "     file:          "$filename;
+fasta_dir=$2;
+echo "     fasta_dir:     "$fasta_dir;
+prefix_length=$3;
+echo "     prefix_length: "$prefix_length;
+outDir=$4;
+echo "     output_dir:    "$outDir;
+echo
+
+#_____________________________________________
+# usage
+usage()
+{
+    echo
+    echo "     You did not enter the correct number of input args"
+    echo "     You entered ($#) args, but 4 are required"
+    echo
+    echo "     DESCRIPTION: (DRISEE.sh)"
+    echo "     This is a master driver script for DRISEE"
+    echo "     (Duplicate Read Inferred Sequencing Error Estimation)"
+    echo
+    echo "     USAGE: (space separated args)"
+    echo "          >DRISEE.sh <fasta_file> <fasta_dir> <prefix_length> <output_dir>"
+    echo "          Please run this from the directory where it resides"
+    echo
+    echo "     fasta_file:    the name of the fasta file you want DRISEE'd"
+    echo "     fasta_dir:     the path for fasta_file"
+    echo "     prefix_length: prefix length you want to use for DRISEE analysis"
+    echo
+
+
+}
+
+# supply usage if no input arguments are specified
+if [ $num_args != 4 ]; then
+    usage;
+    exit;
+fi
+
+#create dir for output
+if [ ! -d $outDir ]; then
+    mkdir $outDir;
+fi
+
+# create log file
+log_file=$outDir/$filename.DRISEE_LOG;
+start_time=`date`;
+
+# Main Script
+#_____________________________________________
+
+echo "start:          "$start_time >> $log_file;
+echo >> $log_file;
+echo "fasta_file:     "$fasta_dir/$filename >> $log_file;
+echo "fasta_dir:      "$fasta_dir >> $log_file;
+echo "prefix_length:  "$prefix_length >> $log_file;
+echo "analysis_dir:   "$outDir >> $log_file;
+
+echo >> $log_file;
+echo "***NOTE: \"(IN)\"  indicates an output***"  >> $log_file;
+echo "***NOTE: \"(OUT)\" indicates an output***"  >> $log_file;
+
+
+# Simple stats -- get the upper and lower bounds to do inital length trimming
+echo >> $log_file;
+echo "running seq_length_stats on $filename" >> $log_file;
+echo >> $log_file;
+echo "seq_length_stats (start)" >> $log_file;
+echo "-fasta_file: $fasta_dir/$filename" >> $log_file;
+stdevmult=2;
+length_stats=`$current/seq_length_stats -fasta_file $fasta_dir/$filename -stat_file $outDir/$filename.length_stats -length_only -length_bin $outDir/$filename.length_bins 2>>$log_file`;
+min_length=`grep length_min $outDir/$filename.length_stats | cut -f 2`;
+max_length=`grep length_max $outDir/$filename.length_stats | cut -f 2`;
+avg_length=`grep average_length $outDir/$filename.length_stats | cut -f 2`;
+stdev_length=`grep standard_deviation_length $outDir/$filename.length_stats | cut -f 2`;
+cut_length_high=$(echo "$avg_length + ($stdev_length * $stdevmult) " | bc | sed -e "s/\(\.[0-9]\).*//g");
+cut_length_low=$(echo "$avg_length - ($stdev_length * $stdevmult)" | bc | sed -e "s/\(\.[0-9]\).*//g");
+
+if [ $cut_length_low -lt $prefix_length ]; then
+    (( cut_length_low=($prefix_length + 1) ));
+fi
+
+echo "  min_length      : $min_length" >> $log_file;
+echo "  max_length      : $max_length" >> $log_file;
+echo "  avg_length      : $avg_length" >> $log_file;
+echo "  stdev           : $stdev_length" >> $log_file;
+echo "  (IN)  "$fasta_dir/$filename >> $log_file;
+echo "  (OUT) cut_length_high : "$cut_length_high >> $log_file;
+echo "  (OUT) cut_length_low  : "$cut_length_low >> $log_file;
+echo "seq_length_stats (complete)" >> $log_file;
+
+if [ $max_length -le $prefix_length ]; then
+    echo  >> $log_file;
+    echo "Cannot proceed - longest read is shorter than prefix length"  >> $log_file;
+    echo "     longest read  : $max_length bp"  >> $log_file;
+    echo "     prefix length : $prefix_length bp"  >> $log_file;
+    echo >> $log_file;
+    exit;
+fi
+
+# filter sequences (preliminary ambiguous base and length based trimming)
+echo >> $log_file;
+echo "filter_sequences (start)" >> $log_file;
+
+# input fasta file
+$current/filter_sequences \
+-i $fasta_dir/$filename \
+-o $outDir/$filename.filtered_pass \
+-r $outDir/$filename.filtered_fail \
+-filter_ln \
+-min_ln $cut_length_low \
+-max_ln $cut_length_high \
+-filter_ambig \
+-max_ambig 0;
+echo "  ARGS:" >> $log_file;
+echo "  -i $fasta_dir/$filename" >> $log_file;
+echo "  -o $outDir/$filename.filtered_pass" >> $log_file;
+echo "  -r $outDir/$filename.filtered_fail" >> $log_file;
+echo "  -filter_ln" >> $log_file;
+echo "  -min_ln $cut_length_low" >> $log_file;
+echo "  -max_ln $cut_length_high" >> $log_file;
+echo "  -filter_ambig" >> $log_file;
+echo "  -max_ambig 0" >> $log_file;
+2>>$log_file;                                      
+
+echo "  (IN) "$fasta_dir/$filename >> $log_file;
+echo "  (OUT)"$outDir/$filename.filtered_pass >> $log_file;
+echo "  (OUT)"$outDir/$filename.filtered_fail >> $log_file;   
+echo "filter_sequences (complete)" >> $log_file;
+
+# perform dereplication
+echo >> $log_file;
+echo "dereplication (start)" >> $log_file;
+$current/dereplication \
+-file $outDir/$filename.filtered_pass \
+-destination $outDir \
+-prefix_length $prefix_length \
+2>>$log_file \
+1>>$log_file;
+echo "  (IN) "$outDir/$filename.filtered_pass >> $log_file; 
+echo "  (OUT)"$outDir/$filename.filtered_pass.prefix_$prefix_length >> $log_file;
+echo "  (OUT)"$outDir/$filename.filtered_pass.prefix_$prefix_length.sorted >> $log_file;
+echo "dereplication (complete)" >> $log_file;
+
+# run seq_err_calc
+echo >> $log_file;
+echo "seq_err_calc (start)" >> $log_file;
+$current/seq_err_calc \
+-fasta_file $outDir/$filename.filtered_pass \
+-derep_file $outDir/$filename.filtered_pass.prefix_$prefix_length.sorted \
+-stat_file $outDir/$filename.STAT \
+-tmp_dir $outDir/ \
+-log_file $log_file \
+-bin_num_max 1000 \
+-subsample_bin true \
+-bin_read_max 1000 \
+-bin_read_min 20 \
+-allowed_err 1 \
+-max_iter 10 \
+-min_converge 3 \
+-filter_bin_lengths min \
+-verbose true \
+-nodelete true \
+2>>$log_file \
+1>>$log_file;
+echo "  (IN) "$outDir/$filename.filtered_pass >> $log_file;
+echo "  (IN) "$outDir/$filename.filtered_pass.prefix_$prefix_length.sorted >> $log_file;
+echo "  (OUT)"$outDir/$filename.STAT >> $log_file;
+echo >> $log_file;
+echo "DRISEE (complete) with $filename" >> $log_file;
+
+# Do mininimal cleanup -- just the formatdb files that are left in the start directory
+echo >>$log_file
+echo "Do minimal cleanup (remove formatdb files)" >> $log_file
+
+for i in `ls $outDir/*`; do
+    
+    if [ `echo $i | grep .nsd$` ]; then 
+	rm  $i; echo " rm'ed : $i" >> $log_file; 
+    fi;
+    
+    if [ `echo $i | grep .nsi$` ]; then 
+	rm  $i; echo " rm'ed : $i" >> $log_file; 
+    fi;
+    
+    if [ `echo $i | grep .nhr$` ]; then 
+	rm  $i; echo " rm'ed : $i" >> $log_file; 
+    fi;
+    
+    if [ `echo $i | grep .nsq$` ]; then 
+	rm  $i; echo " rm'ed : $i" >> $log_file; 
+    fi;
+    
+    if [ `echo $i | grep .nin$` ]; then 
+	rm  $i; echo " rm'ed : $i" >> $log_file; 
+    fi;
+    
+    if [ `echo $i | grep .nal$` ]; then 
+	rm  $i; echo " rm'ed : $i" >> $log_file; 
+    fi;
+    
+done;
+
+echo "Deleted formatdb files for $filename" >> $log_file;
+
+echo >> $log_file;
+echo "start:       "$start_time >> $log_file;
+echo "end:         "`date` >> $log_file;
+echo >> $log_file;
+
+echo "DONE processing $filename" >> $log_file;
+echo >> $log_file;
+
+bp_err=`head -2 $outDir/$filename.STAT | tail -1 | cut -f7`
+echo "Total bp error: $bp_err"
