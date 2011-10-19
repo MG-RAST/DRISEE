@@ -46,6 +46,7 @@ usage()
     echo "     fasta_file:    the name of the fasta file you want DRISEE'd"
     echo "     fasta_dir:     the path for fasta_file"
     echo "     prefix_length: prefix length you want to use for DRISEE analysis"
+    echo "     output_dir:    directory to which output(s) will be written"	
     echo
 
 
