@@ -35,7 +35,7 @@ unless (-d $destination) {
 
 # create md5 list
 print STDERR "Creating md5 prefix file\n" if ($verbose);
-system( "dereplication_create_prefix_file -file $file -destination $destination -prefix $cutoff") == 0  
+system( "./scripts/dereplication_create_prefix_file -file $file -destination $destination -prefix $cutoff") == 0  
   or die "system 'dereplication_create_prefix_file -file $file -destination $destination -prefix $cutoff' failed: $?";
 
 # sort md5 list
@@ -54,7 +54,7 @@ print STDERR "Dumping fasta files of dereplicated and removed sequences\n" if ($
 
 $input = $output;
 
-system( "dereplication_from_list -file $input -destination $destination -option $option -suffix $fname") == 0  
+system( "./scripts/dereplication_from_list -file $input -destination $destination -option $option -suffix $fname") == 0  
   or die "system 'dereplication_from_list -file $input -destination $destination -option $option' failed: $?";
 
 exit(0);
