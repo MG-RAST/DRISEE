@@ -339,7 +339,7 @@ sub process_bin {
     --min_converge $min_cvg"
   );
   }
-  my $run = system("./run_find_steiner.pl $verb --fasta_file $fasta --out_file $outf --seed_file $seedf --md5 $md5 --tmp_dir $tdir --max_iter $max_iter --min_converge $min_cvg");
+  my $run = system("./scripts/run_find_steiner.pl $verb --fasta_file $fasta --out_file $outf --seed_file $seedf --md5 $md5 --tmp_dir $tdir --max_iter $max_iter --min_converge $min_cvg");
   unlink $fasta unless $nodelete;
   unless ($run == 0) { print STDERR "Error running run_find_steiner.pl\n"; exit 1; }
   
