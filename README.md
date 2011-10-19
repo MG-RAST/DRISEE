@@ -25,9 +25,10 @@ To run
      fasta_file:    the name of the fasta file you want DRISEE'd
      fasta_dir:     the path for the fasta_file
      prefix_length: prefix length you want to use for DRISEE analysis
+     output_dir:    directory to which output(s) will be written
 
 example
->drisee my.FASTA /data/location/ 50
+>drisee my.FASTA /data/location/ 50 /data/my_drisee_output
 
 Will perform a DRISEE style analysis on /data/location/my.FASTA
 using a prefix length of 50 bp
