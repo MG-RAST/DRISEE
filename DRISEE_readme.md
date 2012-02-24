@@ -92,11 +92,13 @@ Options:
 	or exceeds the specified limit (see -a AMBIG_MAX below)with -a AMBIG_MAX are excluded 
 	from further analysis.
 
-	-r REP_ FILE, --replicate_file=REP _ FILE[default to calculate replicates]
-	List file with sorted indices for replicate bins.  The file has one row for each read: two columns indicating the bin and sequence id for the read 
+	-r REP\_FILE, --replicate\_file=REP_FILE[default to calculate replicates]
+	List file with sorted indices for replicate bins.  The file has one row for each read: 
+	two columns indicating the bin and sequence id for the read 
 	
 	-d TMPDIR, --tmp_dir=TMPDIR				[default '/tmp']
-	Directory for intermediate files (must be full path), 			deleted at the end of analysis.
+	Directory for intermediate files (must be full path), 			
+	deleted at the end of analysis.
 
 	-l LOGFILE, --log_file=LOGFILE				[default '/dev/null']
 	A detailed log of processing related statistics
@@ -110,27 +112,34 @@ Options:
 	Prefix length for the identification of bins of ADRs
         
 	-s SEQ_MAX, --seq_max=SEQ_MAX				[default 10000000]
-	Maximum number of reads to process.  The specified number of reads are randomly selected from the input fasta/fastq (chosen randomly).  The remaining reads are excluded from analysis.  It is frequently possible to determine the DRISEE error for a data set using less than the total number of reads.  However; to validate your sample size, it is recommended that you perform DRISEE with a number of different sample sizes.  Make sure that your sample size is large enough not to be affected by stochastic sampling artifacts (i.e. that multiple iterations run at the selected sample size produce the ?same? result.
+	Maximum number of reads to process.  The specified number of reads are randomly 
+	selected from the input fasta/fastq (chosen randomly).  The remaining reads are 
+	excluded from analysis.  It is frequently possible to determine the DRISEE error 
+	for a data set using less than the total number of reads.  However; to validate 
+	your sample size, it is recommended that you perform DRISEE with a number of different 
+	sample sizes.  Make sure that your sample size is large enough not to be affected 
+	by stochastic sampling artifacts (i.e. that multiple iterations run at the selected 
+	sample size produce the ?same? result.
                         
--a AMBIG_MAX, --ambig_bp_max=AMBIG_MAX		[default 0]
+-a AMBIG\_MAX, --ambig_bp_max=AMBIG\_MAX		[default 0]
 Maximum number of ambiguous bases (?N?) allowed per read before the read is rejected. Note that inclusion of even a single ambiguous character can dramatically affect multiple sequence alignments of bins of prefix-identical bins.  We recommend exclusion of reads that contain any ambiguous bases.
                        
--m STDEV_MULTI, --stdev_multiplier=STDEV_MULTI	[default 2.0]
+-m STDEV\_MULTI, --stdev\_multiplier=STDEV_MULTI	[default 2.0]
 Multiplier by which the standard deviation in the length of the input reads is multiplied to establish upper and lower bounds for length based read filtering (see -f, --filter_seq) 
                         
--n READ_MIN, --bin_read_min=READ_MIN		[default 20]
+-n READ\_MIN, --bin_read_min=READ\_MIN		[default 20]
 Minimum number of reads a bin of prefix identical reads must possess for it to be considered in the error calculations
  
--x READ_MAX, --bin_read_max=READ_MAX		[default 1000]
+-x READ\_MAX, --bin_read_max=READ\_MAX		[default 1000]
 Maximum number of reads to process from each bin of prefix identical reads.  We have found that values much smaller than 1000 can lead to stochastic artifacts.  Consideration of more reads is possible, but in our testing, rarely leads to results that are appreciably different from those determined from the default of 1000 reads.  This parameter also always for informal control of bin weighting; no bin is allowed to contribute more than 1000 reads to the error calculation ? (i.e.) exceptionally large bins are not allowed to dominate error calculations.  Reads are randomly selected. 
  
--b NUM_MAX, --bin_num_max=NUM_MAX			[default 1000]
+-b NUM\_MAX, --bin_num_max=NUM\_MAX			[default 1000]
 Maximum number of prefix bins to process.  Bins of prefix identical reads are randomly selected.  Analyses that consider smaller numbers of bins are more prone to stochastic artifacts.  Those that consider larger numbers of bins rarely lead to results that differ appreciably from those determined from a default selection of 1000 bins.                        
 
--i ITER_MAX, --iter_max=ITER_MAX			[default 10]
+-i ITER\_MAX, --iter\_max=ITER_MAX			[default 10]
 In the multiple alignment step (used to generate the consensus sequence for each bin of prefix identical reads), specifies the maximum number of iterations to perform if convergence (convergence = no change in cluster identity over at least CONV_MIN iterations ? see below) is not achieved.  In our analysis, bins that require more than 2-3 iterations are exceptionally rare, and usually indicate the presence of ambiguous bases or highly inconsistent sequence content in the non-prefix portion of the reads.
 	
--c CONV_MIN, --converge_min=CONV_MIN		[default 3]
+-c CONV\_MIN, --converge\_min=CONV_MIN		[default 3]
 Minimum number of iterations to identify convergence.  Multiple alignments are iterated until convergence is observed for CONV_MIN consecutive iterations, or when ITER_MAX (see above) has been reached. 
                       
 -v, --verbose 						[default off]
