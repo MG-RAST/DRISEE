@@ -91,7 +91,7 @@ Options:
 	ambiguous bases (?N?). Reads with that possess a number of ambiguous bases that matches 
 	or exceeds the specified limit (see -a AMBIG_MAX below)with -a AMBIG_MAX are excluded 
 	from further analysis. NOTE: that by default, no_filter is disabled.  In this state, 
-	drisee __will__ perform filtering. Enabiling this option will disable filtering 
+	drisee __will__ perform filtering. Enabling this option will disable filtering 
 	(hence the long-option name, "no_filter").
 
 	-r REP_FILE, --replicate_file=REP_FILE[default to calculate replicates]
