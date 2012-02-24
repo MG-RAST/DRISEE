@@ -3,7 +3,7 @@ DRISEE: Duplicate Read Inferred Sequencing Error Estimation
 
 Contributors: Kevin Keegan, William Trimble, Jared Wilkening, Andreas Wilke, Travis Harrison, & Mark D'souza
 
-Description
+DESCRIPTION
 ===
 
 DRISEE is a tool that utilizes artifactual duplicate reads (ADRs) to provide a platform independent assessment 
@@ -50,7 +50,9 @@ version numbers for perl and python meet or exceed those listed above, you shoul
 
 RUNNING DRISEE
 ===
-DRISEE utilizes three scripts to perform its analyses.  All options and input parameters are passed to the main script (drisee.py) which calls the other scripts as needed. Each of the options and input parameters are explained below.  Examples of a typical execution are provided further below:
+DRISEE utilizes three scripts to perform its analyses.  All options and input parameters are passed to 
+the main script (drisee.py) which calls the other scripts as needed. Each of the options and input 
+parameters are explained below.  Examples of a typical execution are provided further below:
 
 UASGE:
 
@@ -72,25 +74,34 @@ Options:
 	Number of processes to use  ? with this option you can select the number of processers 
 	to use on a multiprocessor system. When more than 1 processor is selected, processing 
 	of bins of duplicate reads is split among the specified number of processors.
-____
+
 	-t SEQ_TYPE, --seq_type=SEQ_TYPE			[default 'fasta']
 	Sequence type: fasta, fastq 
 	Specify the type of sequence file ? fasta and fastq are the only accepted options
-____
+
 	-f, --filter_seq  					[default True]    
-       Run sequence filtering, 
-	Sequence filtering performs two filtering processes before data are processed. (1) An average and standard deviation is determined for the lengths of all reads.  The standard deviation is multiplied by the standard deviation multiplier (option -m STDEV_MULTI below).  The product of this multiplication is added or subtracted to the average sequence length to determine upper and lower bounds for sequence length.  All reads with a length greater than the upper bound, or less than the lower bound, are excluded from analysis. (2) Each remaining read is screened for ambiguous bases (?N?). Reads with that possess a number of ambiguous bases that matches or exceeds the specified limit (see -a AMBIG_MAX below)with -a AMBIG_MAX are excluded from further analysis.
-____       
-	-r REP_FILE, --replicate_file=REP_FILE[default to calculate replicates]
+	Run sequence filtering, 
+	Sequence filtering performs two filtering processes before data are processed. 
+	(1) An average and standard deviation is determined for the lengths of all reads.  
+	The standard deviation is multiplied by the standard deviation multiplier 
+	(option -m STDEV_MULTI below).  The product of this multiplication is added or 
+	subtracted to the average sequence length to determine upper and lower bounds for 
+	sequence length.  All reads with a length greater than the upper bound, or less than 
+	the lower bound, are excluded from analysis. (2) Each remaining read is screened for 
+	ambiguous bases (?N?). Reads with that possess a number of ambiguous bases that matches 
+	or exceeds the specified limit (see -a AMBIG_MAX below)with -a AMBIG_MAX are excluded 
+	from further analysis.
+
+	-r REP_ FILE, --replicate_file=REP _ FILE[default to calculate replicates]
 	List file with sorted indices for replicate bins.  The file has one row for each read: two columns indicating the bin and sequence id for the read 
-____                        
+	
 	-d TMPDIR, --tmp_dir=TMPDIR				[default '/tmp']
 	Directory for intermediate files (must be full path), 			deleted at the end of analysis.
-____
-	-l LOGFILE, --log_file=LOGFILE			[default '/dev/null']
+
+	-l LOGFILE, --log_file=LOGFILE				[default '/dev/null']
 	A detailed log of processing related statistics
  
-	--percent							[default True]         
+	--percent						[default True]         
 	Produce second output profile ? with values presented 			
 	as percent per position. Additional output file is				
 	named ?output_stat_file_pattern?.per 
@@ -98,8 +109,8 @@ ____
 	--prefix_length=PREFIX					[default 50]
 	Prefix length for the identification of bins of ADRs
         
--s SEQ_MAX, --seq_max=SEQ_MAX				[default 10000000]
-Maximum number of reads to process.  The specified number of reads are randomly selected from the input fasta/fastq (chosen randomly).  The remaining reads are excluded from analysis.  It is frequently possible to determine the DRISEE error for a data set using less than the total number of reads.  However; to validate your sample size, it is recommended that you perform DRISEE with a number of different sample sizes.  Make sure that your sample size is large enough not to be affected by stochastic sampling artifacts (i.e. that multiple iterations run at the selected sample size produce the ?same? result.
+	-s SEQ_MAX, --seq_max=SEQ_MAX				[default 10000000]
+	Maximum number of reads to process.  The specified number of reads are randomly selected from the input fasta/fastq (chosen randomly).  The remaining reads are excluded from analysis.  It is frequently possible to determine the DRISEE error for a data set using less than the total number of reads.  However; to validate your sample size, it is recommended that you perform DRISEE with a number of different sample sizes.  Make sure that your sample size is large enough not to be affected by stochastic sampling artifacts (i.e. that multiple iterations run at the selected sample size produce the ?same? result.
                         
 -a AMBIG_MAX, --ambig_bp_max=AMBIG_MAX		[default 0]
 Maximum number of ambiguous bases (?N?) allowed per read before the read is rejected. Note that inclusion of even a single ambiguous character can dramatically affect multiple sequence alignments of bins of prefix-identical bins.  We recommend exclusion of reads that contain any ambiguous bases.
