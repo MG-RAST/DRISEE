@@ -55,27 +55,27 @@ STDOUT: Runtime summary stats
 
 Options:
 ____
---version		show the DRISEE version number
-  
--h, --help		show help/usage and exit
-
--p PROCESSES, --processes=PROCESSES			[default '1']
-Number of processes to use  ? with this option you can select the number of processers to use on a multiprocessor system. When more than 1 processor is selected, processing of bins of duplicate reads is split among the specified number of processors.
-
--t SEQ_TYPE, --seq_type=SEQ_TYPE			[default 'fasta']
-       Sequence type: fasta, fastq 
-Specify the type of sequence file ? fasta and fastq are the only accepted options
-
--f, --filter_seq  					[default True]    
+	--version		show the DRISEE version number
+____  
+	-h, --help		show help/usage and exit
+____
+	-p PROCESSES, --processes=PROCESSES			[default '1']
+	Number of processes to use  ? with this option you can select the number of processers to use on a multiprocessor system. When more than 1 processor is selected, processing of bins of duplicate reads is split among the specified number of processors.
+____
+	-t SEQ_TYPE, --seq_type=SEQ_TYPE			[default 'fasta']
+	Sequence type: fasta, fastq 
+	Specify the type of sequence file ? fasta and fastq are the only accepted options
+____
+	-f, --filter_seq  					[default True]    
        Run sequence filtering, 
-Sequence filtering performs two filtering processes before data are processed. (1) An average and standard deviation is determined for the lengths of all reads.  The standard deviation is multiplied by the standard deviation multiplier (option -m STDEV_MULTI below).  The product of this multiplication is added or subtracted to the average sequence length to determine upper and lower bounds for sequence length.  All reads with a length greater than the upper bound, or less than the lower bound, are excluded from analysis. (2) Each remaining read is screened for ambiguous bases (?N?). Reads with that possess a number of ambiguous bases that matches or exceeds the specified limit (see -a AMBIG_MAX below)with -a AMBIG_MAX are excluded from further analysis.
-       
--r REP_FILE, --replicate_file=REP_FILE[default to calculate replicates]
-List file with sorted indices for replicate bins.  The file has one row for each read: two columns indicating the bin and sequence id for the read 
-                        
--d TMPDIR, --tmp_dir=TMPDIR				[default '/tmp']
-			Directory for intermediate files (must be full path), 			deleted at the end of analysis.
- 
+	Sequence filtering performs two filtering processes before data are processed. (1) An average and standard deviation is determined for the lengths of all reads.  The standard deviation is multiplied by the standard deviation multiplier (option -m STDEV_MULTI below).  The product of this multiplication is added or subtracted to the average sequence length to determine upper and lower bounds for sequence length.  All reads with a length greater than the upper bound, or less than the lower bound, are excluded from analysis. (2) Each remaining read is screened for ambiguous bases (?N?). Reads with that possess a number of ambiguous bases that matches or exceeds the specified limit (see -a AMBIG_MAX below)with -a AMBIG_MAX are excluded from further analysis.
+____       
+	-r REP_FILE, --replicate_file=REP_FILE[default to calculate replicates]
+	List file with sorted indices for replicate bins.  The file has one row for each read: two columns indicating the bin and sequence id for the read 
+____                        
+	-d TMPDIR, --tmp_dir=TMPDIR				[default '/tmp']
+	Directory for intermediate files (must be full path), 			deleted at the end of analysis.
+____
 -l LOGFILE, --log_file=LOGFILE			[default '/dev/null']
 			A detailed log of processing related statistics
  
