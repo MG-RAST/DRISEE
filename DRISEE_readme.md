@@ -75,7 +75,7 @@ Options:
 	to use on a multiprocessor system. When more than 1 processor is selected, processing 
 	of bins of duplicate reads is split among the specified number of processors.
 
-	-t SEQ_TYPE, --seq_type=SEQ_TYPE			[default 'fasta']
+	-t SEQ\_TYPE, --seq\_type=SEQ_TYPE			[default 'fasta']
 	Sequence type: fasta, fastq 
 	Specify the type of sequence file ? fasta and fastq are the only accepted options
 
@@ -89,7 +89,7 @@ Options:
 	sequence length.  All reads with a length greater than the upper bound, or less than 
 	the lower bound, are excluded from analysis. (2) Each remaining read is screened for 
 	ambiguous bases (?N?). Reads with that possess a number of ambiguous bases that matches 
-	or exceeds the specified limit (see -a AMBIG_MAX below)with -a AMBIG_MAX are excluded 
+	or exceeds the specified limit (see -a AMBIG\_MAX below)with -a AMBIG\_MAX are excluded 
 	from further analysis.
 
 	-r REP\_FILE, --replicate\_file=REP_FILE[default to calculate replicates]
@@ -106,12 +106,12 @@ Options:
 	--percent						[default True]         
 	Produce second output profile ? with values presented 			
 	as percent per position. Additional output file is				
-	named ?output_stat_file_pattern?.per 
+	named ?output\_stat\_file_pattern?.per 
 
 	--prefix_length=PREFIX					[default 50]
 	Prefix length for the identification of bins of ADRs
         
-	-s SEQ_MAX, --seq_max=SEQ_MAX				[default 10000000]
+	-s SEQ\_MAX, --seq\_max=SEQ_MAX				[default 10000000]
 	Maximum number of reads to process.  The specified number of reads are randomly 
 	selected from the input fasta/fastq (chosen randomly).  The remaining reads are 
 	excluded from analysis.  It is frequently possible to determine the DRISEE error 
@@ -121,86 +121,84 @@ Options:
 	by stochastic sampling artifacts (i.e. that multiple iterations run at the selected 
 	sample size produce the ?same? result.
                         
--a AMBIG\_MAX, --ambig_bp_max=AMBIG\_MAX		[default 0]
-Maximum number of ambiguous bases (?N?) allowed per read before the read is rejected. Note that inclusion of even a single ambiguous character can dramatically affect multiple sequence alignments of bins of prefix-identical bins.  We recommend exclusion of reads that contain any ambiguous bases.
+	-a AMBIG\_MAX, --ambig_bp_max=AMBIG\_MAX		[default 0]
+	Maximum number of ambiguous bases (?N?) allowed per read before the read is rejected. 
+	Note that inclusion of even a single ambiguous character can dramatically affect 
+	multiple sequence alignments of bins of prefix-identical bins.  We recommend exclusion 
+	of reads that contain any ambiguous bases.
                        
--m STDEV\_MULTI, --stdev\_multiplier=STDEV_MULTI	[default 2.0]
-Multiplier by which the standard deviation in the length of the input reads is multiplied to establish upper and lower bounds for length based read filtering (see -f, --filter_seq) 
+	-m STDEV\_MULTI, --stdev\_multiplier=STDEV_MULTI	[default 2.0]
+	Multiplier by which the standard deviation in the length of the input reads is 
+	multiplied to establish upper and lower bounds for length based read filtering 
+	(see -f, --filter_seq) 
                         
--n READ\_MIN, --bin_read_min=READ\_MIN		[default 20]
-Minimum number of reads a bin of prefix identical reads must possess for it to be considered in the error calculations
+	-n READ\_MIN, --bin_read_min=READ\_MIN			[default 20]
+	Minimum number of reads a bin of prefix identical reads must possess for it to be 
+	considered in the error calculations
  
--x READ\_MAX, --bin_read_max=READ\_MAX		[default 1000]
-Maximum number of reads to process from each bin of prefix identical reads.  We have found that values much smaller than 1000 can lead to stochastic artifacts.  Consideration of more reads is possible, but in our testing, rarely leads to results that are appreciably different from those determined from the default of 1000 reads.  This parameter also always for informal control of bin weighting; no bin is allowed to contribute more than 1000 reads to the error calculation ? (i.e.) exceptionally large bins are not allowed to dominate error calculations.  Reads are randomly selected. 
+	-x READ\_MAX, --bin_read_max=READ\_MAX			[default 1000]
+	Maximum number of reads to process from each bin of prefix identical reads.  We have 
+	found that values much smaller than 1000 can lead to stochastic artifacts.  Consideration 
+	of more reads is possible, but in our testing, rarely leads to results that are appreciably 
+	different from those determined from the default of 1000 reads.  This parameter also 
+	always for informal control of bin weighting; no bin is allowed to contribute more than 
+	1000 reads to the error calculation ? (i.e.) exceptionally large bins are not allowed to 
+	dominate error calculations.  Reads are randomly selected. 
  
--b NUM\_MAX, --bin_num_max=NUM\_MAX			[default 1000]
-Maximum number of prefix bins to process.  Bins of prefix identical reads are randomly selected.  Analyses that consider smaller numbers of bins are more prone to stochastic artifacts.  Those that consider larger numbers of bins rarely lead to results that differ appreciably from those determined from a default selection of 1000 bins.                        
+	-b NUM\_MAX, --bin_num_max=NUM\_MAX			[default 1000]
+	Maximum number of prefix bins to process.  Bins of prefix identical reads are randomly 
+	selected.  Analyses that consider smaller numbers of bins are more prone to stochastic 
+	artifacts.  Those that consider larger numbers of bins rarely lead to results that differ 
+	appreciably from those determined from a default selection of 1000 bins.                        
 
--i ITER\_MAX, --iter\_max=ITER_MAX			[default 10]
-In the multiple alignment step (used to generate the consensus sequence for each bin of prefix identical reads), specifies the maximum number of iterations to perform if convergence (convergence = no change in cluster identity over at least CONV_MIN iterations ? see below) is not achieved.  In our analysis, bins that require more than 2-3 iterations are exceptionally rare, and usually indicate the presence of ambiguous bases or highly inconsistent sequence content in the non-prefix portion of the reads.
+	-i ITER\_MAX, --iter\_max=ITER_MAX			[default 10]
+	In the multiple alignment step (used to generate the consensus sequence for each bin of 
+	prefix identical reads), specifies the maximum number of iterations to perform if convergence 
+	(convergence = no change in cluster identity over at least CONV_MIN iterations ? see below) 
+	is not achieved.  In our analysis, bins that require more than 2-3 iterations are exceptionally 
+	rare, and usually indicate the presence of ambiguous bases or highly inconsistent sequence content 
+	in the non-prefix portion of the reads.
 	
--c CONV\_MIN, --converge\_min=CONV_MIN		[default 3]
-Minimum number of iterations to identify convergence.  Multiple alignments are iterated until convergence is observed for CONV_MIN consecutive iterations, or when ITER_MAX (see above) has been reached. 
+	-c CONV\_MIN, --converge\_min=CONV_MIN			[default 3]
+	Minimum number of iterations to identify convergence.  Multiple alignments are iterated until 
+	convergence is observed for CONV_MIN consecutive iterations, or when ITER_MAX (see above) has 
+	been reached. 
                       
--v, --verbose 						[default off]
-			Write runtime summary stats to STDOUT
+	-v, --verbose 						[default off]
+	Write runtime summary stats to STDOUT
 
 
 
 EXAMPLES
 ===
-
-
-
-
-
-
+Coming soon
 
 Output Description
 ===
-DRISEE can produce 2 profile formats ? raw counts, and percent per consensus indexed base. 
-
+DRISEE can produce 2 profile formats, raw counts, and percent per consensus indexed base. 
+---
 The raw counts output has the following format:
 
-
-
-#       A_err   T_err   C_err   G_err   N_err   X_err   bp_err
-# Raw counts    0.096899        0.000000        0.000000        0.000000        0.000000        0.000000
-        0.096899
-#       A       T       C       G       N       X       A       T       C       G       N       X
-1       0       0       24      0       0       0       0       0       0       0       0       0
-2       0       0       0       24      0       0       0       0       0       0       0       0
-3       24      0       0       0       0       0       0       0       0       0       0       0
-4       0       24      0       0       0       0       0       0       0       0       0       0
-5       0       0       24      0       0       0       0       0       0       0       0       0
-6       0       0       0       24      0       0       0       0       0       0       0       0
-7       24      0       0       
-?
-The top two lines contain a summary, presenting the indicated error as a percent of all non-prefix bases of the indicated error classes.  The third line contains headers infor
-
-
-
-
-
-
-
-
-
-
-	A_err   T_err   C_err   G_err   N_err   X_err   bp_err  prefix_length = 50
-	0.0929  0.0895  0.1117  0.0995  0.0000  0.1516  0.5451
-	A       T       C       G       N       X       A       T       C       G       N       X
-	5663    2274    3014    3808    0       0       0       0       0       0       0       0
-	3414    2336    3379    5630    0       0       0       0       0       0       0       0
-	5778    1899    3414    3668    0       0       0       0       0       0       0       0
-	3440    3983    4430    2906    0       0       0       0       0       0       0       0
-	4254    3317    2281    4907    0       0       0       0       0       0       0       0
+	#       A\_err   T\_err   C\_err   G\_err   N\_err   X\_err   bp_err
+	# Raw counts    0.096899        0.000000        0.000000        0.000000        0.000000        0.000000	0.096899
+	#       A       T       C       G       N       X       A       T       C       G       N       X
+	1       0       0       24      0       0       0       0       0       0       0       0       0
+	2       0       0       0       24      0       0       0       0       0       0       0       0
+	3       24      0       0       0       0       0       0       0       0       0       0       0
+	4       0       24      0       0       0       0       0       0       0       0       0       0
 	...
+	
+The first line     ("A\_err   T\_err ...") contains headers for the summary values. It also also 
+indicates the length of the prefix ("prefix_length") used for a given DRISEE analysis.  
+Here a 50 base-long prefix was used.
 
-The first line     ("A_err   T_err ...") contains headers for the summary values. It also also indicates the length of the prefix ("prefix_length") used for a given DRISEE analysis.  Here a 50 base-long prefix was used.
-
-The second line values indicate the various error rates (described below)calculated from the non-prefix portion of the reads that have undergone DRISEE analysis. A, T, C, & G_err indicate the A, T, C & G substituation rates respectively. N_err indicates the substitution rate for ambiguous base calls - by default reads that contain ambiguous base calls are exceluded from DRISEE analysis (Keegan et. al. 2012);
-reads with ambiguous bases can be included in analyses if non default parameters are used. X_err indicates the combined insertion/deletion error rate rate bp_err indicates the total error, the sum of A, T, C, G, N, & X _err.
+The second line values indicate the various error rates (described below)calculated from the non-prefix 
+portion of the reads that have undergone DRISEE analysis. A, T, C, & G_err indicate the A, T, C & G 
+substituation rates respectively. N_err indicates the substitution rate for ambiguous base calls - by default 
+reads that contain ambiguous base calls are exceluded from DRISEE analysis (Keegan et. al. 2012);
+reads with ambiguous bases can be included in analyses if non default parameters are used. 
+X\_err indicates the combined insertion/deletion error rate rate bp\_err indicates the total error, 
+the sum of A, T, C, G, N, & X _err.
 
 The third line contains headers for the DRISEE raw counts.
 The columns labeled as "A, T, C, G, C, X, A, T, C, G, C, X" represent (in order from left to right)
