@@ -32,7 +32,7 @@ INSTALLATION
 ===
 
 Unzip the contents of DRISEE.zip into your folder of choice.  A location in your PATH 
-makes the most sense ? alternatively, add the location to your PATH. When it is unzipped, 
+makes the most sense; alternatively, add the location to your PATH. When it is unzipped, 
 you will find three files:
 
        drisee.py           		(the main driving script)
@@ -175,7 +175,12 @@ Options:
 
 EXAMPLES
 ===
-Coming soon
+
+	drisee.py my_fasta my_fasta.err # will use all default settings on input fasta file my_fasta
+					# primary output (raw output) will be called my_fasta.err
+
+	drisee.py -v -l log test_fasta2 test_fasta2.err # use the verbose setting to get some basic stats
+							# and the log setting to generate a detailed runtime log
 
 Output Description
 ===
