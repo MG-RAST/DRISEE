@@ -11,7 +11,7 @@ of sequencing error in metagenomic (or genomic) sequencing data.  DRISEE is desi
 Currently, it is not appropriate for amplicon data. 
 
 
-Requirements
+REQUIREMENTS
 ===
 
 System:
