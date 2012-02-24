@@ -76,14 +76,16 @@ ____
 	-d TMPDIR, --tmp_dir=TMPDIR				[default '/tmp']
 	Directory for intermediate files (must be full path), 			deleted at the end of analysis.
 ____
--l LOGFILE, --log_file=LOGFILE			[default '/dev/null']
-			A detailed log of processing related statistics
+	-l LOGFILE, --log_file=LOGFILE			[default '/dev/null']
+	A detailed log of processing related statistics
  
---percent							[default True]         
-			Produce second output profile ? with values presented 			as percent per position. Additional output file is				named ?output_stat_file_pattern?.per 
+	--percent							[default True]         
+	Produce second output profile ? with values presented 			
+	as percent per position. Additional output file is				
+	named ?output_stat_file_pattern?.per 
 
---prefix_length=PREFIX					[default 50]
-       Prefix length for the identification of bins of ADRs
+	--prefix_length=PREFIX					[default 50]
+	Prefix length for the identification of bins of ADRs
         
 -s SEQ_MAX, --seq_max=SEQ_MAX				[default 10000000]
 Maximum number of reads to process.  The specified number of reads are randomly selected from the input fasta/fastq (chosen randomly).  The remaining reads are excluded from analysis.  It is frequently possible to determine the DRISEE error for a data set using less than the total number of reads.  However; to validate your sample size, it is recommended that you perform DRISEE with a number of different sample sizes.  Make sure that your sample size is large enough not to be affected by stochastic sampling artifacts (i.e. that multiple iterations run at the selected sample size produce the ?same? result.
