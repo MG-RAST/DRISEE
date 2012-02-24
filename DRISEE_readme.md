@@ -56,7 +56,7 @@ parameters are explained below.  Examples of a typical execution are provided fu
 
 UASGE:
 
-drisee.py [options] input_seq_file output_stat_file_pattern
+	drisee.py [options] input_seq_file output_stat_file_pattern
 ____
 Input/Output summary:
 
