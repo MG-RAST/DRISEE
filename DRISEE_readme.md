@@ -215,41 +215,43 @@ G: bases that do not match consensus
 N: ambiguous bases that do not match consensus
 X: insertion or deletions that do not match consensus
 
-The fourth line ("5663    2274 ...") indicates the integer counts for the match or
-mismatches described in third line header, for the first position for all considered
-bins of prefix identical reads.  The fifth line indicates the same information for
-the second position in all considered bins of prefix identical reads etc.  This 
+The fourth line ("1       0       0       24      0 ...") indicates the integer counts 
+for the match or mismatches described in third line header, for the first position for 
+all consideredbins of prefix identical reads.  The fifth line indicates the same information 
+for the second position in all considered bins of prefix identical reads etc.  This 
 format extends to the end of the file. The example above includes the count data 
 for the first 5 bases - as these are part of the 50 base long prefix region, they
 are expected to be identical -- all displayed counts correspond to consensus matches.
 
-The second principal output of DRISEE is a similarly formatted file that indicates counts as percentages (average of percentages in the summary lines):
+---
+The percentage output has the following format:
 
-#       A_err   T_err   C_err   G_err   N_err   X_err   bp_err
-# Percent counts        0.096899        0.000000        0.000000        0.000000        0.000000        0.000000        0.096899
-#       A       T       C       G       N       X       A       T       C       G       N       X
-1       0.000000        0.000000        100.000000      0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000
-2       0.000000        0.000000        0.000000        100.000000      0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000
-3       100.000000      0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000
-4       0.000000        100.000000      0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000
-5       0.000000        0.000000        100.000000      0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.0
+	#       A_err   T_err   C_err   G_err   N_err   X_err   bp_err
+	# Percent counts        0.096899        0.000000        0.000000        0.000000        0.000000        0.000000        0.096899
+	#       A       T       C       G       N       X       A       T       C       G       N       X
+	1       0.000000        0.000000        100.000000      0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000
+	2       0.000000        0.000000        0.000000        100.000000      0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000
+	3       100.000000      0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000
+	4       0.000000        100.000000      0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000
+	5       0.000000        0.000000        100.000000      0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.0
 
+This is similar to the format for the raw output.
+Except that the summary (lines 1 and 2) indicates the average percent error for the indicated error type.
+Lines 4 on indicate values as the percent of counts per indexed consensus position.
 
-See Keegan 2012 (email kkeegan AT anl.gov ? manuscript is currently under review) for more details. 
-
-
-
-
+See Keegan 2012 (email kkeegan AT anl.gov :: manuscript is currently under review) for more details. 
 
 Changelog
 ===
 This is DRISEE version 1.1 (Feb 2012)
 
-
-
-
 OTHER INFORMATION
 ===
-DRISEE was designed to run on a Unix platform, preferably with access to multiple processors.  A typical DRISEE analysis ? using the default parameters specified above ? takes on the order of 10?s of minutes to a few hours to complete.  Processing time will vary considerably based on the size of the input data file.  DRISEE has been run on OSX machines with a single CPU ? processing times are generally longer, based largely on the limited capability of most such machine have for parallel processing on multiple CPUs.
+DRISEE was designed to run on a Unix platform, preferably with access to multiple processors.  
+A typical DRISEE analysis using the default parameters specified above takes on the order 
+of 10's of minutes to a few hours to complete.  Processing time will vary considerably based 
+on the size of the input data file.  DRISEE has been run on OSX machines with a single CPU; 
+processing times are generally longer, based largely on the limited capability of most such 
+machine have for parallel processing on multiple CPUs.
 
 
