@@ -71,105 +71,105 @@ Options:
 	-h, --help		show help/usage and exit
 
 	-p PROCESSES, --processes=PROCESSES			[default '1']
-	Number of processes to use  ? with this option you can select the number of processers 
-	to use on a multiprocessor system. When more than 1 processor is selected, processing 
-	of bins of duplicate reads is split among the specified number of processors.
+		Number of processes to use  ? with this option you can select the number of processers 
+		to use on a multiprocessor system. When more than 1 processor is selected, processing 
+		of bins of duplicate reads is split among the specified number of processors.
 
 	-t SEQ_TYPE, --seq_type=SEQ_TYPE			[default 'fasta']
-	Sequence type: fasta, fastq 
-	Specify the type of sequence file ? fasta and fastq are the only accepted options
+		Sequence type: fasta, fastq 
+		Specify the type of sequence file ? fasta and fastq are the only accepted options
 
 	-f, --no_filter_seq  					[default True]    
-	Run sequence filtering, 
-	Sequence filtering performs two filtering processes before data are processed. 
-	(1) An average and standard deviation is determined for the lengths of all reads.  
-	The standard deviation is multiplied by the standard deviation multiplier 
-	(option -m STDEV_MULTI below).  The product of this multiplication is added or 
-	subtracted to the average sequence length to determine upper and lower bounds for 
-	sequence length.  All reads with a length greater than the upper bound, or less than 
-	the lower bound, are excluded from analysis. (2) Each remaining read is screened for 
-	ambiguous bases (?N?). Reads with that possess a number of ambiguous bases that matches 
-	or exceeds the specified limit (see -a AMBIG_MAX below)with -a AMBIG_MAX are excluded 
-	from further analysis. NOTE: that by default, no_filter is disabled.  In this state, 
-	drisee __will__ perform filtering. Enabling this option will disable filtering 
-	(hence the long-option name, "no_filter").
+		Run sequence filtering, 
+		Sequence filtering performs two filtering processes before data are processed. 
+		(1) An average and standard deviation is determined for the lengths of all reads.  
+		The standard deviation is multiplied by the standard deviation multiplier 
+		(option -m STDEV_MULTI below).  The product of this multiplication is added or 
+		subtracted to the average sequence length to determine upper and lower bounds for 
+		sequence length.  All reads with a length greater than the upper bound, or less than 
+		the lower bound, are excluded from analysis. (2) Each remaining read is screened for 
+		ambiguous bases (?N?). Reads with that possess a number of ambiguous bases that matches 
+		or exceeds the specified limit (see -a AMBIG_MAX below)with -a AMBIG_MAX are excluded 
+		from further analysis. NOTE: that by default, no_filter is disabled.  In this state, 
+		drisee __will__ perform filtering. Enabling this option will disable filtering 
+		(hence the long-option name, "no_filter").
 
 	-r REP_FILE, --replicate_file=REP_FILE[default to calculate replicates]
-	List file with sorted indices for replicate bins.  The file has one row for each read: 
-	two columns indicating the bin and sequence id for the read 
+		List file with sorted indices for replicate bins.  The file has one row for each read: 
+		two columns indicating the bin and sequence id for the read 
 	
 	-d TMPDIR, --tmp_dir=TMPDIR				[default '/tmp']
-	Directory for intermediate files (must be full path), 			
-	deleted at the end of analysis.
+		Directory for intermediate files (must be full path), 			
+		deleted at the end of analysis.
 
 	-l LOGFILE, --log_file=LOGFILE				[default '/dev/null']
-	A detailed log of processing related statistics
+		A detailed log of processing related statistics
  
 	--no_percent						[default True]         
-	Produce second output profile ? with values presented 			
-	as percent per position. Additional output file is				
-	named ?output_stat_file_pattern?.per NOTE: that by default, no_percent is disabled.  In this state, 
-	drisee __will__ produce a percent profile. Enabling this option will disable production of
-	percent-based profiles (hence the long-option name, "no_pecent").
+		Produce second output profile ? with values presented 			
+		as percent per position. Additional output file is				
+		named ?output_stat_file_pattern?.per NOTE: that by default, no_percent is disabled.  In this state, 
+		drisee __will__ produce a percent profile. Enabling this option will disable production of
+		percent-based profiles (hence the long-option name, "no_pecent").
 
 	--prefix_length=PREFIX					[default 50]
-	Prefix length for the identification of bins of ADRs
+		Prefix length for the identification of bins of ADRs
         
 	-s SEQ_MAX, --seq_max=SEQ_MAX				[default 10000000]
-	Maximum number of reads to process.  The specified number of reads are randomly 
-	selected from the input fasta/fastq (chosen randomly).  The remaining reads are 
-	excluded from analysis.  It is frequently possible to determine the DRISEE error 
-	for a data set using less than the total number of reads.  However; to validate 
-	your sample size, it is recommended that you perform DRISEE with a number of different 
-	sample sizes.  Make sure that your sample size is large enough not to be affected 
-	by stochastic sampling artifacts (i.e. that multiple iterations run at the selected 
-	sample size produce the ?same? result.
+		Maximum number of reads to process.  The specified number of reads are randomly 
+		selected from the input fasta/fastq (chosen randomly).  The remaining reads are 
+		excluded from analysis.  It is frequently possible to determine the DRISEE error 
+		for a data set using less than the total number of reads.  However; to validate 
+		your sample size, it is recommended that you perform DRISEE with a number of different 
+		sample sizes.  Make sure that your sample size is large enough not to be affected 
+		by stochastic sampling artifacts (i.e. that multiple iterations run at the selected 
+		sample size produce the ?same? result.
                         
 	-a AMBIG_MAX, --ambig_bp_max=AMBIG_MAX		[default 0]
-	Maximum number of ambiguous bases (?N?) allowed per read before the read is rejected. 
-	Note that inclusion of even a single ambiguous character can dramatically affect 
-	multiple sequence alignments of bins of prefix-identical bins.  We recommend exclusion 
-	of reads that contain any ambiguous bases.
+		Maximum number of ambiguous bases (?N?) allowed per read before the read is rejected. 
+		Note that inclusion of even a single ambiguous character can dramatically affect 
+		multiple sequence alignments of bins of prefix-identical bins.  We recommend exclusion 
+		of reads that contain any ambiguous bases.
                        
 	-m STDEV_MULTI, --stdev_multiplier=STDEV_MULTI	[default 2.0]
-	Multiplier by which the standard deviation in the length of the input reads is 
-	multiplied to establish upper and lower bounds for length based read filtering 
-	(see -f, --filter_seq) 
+		Multiplier by which the standard deviation in the length of the input reads is 
+		multiplied to establish upper and lower bounds for length based read filtering 
+		(see -f, --filter_seq) 
                         
 	-n READ_MIN, --bin_read_min=READ_MIN			[default 20]
-	Minimum number of reads a bin of prefix identical reads must possess for it to be 
-	considered in the error calculations
+		Minimum number of reads a bin of prefix identical reads must possess for it to be 
+		considered in the error calculations
  
 	-x READ_MAX, --bin_read_max=READ_MAX			[default 1000]
-	Maximum number of reads to process from each bin of prefix identical reads.  We have 
-	found that values much smaller than 1000 can lead to stochastic artifacts.  Consideration 
-	of more reads is possible, but in our testing, rarely leads to results that are appreciably 
-	different from those determined from the default of 1000 reads.  This parameter also 
-	always for informal control of bin weighting; no bin is allowed to contribute more than 
-	1000 reads to the error calculation ? (i.e.) exceptionally large bins are not allowed to 
-	dominate error calculations.  Reads are randomly selected. 
+		Maximum number of reads to process from each bin of prefix identical reads.  We have 
+		found that values much smaller than 1000 can lead to stochastic artifacts.  Consideration 
+		of more reads is possible, but in our testing, rarely leads to results that are appreciably 
+		different from those determined from the default of 1000 reads.  This parameter also 
+		always for informal control of bin weighting; no bin is allowed to contribute more than 
+		1000 reads to the error calculation ? (i.e.) exceptionally large bins are not allowed to 
+		dominate error calculations.  Reads are randomly selected. 
  
 	-b NUM_MAX, --bin_num_max=NUM_MAX			[default 1000]
-	Maximum number of prefix bins to process.  Bins of prefix identical reads are randomly 
-	selected.  Analyses that consider smaller numbers of bins are more prone to stochastic 
-	artifacts.  Those that consider larger numbers of bins rarely lead to results that differ 
-	appreciably from those determined from a default selection of 1000 bins.                        
+		Maximum number of prefix bins to process.  Bins of prefix identical reads are randomly 
+		selected.  Analyses that consider smaller numbers of bins are more prone to stochastic 
+		artifacts.  Those that consider larger numbers of bins rarely lead to results that differ 
+		appreciably from those determined from a default selection of 1000 bins.                        
 
 	-i ITER_MAX, --iter_max=ITER_MAX			[default 10]
-	In the multiple alignment step (used to generate the consensus sequence for each bin of 
-	prefix identical reads), specifies the maximum number of iterations to perform if convergence 
-	(convergence = no change in cluster identity over at least CONV_MIN iterations ? see below) 
-	is not achieved.  In our analysis, bins that require more than 2-3 iterations are exceptionally 
-	rare, and usually indicate the presence of ambiguous bases or highly inconsistent sequence content 
-	in the non-prefix portion of the reads.
+		In the multiple alignment step (used to generate the consensus sequence for each bin of 
+		prefix identical reads), specifies the maximum number of iterations to perform if convergence 
+		(convergence = no change in cluster identity over at least CONV_MIN iterations ? see below) 
+		is not achieved.  In our analysis, bins that require more than 2-3 iterations are exceptionally 
+		rare, and usually indicate the presence of ambiguous bases or highly inconsistent sequence content 
+		in the non-prefix portion of the reads.
 	
 	-c CONV_MIN, --converge_min=CONV_MIN			[default 3]
-	Minimum number of iterations to identify convergence.  Multiple alignments are iterated until 
-	convergence is observed for CONV_MIN consecutive iterations, or when ITER_MAX (see above) has 
-	been reached. 
+		Minimum number of iterations to identify convergence.  Multiple alignments are iterated until 
+		convergence is observed for CONV_MIN consecutive iterations, or when ITER_MAX (see above) has 
+		been reached. 
                       
 	-v, --verbose 						[default off]
-	Write runtime summary stats to STDOUT
+		Write runtime summary stats to STDOUT
 
 
 
