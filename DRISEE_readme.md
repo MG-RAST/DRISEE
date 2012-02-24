@@ -6,7 +6,8 @@ Contributors: Kevin Keegan, William Trimble, Jared Wilkening, Andreas Wilke, Tra
 Description
 ===
 
-DRISEE is a tool that utilizes artifactual duplicate reads (ADRs) to provide a platform independent assessment of sequencing error in metagenomic (or genomic) sequencing data.  DRISEE is designed to consider shotgun data.
+DRISEE is a tool that utilizes artifactual duplicate reads (ADRs) to provide a platform independent assessment 
+of sequencing error in metagenomic (or genomic) sequencing data.  DRISEE is designed to consider shotgun data.
 Currently, it is not appropriate for amplicon data. 
 
 
@@ -14,10 +15,12 @@ Requirements
 ===
 
 System:
+---
 A unix environment ( Unix / Linux / OSX / Darwin / Cygwin / etc. ) 
 DRISEE was developed to run on multicore Unix systems, but can be run on a desktop or laptop. DRISEE has been run on several OSX based systems.
 
 Software:
+---
 - perl 5.12.1 or later (http://www.perl.org/get.html)
 - python 2.6 or later (http://python.org/getit/)
 		with biopython (http://biopython.org/wiki/Biopython)
