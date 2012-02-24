@@ -28,15 +28,21 @@ Software:
 INSTALLATION
 ===
 
-Unzip the contents of DRISEE.zip into your folder of choice.  A location in your PATH makes the most sense ? alternatively, add the location to your PATH. When it is unzipped, you will find three files:
+Unzip the contents of DRISEE.zip into your folder of choice.  A location in your PATH 
+makes the most sense ? alternatively, add the location to your PATH. When it is unzipped, 
+you will find three files:
 
        drisee.py           		(the main driving script)
        seq_length_stats.py 		(an accessory script)
        run_find_steiner.pl 		(an accessory script)
        DRISEE_requirements_check.sh 	(an accessory script)
 
-You can run DRISEE_requirements_check.sh to perform a simple check that will determine if your system has the software requirements listed above.  From a command prompt in the folder containing the scripts type: ?sh DRISEE_requirements_check.sh? (without the quotes)
-The script will check to see if you have the required software installed.  Note that this check is not version-aware; read the output to determine your software versions.  If you meet all 5 requirements, and the version numbers for perl and python meet or exceed those listed above, you should be all set to run DRISEE
+You can run DRISEE_requirements_check.sh to perform a simple check that will determine if your 
+system has the software requirements listed above.  From a command prompt in the folder containing 
+the scripts type: ?sh DRISEE_requirements_check.sh? (without the quotes) The script will check to 
+see if you have the required software installed.  Note that this check is not version-aware; 
+read the output to determine your software versions.  If you meet all 5 requirements, and the 
+version numbers for perl and python meet or exceed those listed above, you should be all set to run DRISEE
 
 
 RUNNING DRISEE
@@ -46,21 +52,23 @@ DRISEE utilizes three scripts to perform its analyses.  All options and input pa
 UASGE:
 
 drisee.py [options] input_seq_file output_stat_file_pattern
-
+____
 Input/Output summary:
 
 Input:  fasta/fastq file     (input_seq_file)
 Output: error matrix file(s) (output_stat_file_pattern)
 STDOUT: Runtime summary stats
-
+____
 Options:
-____
+
 	--version		show the DRISEE version number
-____  
+
 	-h, --help		show help/usage and exit
-____
+
 	-p PROCESSES, --processes=PROCESSES			[default '1']
-	Number of processes to use  ? with this option you can select the number of processers to use on a multiprocessor system. When more than 1 processor is selected, processing of bins of duplicate reads is split among the specified number of processors.
+	Number of processes to use  ? with this option you can select the number of processers 
+	to use on a multiprocessor system. When more than 1 processor is selected, processing 
+	of bins of duplicate reads is split among the specified number of processors.
 ____
 	-t SEQ_TYPE, --seq_type=SEQ_TYPE			[default 'fasta']
 	Sequence type: fasta, fastq 
