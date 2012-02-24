@@ -54,7 +54,7 @@ DRISEE utilizes three scripts to perform its analyses.  All options and input pa
 the main script (drisee.py) which calls the other scripts as needed. Each of the options and input 
 parameters are explained below.  Examples of a typical execution are provided further below:
 ____
-UASGE:
+USAGE:
 
 	drisee.py [options] input_seq_file output_stat_file_pattern
 ____
