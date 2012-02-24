@@ -182,7 +182,7 @@ EXAMPLES
 	drisee.py -v -l log test_fasta2 test_fasta2.err # use the verbose setting to get some basic stats
 													# and the log setting to generate a detailed runtime log
 
-Output Description
+OUTPUT DESCRIPTION
 ===
 
 DRISEE can produce 2 profile formats, raw counts, and percent per consensus indexed base. 
@@ -252,7 +252,7 @@ Lines 4 on indicate values as the percent of counts per indexed consensus positi
 
 See Keegan 2012 (email kkeegan AT anl.gov :: manuscript is currently under review) for more details. 
 
-Changelog
+CHANGELOG
 ===
 This is DRISEE version 1.1 (Feb 2012)
 
