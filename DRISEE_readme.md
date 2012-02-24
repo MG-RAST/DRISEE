@@ -54,8 +54,8 @@ Output: error matrix file(s) (output_stat_file_pattern)
 STDOUT: Runtime summary stats
 
 Options:
-
---version		show the DRISEE/ seq_err_calc version number
+____
+--version		show the DRISEE version number
   
 -h, --help		show help/usage and exit
 
