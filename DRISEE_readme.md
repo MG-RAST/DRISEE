@@ -60,8 +60,8 @@ drisee.py [options] input_seq_file output_stat_file_pattern
 ____
 Input/Output summary:
 
-Input:  fasta/fastq file     (input_seq_file)
-Output: error matrix file(s) (output_stat_file_pattern)
+Input:  fasta/fastq file     (input\_seq\_file)
+Output: error matrix file(s) (output\_stat\_file_pattern)
 STDOUT: Runtime summary stats
 ____
 Options:
