@@ -25,7 +25,7 @@ Software:
 - python 2.6 or later (http://python.org/getit/)
 		with biopython (http://biopython.org/wiki/Biopython)
 - uclust (http://www.drive5.com/uclust/downloads1_2_15.html)
-- cdbfasta & cdbyank (http://sourceforge.net/projects/cdbfasta/
+- cdbfasta & cdbyank (http://sourceforge.net/projects/cdbfasta/)
 
 
 INSTALLATION
