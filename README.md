@@ -42,7 +42,7 @@ you will find three files:
 
 You can run DRISEE_requirements_check.sh to perform a simple check that will determine if your 
 system has the software requirements listed above.  From a command prompt in the folder containing 
-the scripts type: ?sh DRISEE_requirements_check.sh? (without the quotes) The script will check to 
+the scripts type: "sh DRISEE_requirements_check.sh" (without the quotes) The script will check to 
 see if you have the required software installed.  Note that this check is not version-aware; 
 read the output to determine your software versions.  If you meet all 5 requirements, and the 
 version numbers for perl and python meet or exceed those listed above, you should be all set to run DRISEE
@@ -71,13 +71,13 @@ Options:
 	-h, --help		show help/usage and exit
 
 	-p PROCESSES, --processes=PROCESSES			[default '1']
-		Number of processes to use  ? with this option you can select the number of processers 
+		Number of processes to use. With this option you can select the number of processers 
 		to use on a multiprocessor system. When more than 1 processor is selected, processing 
 		of bins of duplicate reads is split among the specified number of processors.
 
 	-t SEQ_TYPE, --seq_type=SEQ_TYPE			[default 'fasta']
 		Sequence type: fasta, fastq 
-		Specify the type of sequence file ? fasta and fastq are the only accepted options
+		Specify the type of sequence file; fasta and fastq are the only accepted options
 
 	-f, --no_filter_seq  					[default True]    
 		Run sequence filtering, 
@@ -88,7 +88,7 @@ Options:
 		subtracted to the average sequence length to determine upper and lower bounds for 
 		sequence length.  All reads with a length greater than the upper bound, or less than 
 		the lower bound, are excluded from analysis. (2) Each remaining read is screened for 
-		ambiguous bases (?N?). Reads with that possess a number of ambiguous bases that matches 
+		ambiguous bases ("N"). Reads with that possess a number of ambiguous bases that matches 
 		or exceeds the specified limit (see -a AMBIG_MAX below)with -a AMBIG_MAX are excluded 
 		from further analysis. NOTE: that by default, no_filter is disabled.  In this state, 
 		drisee __will__ perform filtering. Enabling this option will disable filtering 
@@ -106,9 +106,9 @@ Options:
 		A detailed log of processing related statistics
  
 	--no_percent						[default True]         
-		Produce second output profile ? with values presented 			
+		Produce second output profile with values presented 			
 		as percent per position. Additional output file is				
-		named ?output_stat_file_pattern?.per NOTE: that by default, no_percent is disabled.  In this state, 
+		named "output_stat_file_pattern".per NOTE: that by default, no_percent is disabled.  In this state, 
 		drisee __will__ produce a percent profile. Enabling this option will disable production of
 		percent-based profiles (hence the long-option name, "no_pecent").
 
@@ -123,7 +123,7 @@ Options:
 		your sample size, it is recommended that you perform DRISEE with a number of different 
 		sample sizes.  Make sure that your sample size is large enough not to be affected 
 		by stochastic sampling artifacts (i.e. that multiple iterations run at the selected 
-		sample size produce the ?same? result.
+		sample size produce the same result.
                         
 	-a AMBIG_MAX, --ambig_bp_max=AMBIG_MAX		[default 0]
 		Maximum number of ambiguous bases ("N") allowed per read before the read is rejected. 
@@ -146,7 +146,7 @@ Options:
 		of more reads is possible, but in our testing, rarely leads to results that are appreciably 
 		different from those determined from the default of 1000 reads.  This parameter also 
 		always for informal control of bin weighting; no bin is allowed to contribute more than 
-		1000 reads to the error calculation ? (i.e.) exceptionally large bins are not allowed to 
+		1000 reads to the error calculation (i.e.) exceptionally large bins are not allowed to 
 		dominate error calculations.  Reads are randomly selected. 
  
 	-b NUM_MAX, --bin_num_max=NUM_MAX			[default 1000]
@@ -158,7 +158,7 @@ Options:
 	-i ITER_MAX, --iter_max=ITER_MAX			[default 10]
 		In the multiple alignment step (used to generate the consensus sequence for each bin of 
 		prefix identical reads), specifies the maximum number of iterations to perform if convergence 
-		(convergence = no change in cluster identity over at least CONV_MIN iterations ? see below) 
+		(convergence = no change in cluster identity over at least CONV_MIN iterations, see below) 
 		is not achieved.  In our analysis, bins that require more than 2-3 iterations are exceptionally 
 		rare, and usually indicate the presence of ambiguous bases or highly inconsistent sequence content 
 		in the non-prefix portion of the reads.
