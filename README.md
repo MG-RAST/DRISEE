@@ -262,5 +262,5 @@ DRISEE was designed to run on a Unix platform, preferably with access to multipl
 A typical DRISEE analysis using the default parameters specified above takes on the order 
 of 10's of minutes to a few hours to complete.  Processing time will vary considerably based 
 on the size of the input data file.  DRISEE has been run on OSX machines with a single CPU; 
-processing times are generally longer, based largely on the limited capability oF such 
+processing times are generally longer, based largely on the limited capability of such 
 machines to perform parallel computation on multiple CPUs.
