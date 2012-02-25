@@ -126,7 +126,7 @@ Options:
 		sample size produce the ?same? result.
                         
 	-a AMBIG_MAX, --ambig_bp_max=AMBIG_MAX		[default 0]
-		Maximum number of ambiguous bases (?N?) allowed per read before the read is rejected. 
+		Maximum number of ambiguous bases ("N") allowed per read before the read is rejected. 
 		Note that inclusion of even a single ambiguous character can dramatically affect 
 		multiple sequence alignments of bins of prefix-identical bins.  We recommend exclusion 
 		of reads that contain any ambiguous bases.
