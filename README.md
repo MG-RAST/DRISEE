@@ -190,7 +190,7 @@ DRISEE can produce 2 profile formats, raw counts, and percent per consensus inde
 ---
 The raw counts output has the following format:
 
-	#       A\_err   T\_err   C\_err   G\_err   N\_err   X\_err   bp_err
+	#       A_err   T_err   C_err   G_err   N_err   X_err   bp_err
 	# Raw counts    0.096899        0.000000        0.000000        0.000000        0.000000        0.000000	0.096899
 	#       A       T       C       G       N       X       A       T       C       G       N       X
 	1       0       0       24      0       0       0       0       0       0       0       0       0
