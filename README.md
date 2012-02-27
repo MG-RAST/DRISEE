@@ -117,7 +117,7 @@ Options:
         
 	-s SEQ_MAX, --seq_max=SEQ_MAX				[default 10000000]
 		Maximum number of reads to process.  The specified number of reads are randomly 
-		selected from the input fasta/fastq (chosen randomly).  The remaining reads are 
+		selected from the input fasta/fastq.  The remaining reads are 
 		excluded from analysis.  It is frequently possible to determine the DRISEE error 
 		for a data set using less than the total number of reads.  However; to validate 
 		your sample size, it is recommended that you perform DRISEE with a number of different 
