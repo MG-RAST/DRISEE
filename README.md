@@ -181,6 +181,10 @@ EXAMPLES
 
 	drisee.py -v -l log test_fasta2 test_fasta2.err # use the verbose setting to get some basic stats
 													# and the log setting to generate a detailed runtime log
+EXAMPLE INPUT/OUTPUT FILES
+---
+	- This area will be populated with example files soon
+ 	- Example above will include generation of outputs with example inputs 
 
 OUTPUT DESCRIPTION
 ===
