@@ -176,12 +176,16 @@ Options:
 EXAMPLES
 ===
 
+Example command line
+---
+
 	drisee.py my_fasta my_fasta.err # will use all default settings on input fasta file my_fasta
 									# primary output (raw output) will be called my_fasta.err
 
 	drisee.py -v -l log test_fasta2 test_fasta2.err # use the verbose setting to get some basic stats
 													# and the log setting to generate a detailed runtime log
-EXAMPLE INPUT/OUTPUT FILES
+
+Example input/output files
 ---
 	- This area will be populated with example files soon
  	- Example above will include generation of outputs with example inputs 
