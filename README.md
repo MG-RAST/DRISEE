@@ -3,6 +3,7 @@ DRISEE: Duplicate Read Inferred Sequencing Error Estimation
 
 Contributors: Kevin Keegan, William Trimble, Jared Wilkening, Andreas Wilke, Travis Harrison, Mark D'souza, & Folker Meyer
 
+
 DESCRIPTION
 ===
 
@@ -190,6 +191,7 @@ Example input/output files
 	- This area will be populated with example files soon
  	- COmmand line example above will include generation of outputs with example inputs 
 
+
 OUTPUT DESCRIPTION
 ===
 
@@ -260,9 +262,11 @@ Lines 4 on indicate values as the percent of counts per indexed consensus positi
 
 See Keegan 2012 (email kkeegan AT anl.gov :: manuscript is currently under review) for more details. 
 
+
 CHANGELOG
 ===
 This is DRISEE version 1.1 (Feb 2012)
+
 
 OTHER INFORMATION
 ===
