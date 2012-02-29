@@ -188,7 +188,7 @@ Example command line
 Example input/output files
 ---
 	- This area will be populated with example files soon
- 	- Example above will include generation of outputs with example inputs 
+ 	- COmmand line example above will include generation of outputs with example inputs 
 
 OUTPUT DESCRIPTION
 ===
