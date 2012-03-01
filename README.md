@@ -181,10 +181,10 @@ Example command line
 ---
 
 	(1)> drisee.py my_fasta my_fasta.err # will use all default settings on input fasta file my_fasta
-									# primary output (raw output) will be called my_fasta.err
+													# primary output (raw output) will be called my_fasta.err
 
 	(2)> drisee.py -v -l log test_fasta2 test_fasta2.err # use the verbose setting to get some basic stats
-													# and the log setting to generate a detailed runtime log
+														# and the log setting to generate a detailed runtime log
 	(3)> drisee.py -p 10 -l example_log -v example_fasta example_fasta.drisee_results > verbose_text &
 													# run drisee with 10 cpus on the example_file (see below), 
 													# printing a log and the stdout text
