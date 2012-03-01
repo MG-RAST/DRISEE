@@ -32,14 +32,14 @@ Software:
 INSTALLATION
 ===
 
-Unzip the contents of DRISEE.zip into your folder of choice.  A location in your PATH 
-makes the most sense; alternatively, add the location to your PATH. When it is unzipped, 
-you will find three files:
+Download and place the three main "script files" into your folder of choice (listed below).  
+A location in your PATH makes the most sense; alternatively, add the location to your PATH. 
 
-       drisee.py           		(the main driving script)
-       seq_length_stats.py 		(an accessory script)
-       run_find_steiner.pl 		(an accessory script)
-       DRISEE_requirements_check.sh 	(an accessory script)
+       drisee.py           		(the main driving script - a main script file)
+       seq_length_stats.py 		(an accessory script - a main script file)
+       run_find_steiner.pl 		(an accessory script - a main script file)
+       
+       DRISEE_requirements_check.sh 	(an accessory script - non-required tool to check for requrements)
 
 You can run DRISEE_requirements_check.sh to perform a simple check that will determine if your 
 system has the software requirements listed above.  From a command prompt in the folder containing 
@@ -180,19 +180,23 @@ EXAMPLES
 Example command line
 ---
 
-	drisee.py my_fasta my_fasta.err # will use all default settings on input fasta file my_fasta
+	(1)> drisee.py my_fasta my_fasta.err # will use all default settings on input fasta file my_fasta
 									# primary output (raw output) will be called my_fasta.err
 
-	drisee.py -v -l log test_fasta2 test_fasta2.err # use the verbose setting to get some basic stats
+	(2)> drisee.py -v -l log test_fasta2 test_fasta2.err # use the verbose setting to get some basic stats
 													# and the log setting to generate a detailed runtime log
-	drisee.py -p 10 -l example_log -v example_fasta example_fasta.drisee_results > verbose_text &
-													# run drisee with 10 cpus on the example file, printing a log and the stdout text
+	(3)> drisee.py -p 10 -l example_log -v example_fasta example_fasta.drisee_results > verbose_text &
+													# run drisee with 10 cpus on the example_file (see below), 
+													# printing a log and the stdout text
 
 
 Example input/output files
 ---
-	- unzip example_files.zip 
-
+- unzip example_files.zip: This file cotains the following files:
+	example_fasta         		# an example input fasta file       (used for example command line 3 above)
+	example_fasta_results 		# example of the raw counts format  (produced from example command line 3 above)
+	example_fasta_results.per	# example of the percentage output  (produced from example command line 3 above)
+	example_log			# example of the log                (produced from example command line 3 above)
 
 OUTPUT DESCRIPTION
 ===
@@ -259,8 +263,14 @@ The percentage output has the following format:
 	...
 
 This is similar to the format for the raw output.
-Except that the summary (lines 1 and 2) indicates the average percent error for the indicated error type.
-Lines 4 on indicate values as the percent of counts per indexed consensus position.
+The summary header and summary values are identical to those from the raw counts file
+
+Lines 4 on are produced from the the values used to generate the raw output. These are modified
+as follows: each row presents indicates counts as the percent of total counts for that row
+(i.e. for the indicated seqeunce-indexed postion).
+In the example above, the row indexed as "1" has a value of 100 under the first "C" column, indicating
+that 100% of considered reads match a consensus "C" at postion 1.  This value is calculated from
+the same indexed row (1) in the raw counts that exhibit a raw count of "24" for the same data point. 
 
 See Keegan 2012 (email kkeegan AT anl.gov :: manuscript is currently under review) for more details. 
 
