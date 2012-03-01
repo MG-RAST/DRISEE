@@ -198,7 +198,7 @@ unzip example_files.zip: This file cotains the following:
 	example_fasta         		# an example input fasta file       (used for example command line 3 above)
 	example_fasta_results 		# example of the raw counts format  (produced from example command line 3 above)
 	example_fasta_results.per	# example of the percentage output  (produced from example command line 3 above)
-	example_log				# example of the log                (produced from example command line 3 above)
+	example_log						# example of the log                (produced from example command line 3 above)
 
 
 OUTPUT DESCRIPTION
