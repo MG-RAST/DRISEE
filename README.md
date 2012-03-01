@@ -185,11 +185,13 @@ Example command line
 
 	drisee.py -v -l log test_fasta2 test_fasta2.err # use the verbose setting to get some basic stats
 													# and the log setting to generate a detailed runtime log
+	drisee.py -p 10 -l example_log -v example_fasta example_fasta.drisee_results > verbose_text &
+													# run drisee with 10 cpus on the example file, printing a log and the stdout text
+
 
 Example input/output files
 ---
-	- This area will be populated with example files soon
- 	- COmmand line example above will include generation of outputs with example inputs 
+	- unzip example_files.zip 
 
 
 OUTPUT DESCRIPTION
