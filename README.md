@@ -266,14 +266,19 @@ The percentage output has the following format:
 	...
 
 This is similar to the format for the raw output.
-The summary header and summary values are identical to those from the raw counts file
+The summary header and summary values are identical to those from the raw counts file.
 
 Lines 4 on are produced from the the values used to generate the raw output. These are modified
-as follows: each row presents indicates counts as the percent of total counts for that row
+as follows: each row presents counts as the percent of total counts for that row
 (i.e. for the indicated seqeunce-indexed postion).
 In the example above, the row indexed as "1" has a value of 100 under the first "C" column, indicating
-that 100% of considered reads match a consensus "C" at postion 1.  This value is calculated from
-the same indexed row (1) in the raw counts that exhibit a raw count of "24" for the same data point. 
+that 100% of considered reads match a consensus "C" at postion 1.  A value of "0" in the second "C"
+column indicates that no reads possess a "C" at this postion that does not match their respective 
+consensus sequence. These values are calculated from the corresponding counts in the raw counts output:
+a value of "24" for the first "C" column (percent = 24/24*100), and "0" for the second "C" column
+(percent = 0/24).  Where 24 is the number of total counts (in this example it is also the number of 
+"C" counts that match their consensus at postion 1).
+. 
 
 See Keegan 2012 (email kkeegan AT anl.gov :: manuscript is currently under review) for more details. 
 
