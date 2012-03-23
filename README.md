@@ -17,7 +17,7 @@ REQUIREMENTS
 
 System:
 ---
-A unix environment ( Unix / Linux / OSX / Darwin / Cygwin / etc. ) 
+A Unix environment ( Unix / Linux / OSX / Darwin / Cygwin / etc. ) 
 DRISEE was developed to run on multicore Unix systems, but can be run on a desktop or laptop. DRISEE has been run on several OSX based systems.
 
 Software:
