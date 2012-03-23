@@ -23,8 +23,8 @@ DRISEE was developed to run on multicore Unix systems, but can be run on a deskt
 Software:
 ---
 - perl 5.12.1 or later (http://www.perl.org/get.html) *1
-- python 2.6 or later (http://python.org/getit/) *1
-		with biopython (http://biopython.org/wiki/Biopython)*
+- python 2.6 or later (http://python.org/getit/)
+		with biopython (http://biopython.org/wiki/Biopython) *1
 - uclust (http://drive5.com/usearch/usearch3.0.html) *1 *2
 - cdbfasta & cdbyank (http://sourceforge.net/projects/cdbfasta/) *1
 
