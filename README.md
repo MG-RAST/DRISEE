@@ -29,7 +29,7 @@ Software:
 - cdbfasta & cdbyank (http://sourceforge.net/projects/cdbfasta/) *1
 
 *1 Please note that users are responsible for making sure that their use of required software
-   products is compliant with exisiting licenses and/or user agreements.  
+   products is compliant with existing licenses and/or user agreements.  
 *2 DRISEE will soon be updated to allow users to choose from a variety of tools to perform
    the multiple sequence alignments portion of the workflow.
 
