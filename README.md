@@ -22,12 +22,16 @@ DRISEE was developed to run on multicore Unix systems, but can be run on a deskt
 
 Software:
 ---
-- perl 5.12.1 or later (http://www.perl.org/get.html)
-- python 2.6 or later (http://python.org/getit/)
-		with biopython (http://biopython.org/wiki/Biopython)
-- uclust (http://www.drive5.com/uclust/downloads1_2_15.html)
-- cdbfasta & cdbyank (http://sourceforge.net/projects/cdbfasta/)
-
+- perl 5.12.1 or later (http://www.perl.org/get.html)*
+- python 2.6 or later (http://python.org/getit/)*
+		with biopython (http://biopython.org/wiki/Biopython)*
+- uclust (http://drive5.com/usearch/usearch3.0.html)* **
+- cdbfasta & cdbyank (http://sourceforge.net/projects/cdbfasta/)*
+ 
+*  Please note that users are responsible for making sure that their use of required software
+   products is compliant with exisiting licenses and/or user agreements  
+** DRISEE will soon be updated to allow users to choose from a variety of tools to perform
+   the multiple sequence alignments portion of the workflow
 
 INSTALLATION
 ===
