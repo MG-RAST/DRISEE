@@ -31,7 +31,7 @@ Software:
 *1 Please note that users are responsible for making sure that their use of required software
    products is compliant with existing licenses and/or user agreements.  
 *2 DRISEE will soon be updated to allow users to choose from a variety of tools to perform
-   the multiple sequence alignments portion of the workflow.
+   multiple sequence alignment related operations.
 
 INSTALLATION
 ===
