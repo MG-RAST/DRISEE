@@ -30,8 +30,8 @@ Software:
 
 *1 Please note that users are responsible for making sure that their use of required software
    products is compliant with existing licenses and/or user agreements.  
-*2 DRISEE will soon be updated to allow users to choose from a variety of tools to perform
-   multiple sequence alignment related operations.
+*2 DRISEE will soon be updated to allow users to choose from a variety of tools (in addition to 
+   to uclust) to perform multiple sequence alignment related operations.
 
 INSTALLATION
 ===
