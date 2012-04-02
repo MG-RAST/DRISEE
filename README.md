@@ -34,9 +34,9 @@ Software:
 INSTALLATION
 ===
 
-Download and place the three main script files (listed below) into your folder of choice.  
-A location in your exisiting PATH makes the most sense; alternatively, you can add the location 
-of the script files to your exisiting PATH. 
+Download and place the four script files (listed below) into your folder of choice.  
+A location in your exisiting PATH makes the most sense; alternatively, you can add the 
+selected folder to your exisiting PATH. 
 
        drisee.py           		(the main driving script - a main script file)
        seq_length_stats.py 		(an accessory script - generates sequence related stats)
