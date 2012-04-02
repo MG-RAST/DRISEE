@@ -288,7 +288,7 @@ See Keegan 2012 (email kkeegan AT anl.gov :: manuscript is currently under revie
 
 CHANGELOG
 ===
-This is DRISEE version 1.1 (Feb 2012)
+This is DRISEE version 1.2 (April 2012)
 
 
 OTHER INFORMATION
