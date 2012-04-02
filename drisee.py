@@ -10,12 +10,9 @@ from optparse import OptionParser
 from multiprocessing import Pool
 
 __doc__ = """
-drisee.py
-A tool to calculate sequence error
-from artifactual duplicate reads (ARDs).
-
-Input:  fasta/fastq file     (input_seq_file)
-Output: error matrix file(s) (output_stat_file_pattern)
+Script to calculate sequence error.
+Input: fasta/fastq file to get error on
+Output: error matrix file
 STDOUT: Runtime summary stats"""
 
 LOG_FILE = ''
@@ -187,9 +184,6 @@ def create_output(bps, match, error, per):
     total = 0
     errs  = dict([(x,0) for x in bps])
     stext = [ "#\t" + "\t".join(bps) + "\t" + "\t".join(bps) ]
-    desc_text = 'Raw counts'
-    if per:
-        desc_text = 'Percent counts'
     
     for i in range( len(match) ):
         rsum = 0
@@ -217,28 +211,27 @@ def create_output(bps, match, error, per):
     err_head.append('bp_err')
     err_nums.append("%f"%err_sum)
 
-    stext.insert(0, "# "+desc_text+"\t"+"\t".join(err_nums))
+    stext.insert(0, "#\t"+"\t".join(err_nums))
     stext.insert(0, "#\t"+"\t".join(err_head))
     return err_sum, "\n".join(stext)
 
 
-usage = "%prog [options] input_seq_file output_stat_file_pattern\n" + __doc__
-
-version = "%prog 1.1 (Feb 2012)"
+usage = "usage: %prog [options] input_seq_file output_stat_file\n" + __doc__
+version = "%prog 1.2"
 
 def main(args):
     global TMP_DIR, LOG_FILE, ITER_MAX, CONV_MIN, PREF_LEN
     parser = OptionParser(usage=usage, version=version)
-    parser.add_option("-p", "--processes", dest="processes", type="int", default=8, help="Number of processes to use [default '1']")
+    parser.add_option("-p", "--processes", dest="processes", type="int", default=8, help="Number of processes to use [default '8']")
     parser.add_option("-t", "--seq_type", dest="seq_type", default='fasta', help="Sequence type: fasta, fastq [default 'fasta']")
-    parser.add_option("-f", "--no_filter_seq", dest="filter", action="store_false", default=True, help="Run sequence filtering, reads removed based on length and number of ambiguous base [default True]")
+    parser.add_option("-f", "--filter_seq", dest="filter", action="store_true", default=False, help="Run sequence filtering, length and ambig bp [default off]")
     parser.add_option("-r", "--replicate_file", dest="rep_file", default=None, help="File with sorted replicate bins (bin_id, seq_id) [default to calculate replicates]")
     parser.add_option("-d", "--tmp_dir", dest="tmpdir", default="/tmp", help="DIR for intermediate files (must be full path), deleted at end [default '/tmp']")
     parser.add_option("-l", "--log_file", dest="logfile", default=None, help="Detailed processing related stats [default '/dev/null']")
-    parser.add_option("", "--no_percent", dest="percent", action="store_false", default=True, help="Produce additional output (output_stat_file_pattern.per) with percent-based counts [default True]")
+    parser.add_option("", "--percent", dest="percent", action="store_true", default=False, help="Additional output (output_stat_file.per) with percent values [default off]")
     parser.add_option("", "--prefix_length", dest="prefix", type="int", default=50, help="Prefix length for replicate bins [default 50]")
     parser.add_option("-s", "--seq_max", dest="seq_max", type="int", default=10000000, help="Maximum number of reads to process (chosen randomly) [default 10000000]")
-    parser.add_option("-a", "--ambig_bp_max", dest="ambig_max", type="int", default=0, help="Maximum number of ambiguous bases (\"N\") before rejection [default 0]")
+    parser.add_option("-a", "--ambig_bp_max", dest="ambig_max", type="int", default=0, help="Maximum number of ambiguity characters before rejection [default 0]")
     parser.add_option("-m", "--stdev_multiplier", dest="stdev_multi", type="float", default=2.0, help="Multiplier to stddev to get min and max seq lengths [default 2.0]")
     parser.add_option("-n", "--bin_read_min", dest="read_min", type="int", default=20, help="Minimum number of reads in bin to be considered [default 20]")
     parser.add_option("-x", "--bin_read_max", dest="read_max", type="int", default=1000, help="Maximum number of reads in bin to process (chosen randomly) [default 1000]")
@@ -365,14 +358,13 @@ def main(args):
                 curr = bid
                 ids  = []
             ids.append(sid)
-        if bid != curr:
-            if len(ids) > opts.read_max:
-                ids = random_truncate(ids, opts.read_max)
-            bin_fasta = os.path.join(TMP_DIR, curr+".fasta")
-            get_sub_fasta(ids, index_seq, in_seq, bin_fasta) ## seqs truncated to min
-            if os.path.isfile(bin_fasta):
-                to_process.append(curr)
-                total_ids += len(ids)
+        if len(ids) > opts.read_max:
+            ids = random_truncate(ids, opts.read_max)
+        bin_fasta = os.path.join(TMP_DIR, curr+".fasta")
+        get_sub_fasta(ids, index_seq, in_seq, bin_fasta) ## seqs truncated to min
+        if os.path.isfile(bin_fasta):
+            to_process.append(curr)
+            total_ids += len(ids)
     finally:
         dhdl.close()
     if opts.verbose: sys.stdout.write("Done\n")
