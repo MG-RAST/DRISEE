@@ -42,15 +42,6 @@ of the script files to your exisiting PATH.
        seq_length_stats.py 		(an accessory script - a main script file)
        run_find_steiner.pl 		(an accessory script - a main script file)
        
-       DRISEE_requirements_check.sh 	(an accessory script - non-required tool to check for requrements)
-
-You can run DRISEE_requirements_check.sh to perform a simple check that will determine if your 
-system has the software requirements listed above.  From a command prompt in the folder containing 
-the scripts type: "sh DRISEE_requirements_check.sh" (without the quotes) The script will check to 
-see if you have the required software installed.  Note that this check is not version-aware; 
-read the output to determine your software versions.  If you meet all 5 requirements, and the 
-version numbers for perl and python meet or exceed those listed above, you should be all set to run DRISEE
-
 
 RUNNING DRISEE
 ===
