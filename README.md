@@ -41,7 +41,7 @@ of the script files to your exisiting PATH.
        drisee.py           		(the main driving script - a main script file)
        seq_length_stats.py 		(an accessory script - generates sequence related stats)
        run_find_steiner.pl 		(an accessory script - performs iterative consensus sequence construction)
-       qiime-uclust			(an accessory script - runs qiime-integrated uclust)
+       qiime-uclust				(an accessory script - runs qiime-integrated uclust)
        
 
 RUNNING DRISEE
