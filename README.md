@@ -25,19 +25,18 @@ Software:
 - perl 5.12.1 or later (http://www.perl.org/get.html) *1
 - python 2.6 or later (http://python.org/getit/)
 		with biopython (http://biopython.org/wiki/Biopython) *1
-- uclust (http://drive5.com/usearch/usearch3.0.html) *1 *2
+- QIIME and the supporting uclust packages  (http://qiime.org/install/virtual_box.html) *1
 - cdbfasta & cdbyank (http://sourceforge.net/projects/cdbfasta/) *1
 
 *1 Please note that users are responsible for making sure that their use of required software
    products is compliant with existing licenses and/or user agreements.  
-*2 DRISEE will soon be updated to allow users to choose from a variety of tools (in addition to 
-   to uclust) to perform multiple sequence alignment related operations.
 
 INSTALLATION
 ===
 
-Download and place the three main "script files" into your folder of choice (listed below).  
-A location in your PATH makes the most sense; alternatively, add the location to your PATH. 
+Download and place the three main script files (listed below) into your folder of choice.  
+A location in your exisiting PATH makes the most sense; alternatively, you can add the location 
+of the script files to your exisiting PATH. 
 
        drisee.py           		(the main driving script - a main script file)
        seq_length_stats.py 		(an accessory script - a main script file)
