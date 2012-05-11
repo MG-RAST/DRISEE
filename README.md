@@ -75,7 +75,7 @@ Options:
 		Sequence type: fasta, fastq 
 		Specify the type of sequence file; fasta and fastq are the only accepted options
 
-	-f, --no_filter_seq  					[default True]    
+	-f, --filter_seq  					[default True]    
 		Run sequence filtering, 
 		Sequence filtering performs two filtering processes before data are processed. 
 		(1) An average and standard deviation is determined for the lengths of all reads.  
@@ -86,9 +86,7 @@ Options:
 		the lower bound, are excluded from analysis. (2) Each remaining read is screened for 
 		ambiguous bases ("N"). Reads with that possess a number of ambiguous bases that matches 
 		or exceeds the specified limit (see -a AMBIG_MAX below)with -a AMBIG_MAX are excluded 
-		from further analysis. NOTE: that by default, no_filter is disabled.  In this state, 
-		drisee __will__ perform filtering. Enabling this option will disable filtering 
-		(hence the long-option name, "no_filter").
+		from further analysis.
 
 	-r REP_FILE, --replicate_file=REP_FILE[default to calculate replicates]
 		List file with sorted indices for replicate bins.  The file has one row for each read: 
@@ -101,12 +99,10 @@ Options:
 	-l LOGFILE, --log_file=LOGFILE				[default '/dev/null']
 		A detailed log of processing related statistics
  
-	--no_percent						[default True]         
+	--percent						[default True]         
 		Produce second output profile with values presented 			
 		as percent per position. Additional output file is				
-		named "output_stat_file_pattern".per NOTE: that by default, no_percent is disabled.  In this state, 
-		drisee __will__ produce a percent profile. Enabling this option will disable production of
-		percent-based profiles (hence the long-option name, "no_pecent").
+		named "output_stat_file_pattern".per
 
 	--prefix_length=PREFIX					[default 50]
 		Prefix length for the identification of bins of ADRs
