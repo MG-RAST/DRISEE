@@ -46,33 +46,31 @@ def uc2fasta(infasta, inclust, outfasta, types, nameonly, tmpdir):
         if ctype not in typeSet:
             continue
         while sname != curFasta.id:
-            curFasta = fastaItr.next()
+            try:
+                curFasta = fastaItr.next()
+            except StopIteration:
+                break
             if not curFasta:
                 break
         if nameonly:
-            tmpHdl.write(">%s\n%s\n"%(sname, str(curFasta.seq)))
+            tmpHdl.write("%s\t%s\n"%(sname, str(curFasta.seq)))
         else:
             pidStr = pid if pid == '*' else pid+'%'
             tmpHdl.write("%s|%s|%s\t%s\n"%(cname, pidStr, sname, str(curFasta.seq)))
-            
     clustHdl.close()
     fastaHdl.close()
     tmpHdl.close()
 
+    sortTmp = outTmp+'.sort'
     if nameonly:
-        os.rename(outTmp, outfasta)
+        args = ["sort", "-u", "-T", tmpdir, "-o", sortTmp, outTmp]
     else:
-        headerSort(outTmp, outTmp+'.sort', tmpdir)
-        SeqIO.convert(outTmp+'.sort', "tab", outfasta, "fasta")
-        os.remove(outTmp)
-        os.remove(outTmp+'.sort')
-
-def headerSort(infile, outfile, tmpdir):
-    sortOut = open(outfile, "w")
-    args = ["sort", "-T", tmpdir, "-t", "|", "-k", "1,1n", "-k", "2,2n", infile]
-    proc = subprocess.Popen(args, stdout=sortOut)
+        args = ["sort", "-T", tmpdir, "-t", "|", "-k", "1,1n", "-k", "2,2n", "-o", sortTmp, outTmp]
+    proc = subprocess.Popen(args)
     proc.communicate()
-    sortOut.close()
+    SeqIO.convert(sortTmp, "tab", outfasta, "fasta")
+    os.remove(outTmp)
+    os.remove(sortTmp)
     
 def seqSort(infasta, outfasta, tmpdir):
     params = {'--tmpdir': tmpdir}

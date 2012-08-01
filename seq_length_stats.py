@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, sys, math, random, subprocess
+import os, sys, math, subprocess
 from collections import defaultdict
 from optparse import OptionParser
 from Bio import SeqIO
@@ -24,21 +24,6 @@ OUTPUT:
   average_ambig_chars
   sequence_type"""
 
-def countseqs(infile, stype):
-    headchar = '>'
-    if stype == 'fastq':
-        headchar = '@'
-    cmd  = ['grep', '-c', "^%s"%headchar, infile]
-    proc = subprocess.Popen( cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE )
-    stdout, stderr = proc.communicate()
-    if proc.returncode != 0:
-        raise IOError("%s\n%s"%(" ".join(cmd), stderr))
-    slen = stdout.strip()
-    if not slen:
-        sys.stderr.write("%s is invalid %s file\n"%(infile, stype))
-        exit(1)
-    return int(slen)
-
 def sum_map(aMap):
     total = 0
     for k, v in aMap.iteritems():
@@ -49,12 +34,10 @@ def get_mean_stdev(count, data):
     total = sum_map(data)
     mean  = (total * 1.0) / count
     tmp   = 0
-
     for k, v in data.iteritems():
         for i in range(0, v):
             dev  = float(k) - mean
             tmp += (dev * dev)
-
     return mean, math.sqrt(tmp / count)
 
 def get_seq_type(size, data):
@@ -94,7 +77,6 @@ def main(args):
     parser.add_option("-i", "--input", dest="input", default=None, help="Input sequence file")
     parser.add_option("-o", "--output", dest="output", default=None, help="Output stats file, if not called prints to STDOUT")
     parser.add_option("-t", "--type", dest="type", default="fasta", help="Input file type. Must be fasta or fastq [default 'fasta']")
-    parser.add_option("-m", "--max_seq", dest="max_seq", default=100000, type="int", help="max number of seqs process [default 100000]")
     parser.add_option("-l", "--length_bin", dest="len_bin", metavar="FILE", default=None, help="File to place length bins [default is no output]")
     parser.add_option("-g", "--gc_percent_bin", dest="gc_bin", metavar="FILE", default=None, help="File to place % gc bins [default is no output]")
     parser.add_option("-f", "--fast", dest="fast", default=False, action="store_true", help="Fast mode, only calculate length stats")
@@ -103,17 +85,14 @@ def main(args):
     # check options
     (opts, args) = parser.parse_args()
     if not opts.input:
-        parser.error("Missing input file")
+        sys.stderr.write("[error] missing input file\n")
+        os._exit(1)
     if (opts.type != 'fasta') and (opts.type != 'fastq'):
-        parser.error("File type '%s' is invalid" %opts.type)
+        sys.stderr.write("[error] file type '%s' is invalid\n" %opts.type)
+        os._exit(1)
 
     # set variables
-    seqnum = 0
-    seqper = 1.0
-    if opts.seq_type:
-        seqnum = countseqs(opts.input, opts.type)    
-        seqper = (opts.max_seq * 1.0) / seqnum
-    seqcount = 0
+    seqnum   = 0
     lengths  = defaultdict(int)
     gc_perc  = defaultdict(int)
     gc_ratio = defaultdict(int)
@@ -124,36 +103,41 @@ def main(args):
     in_hdl = open(opts.input, "rU")
 
     # parse sequences
-    for rec in SeqIO.parse(in_hdl, opts.type):
-        seqcount += 1
+    try:
+      for rec in SeqIO.parse(in_hdl, opts.type):
+        seqnum += 1
         seq  = str(rec.seq).upper()
         slen = len(seq)
         lengths[slen] += 1
-        rnd_num = random.random()
         
         if not opts.fast:
-            char = {'A': 0, 'T': 0, 'G': 0, 'C': 0}
-            for c in seq:
-                if c in char:
-                    char[c] += 1
-            atgc  = char['A'] + char['T'] + char['G'] + char['C']
-            ambig = slen - atgc;
-            gc_p  = "0"
-            gc_r  = "0"
-            if atgc > 0:
-                gc_p = "%.1f"%((1.0 * (char['G'] + char['C']) / atgc) * 100)
-            if (char['G'] + char['C']) > 0:
-                gc_r = "%.1f"%(1.0 * (char['A'] + char['T']) / (char['G'] + char['C']))
-            gc_perc[gc_p] += 1
-            gc_ratio[gc_r] += 1
-            if ambig > 0:
-                ambig_char += ambig
-                ambig_seq += 1
-        if opts.seq_type and (slen >= kmer_len) and (seqper >= rnd_num):
-            prefix_map[ seq[:kmer_len] ] += 1
+          char = {'A': 0, 'T': 0, 'G': 0, 'C': 0}
+          for c in seq:
+            if c in char:
+              char[c] += 1
+          atgc  = char['A'] + char['T'] + char['G'] + char['C']
+          ambig = slen - atgc;
+          gc_p  = "0"
+          gc_r  = "0"
+          if atgc > 0:
+            gc_p = "%.1f"%((1.0 * (char['G'] + char['C']) / atgc) * 100)
+          if (char['G'] + char['C']) > 0:
+            gc_r = "%.1f"%(1.0 * (char['A'] + char['T']) / (char['G'] + char['C']))
+          gc_perc[gc_p] += 1
+          gc_ratio[gc_r] += 1
+          if ambig > 0:
+            ambig_char += ambig
+            ambig_seq += 1
+        if opts.seq_type and (slen >= kmer_len):
+          prefix_map[ seq[:kmer_len] ] += 1
+    except ValueError as e:
+      sys.stderr.write("[error] possible file truncation: %s\n"%e)
+      os._exit(1)
 
     # get stats
-    seqnum = max(seqnum, seqcount)
+    if seqnum == 0:
+      sys.stderr.write("[error] invalid %s file, unable to find sequence records\n"%opts.type)
+      os._exit(1)
     len_mean, len_stdev = get_mean_stdev(seqnum, lengths)
     min_len   = min( lengths.iterkeys() )
     max_len   = max( lengths.iterkeys() )
