@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, sys, re, time, datetime, hashlib, shutil, glob
+import os, sys, re, time, datetime, hashlib, shutil
 import subprocess
 import cStringIO
 import string, random
@@ -224,13 +224,13 @@ def main(args):
     parser = OptionParser(usage=usage, version=version)
     parser.add_option("-p", "--processes", dest="processes", type="int", default=8, help="Number of processes to use [default '8']")
     parser.add_option("-t", "--seq_type", dest="seq_type", default='fasta', help="Sequence type: fasta, fastq [default 'fasta']")
-    parser.add_option("-f", "--filter_seq", dest="filter", action="store_true", default=True, help="Run sequence filtering, length and ambig bp [default on]")
+    parser.add_option("-f", "--filter_seq", dest="filter", action="store_true", default=False, help="Run sequence filtering, length and ambig bp [default off]")
     parser.add_option("-r", "--replicate_file", dest="rep_file", default=None, help="File with sorted replicate bins (bin_id, seq_id) [default to calculate replicates]")
     parser.add_option("-d", "--tmp_dir", dest="tmpdir", default="/tmp", help="DIR for intermediate files (must be full path), deleted at end [default '/tmp']")
     parser.add_option("-l", "--log_file", dest="logfile", default=None, help="Detailed processing related stats [default '/dev/null']")
-    parser.add_option("", "--percent", dest="percent", action="store_true", default=True, help="Additional output (output_stat_file.per) with percent values [default on]")
+    parser.add_option("", "--percent", dest="percent", action="store_true", default=False, help="Additional output (output_stat_file.per) with percent values [default off]")
     parser.add_option("", "--prefix_length", dest="prefix", type="int", default=50, help="Prefix length for replicate bins [default 50]")
-    parser.add_option("-s", "--seq_max", dest="seq_max", type="int", default=10000000, help="Maximum number of reads to process (chosen randomly) [default 10000000]")
+    parser.add_option("-s", "--seq_max", dest="seq_max", type="int", default=1000000, help="Maximum number of reads to process (chosen randomly) [default 1000000]")
     parser.add_option("-a", "--ambig_bp_max", dest="ambig_max", type="int", default=0, help="Maximum number of ambiguity characters before rejection [default 0]")
     parser.add_option("-m", "--stdev_multiplier", dest="stdev_multi", type="float", default=2.0, help="Multiplier to stddev to get min and max seq lengths [default 2.0]")
     parser.add_option("-n", "--bin_read_min", dest="read_min", type="int", default=20, help="Minimum number of reads in bin to be considered [default 20]")
