@@ -260,7 +260,7 @@ def main(args):
     if opts.iter_max < 1: opts.iter_max = 1
     if opts.conv_min < 1: opts.conv_min = 1
     if opts.seq_max < 1:  opts.seq_max = 2
-    if opts.prefix < 10:  opts.prefix  = 10        
+    if opts.prefix < 10:  opts.prefix  = 10
     TMP_DIR  = os.path.join(opts.tmpdir, random_str(8)+'.drisee')
     LOG_FILE = opts.logfile
     ITER_MAX = opts.iter_max
@@ -291,7 +291,7 @@ def main(args):
         out_hdl  = open(out_file, 'w')
         in_hdl   = open(in_seq, 'rU')
         try:
-            for rec in SeqIO.parse(in_hdl, fformat):
+            for rec in SeqIO.parse(in_hdl, opts.seq_type):
                 rnd_num = random.random()
                 if seqper >= rnd_num:
                     seqmax += 1
