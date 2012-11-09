@@ -274,7 +274,7 @@ def main(args):
     seqnum = int(stats['sequence_count'])
     seqper = float(opts.seq_max) / seqnum
     seqmax = 0
-    if opts.verbose: sys.stdout.write("DRISEE will be ran on %d of %d sequences\n"%(min(opts.seq_max, seqnum),seqnum))
+    if opts.verbose: sys.stdout.write("DRISEE will be run on %d of %d sequences\n"%(min(opts.seq_max, seqnum),seqnum))
 
     # random subselect / length filter
     if opts.filter:
@@ -286,7 +286,7 @@ def main(args):
         if opts.verbose: sys.stdout.write("Done, %s sequences kept\n"%seqmax)
     # random subselect / uniquify seqs
     else:
-        if opts.verbose: sys.stdout.write("Uniquifying seq ids ... ")
+        if opts.verbose: sys.stdout.write("Making sure seq ids are unique ... ")
         out_file = os.path.join(TMP_DIR, os.path.basename(in_seq)+'.uniq.fasta')
         out_hdl  = open(out_file, 'w')
         in_hdl   = open(in_seq, 'rU')
