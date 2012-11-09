@@ -34,7 +34,7 @@ def run_cmd(cmd, in_pipe=None, output=None):
         output = subprocess.PIPE
     if in_pipe:
         proc_in = subprocess.Popen( in_pipe, stdout=subprocess.PIPE )
-        proc    = subprocess.Popen( cmd, stdin=proc_in.stdout, stdout=output, stderr=subprocess.PIPE )
+        proc = subprocess.Popen( cmd, stdin=proc_in.stdout, stdout=output, stderr=subprocess.PIPE )
     else:
         proc = subprocess.Popen( cmd, stdout=output, stderr=subprocess.PIPE )
     stdout, stderr = proc.communicate()
@@ -49,7 +49,7 @@ def random_truncate(items, cutoff):
     i = len(items)
     while i > 1:
         i = i - 1
-        j = randrange(i)  # 0 <= j <= i-1
+        j = randrange(i) # 0 <= j <= i-1
         items[j], items[i] = items[i], items[j]
     return items[:cutoff]
 
@@ -57,8 +57,10 @@ def random_str(size=6):
     chars = string.ascii_letters + string.digits
     return ''.join(random.choice(chars) for x in range(size))
 
-def seq_stats(in_file, fformat, verb):
-    fout, ferr = run_cmd(['seq_length_stats.py', '-f', '-i', in_file, '-t', fformat])
+# kk 11-9-12 # def seq_stats(in_file, fformat, verb):
+def seq_stats(in_file, opts.seq_type, verb):
+    #fout, ferr = run_cmd(['seq_length_stats.py', '-f', '-i', in_file, '-t', fformat])
+    fout, ferr = run_cmd(['seq_length_stats.py', '-f', '-i', in_file, '-t', opts.seq_type])
     if LOG_FILE and (fout or ferr):
         write_file("\n".join([fout, ferr]), LOG_FILE, 1)
     if verb and (fout or ferr):
@@ -67,28 +69,30 @@ def seq_stats(in_file, fformat, verb):
     stats = {}
     for l in lines:
         k, v = l.split('\t')
-        stats[k] = v    
+        stats[k] = v
     return stats
 
-def filter_seqs(in_file, out_file, stats, seqper, ambig_max, stdev_multi, filter_min, fformat):
+# kk 11-9-12 # def filter_seqs(in_file, out_file, stats, seqper, ambig_max, stdev_multi, filter_min, fformat):
+def filter_seqs(in_file, out_file, stats, seqper, ambig_max, stdev_multi, filter_min, opts.seq_type):
     # get stats
     avg_len = float(stats['average_length'])
     sdv_len = float(stats['standard_deviation_length'])
     min_len = int(avg_len - (sdv_len * stdev_multi))
     max_len = int(avg_len + (sdv_len * stdev_multi))
     if min_len < filter_min: min_len = filter_min + 1
-    if max_len < min_len:    max_len = min_len + 1
+    if max_len < min_len: max_len = min_len + 1
     # get filtered fasta file
     output_hdl = open(out_file, 'w')
-    input_hdl  = open(in_file, 'rU')
+    input_hdl = open(in_file, 'rU')
     new_num = 0
     try:
-        for rec in SeqIO.parse(input_hdl, fformat):
+        # kk 11-9-12 # for rec in SeqIO.parse(input_hdl, fformat):
+        for rec in SeqIO.parse(input_hdl, opts.seq_type):
             rnd_num = random.random()
             if seqper < rnd_num:
                 continue
             ambig = 0
-            slen  = len(rec.seq)
+            slen = len(rec.seq)
             if (slen < min_len) or (slen > max_len):
                 continue
             for char in rec.seq:
@@ -103,8 +107,8 @@ def filter_seqs(in_file, out_file, stats, seqper, ambig_max, stdev_multi, filter
     return new_num
 
 def bin_replicate_seqs(in_file, out_file, tmp_dir, prefix_len, nodes):
-    tmp_file  = os.path.join(tmp_dir, os.path.basename(out_file)+'.tmp')
-    tmp_hdl   = open(tmp_file, 'w')
+    tmp_file = os.path.join(tmp_dir, os.path.basename(out_file)+'.tmp')
+    tmp_hdl = open(tmp_file, 'w')
     input_hdl = open(in_file, 'rU')
     try:
         for rec in SeqIO.parse(input_hdl, 'fasta'):
@@ -140,7 +144,7 @@ def get_sub_fasta(ids, index_seq, seq_file, sub_fasta):
     stdo,_x = run_cmd(['cdbyank', index_seq, '-d', seq_file], id_echo)
     # get min length
     seq_lens = []
-    str_hdl  = cStringIO.StringIO(stdo)
+    str_hdl = cStringIO.StringIO(stdo)
     for rec in SeqIO.parse(str_hdl, 'fasta'):
         seq_lens.append( len(rec.seq) )
     str_hdl.close()
@@ -166,7 +170,7 @@ def process_bin(bin_id):
 
 def process_data(data, match, error):
     head = data.pop(0)
-    bps  = head.split("\t")
+    bps = head.split("\t")
     for i, d in enumerate(data):
         if not d: continue
         counts = filter(lambda x: x != '', d.split("\t"))
@@ -176,18 +180,18 @@ def process_data(data, match, error):
         if len(error) <= i: error.insert( i, dict([(x,0) for x in bps]) )
         max_bp = max(counts)
         for j, c in enumerate(counts):
-            if c == max_bp:  match[i][ bps[j] ] += c
+            if c == max_bp: match[i][ bps[j] ] += c
             elif c < max_bp: error[i][ bps[j] ] += c
     return bps, match, error
 
 def create_output(bps, match, error, per):
     total = 0
-    errs  = dict([(x,0) for x in bps])
+    errs = dict([(x,0) for x in bps])
     stext = [ "#\t" + "\t".join(bps) + "\t" + "\t".join(bps) ]
     
     for i in range( len(match) ):
         rsum = 0
-        row  = []
+        row = []
         for b in bps:
             row.append( match[i][b] )
             rsum += match[i][b]
@@ -207,7 +211,7 @@ def create_output(bps, match, error, per):
 
     err_head = map(lambda x: "%s_err"%x, bps)
     err_nums = map(lambda x: "%f"%(((errs[x] * 1.0) / total) * 100), bps)
-    err_sum  = ((sum(errs.values()) * 1.0) / total) * 100
+    err_sum = ((sum(errs.values()) * 1.0) / total) * 100
     err_head.append('bp_err')
     err_nums.append("%f"%err_sum)
 
@@ -240,7 +244,7 @@ def main(args):
     parser.add_option("-c", "--converge_min", dest="conv_min", type="int", default=3, help="Minimum number of iterations to identify convergence [default 3]")
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=False, help="Write runtime summary stats to STDOUT [default off]")
 
-    start_time   = time.time()
+    start_time = time.time()
     (opts, args) = parser.parse_args()
     if len(args) != 2:
         parser.error("Incorrect number of arguments")
@@ -256,12 +260,12 @@ def main(args):
         parser.error("bin_read_min (%d) can not be greater than bin_read_max %d)"%(opts.read_min, opts.out_name))
     if opts.read_min < 1: opts.read_min = 1
     if opts.read_max < 2: opts.read_max = 2
-    if opts.num_max < 1:  opts.num_max  = 1
+    if opts.num_max < 1: opts.num_max = 1
     if opts.iter_max < 1: opts.iter_max = 1
     if opts.conv_min < 1: opts.conv_min = 1
-    if opts.seq_max < 1:  opts.seq_max = 2
-    if opts.prefix < 10:  opts.prefix  = 10
-    TMP_DIR  = os.path.join(opts.tmpdir, random_str(8)+'.drisee')
+    if opts.seq_max < 1: opts.seq_max = 2
+    if opts.prefix < 10: opts.prefix = 10
+    TMP_DIR = os.path.join(opts.tmpdir, random_str(8)+'.drisee')
     LOG_FILE = opts.logfile
     ITER_MAX = opts.iter_max
     CONV_MIN = opts.conv_min
@@ -270,7 +274,7 @@ def main(args):
     
     if opts.verbose: sys.stdout.write("Version:\t%s\n"%version)
     # seq stats
-    stats  = seq_stats(in_seq, opts.seq_type, opts.verbose)
+    stats = seq_stats(in_seq, opts.seq_type, opts.verbose)
     seqnum = int(stats['sequence_count'])
     seqper = float(opts.seq_max) / seqnum
     seqmax = 0
@@ -280,16 +284,16 @@ def main(args):
     if opts.filter:
         if opts.verbose: sys.stdout.write("Filtering with max ambig %d and stddev range x%f ... " %(opts.ambig_max,opts.stdev_multi))
         filter_file = os.path.join(TMP_DIR, os.path.basename(in_seq)+'.filter.fasta')
-        seqmax  = filter_seqs(in_seq, filter_file, stats, seqper, opts.ambig_max, opts.stdev_multi, opts.prefix, opts.seq_type)
-        in_seq  = filter_file
+        seqmax = filter_seqs(in_seq, filter_file, stats, seqper, opts.ambig_max, opts.stdev_multi, opts.prefix, opts.seq_type)
+        in_seq = filter_file
         opts.seq_type = 'fasta'
         if opts.verbose: sys.stdout.write("Done, %s sequences kept\n"%seqmax)
     # random subselect / uniquify seqs
     else:
         if opts.verbose: sys.stdout.write("Making sure seq ids are unique ... ")
         out_file = os.path.join(TMP_DIR, os.path.basename(in_seq)+'.uniq.fasta')
-        out_hdl  = open(out_file, 'w')
-        in_hdl   = open(in_seq, 'rU')
+        out_hdl = open(out_file, 'w')
+        in_hdl = open(in_seq, 'rU')
         try:
             for rec in SeqIO.parse(in_hdl, opts.seq_type):
                 rnd_num = random.random()
@@ -314,7 +318,7 @@ def main(args):
 
     # index fasta file
     if opts.verbose: sys.stdout.write("Creating cdb index ... ")
-    index_seq  = os.path.join(TMP_DIR, os.path.basename(in_seq)+'.cidx')
+    index_seq = os.path.join(TMP_DIR, os.path.basename(in_seq)+'.cidx')
     iout, ierr = run_cmd(['cdbfasta', in_seq, '-o', index_seq])
     if opts.logfile and (iout or ierr):
         write_file("\n".join([iout, ierr]), opts.logfile, 1)
@@ -335,8 +339,8 @@ def main(args):
 
     # create trimmed bin fasta files
     to_process = []
-    total_ids  = 0
-    ids  = []
+    total_ids = 0
+    ids = []
     curr = ''
     dhdl = open(opts.rep_file, 'rU')
     if opts.verbose: sys.stdout.write("Creating %d bin files with >= %d reads ..." %(size,opts.read_min))
@@ -356,7 +360,7 @@ def main(args):
                     to_process.append(curr)
                     total_ids += len(ids)
                 curr = bid
-                ids  = []
+                ids = []
             ids.append(sid)
         if len(ids) > opts.read_max:
             ids = random_truncate(ids, opts.read_max)
@@ -376,7 +380,7 @@ def main(args):
     if len(to_process) < min_proc:
         min_proc = len(to_process)
     if opts.verbose: sys.stdout.write("Processing %d bins (%d sequences total) using %d threades ... "%(size,total_ids,min_proc))
-    pool   = Pool(processes=min_proc)
+    pool = Pool(processes=min_proc)
     finish = pool.map(process_bin, to_process, 1)
     pool.close()
     pool.join()
@@ -395,7 +399,7 @@ def main(args):
     if opts.verbose: sys.stdout.write("Merging scores from %d bins ... "%len(finish))
     for bid in finish:
         bin_score = os.path.join(TMP_DIR, bid+'.score')
-        bin_log   = os.path.join(TMP_DIR, bid+'.log')
+        bin_log = os.path.join(TMP_DIR, bid+'.log')
         if opts.logfile and os.path.isfile(bin_log):
             lhdl = open(bin_log, 'rU')
             write_file(lhdl.read(), opts.logfile, 1)
