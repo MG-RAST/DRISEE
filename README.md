@@ -164,7 +164,6 @@ Options:
 		Write runtime summary stats to STDOUT
 
 
-
 EXAMPLES
 ===
 
@@ -274,10 +273,18 @@ a value of "24" for the first "C" column (percent = 24/24*100), and "0" for the 
 See Keegan 2012 (email kkeegan AT anl.gov :: manuscript is currently under review) for more details. 
 
 
+PLOTTING DRISEE OUTPUTS
+===
+Two scripts allow you to produce linear graphs from *.DRISEE (raw DRISEE abundance output) and *.DRISEE.per
+(percentage scaled DRISEE output) outputs.  One is an independent R script (plot_DRISEE.11-19-12.r), the 
+second is a shell script (plot_DRISEE_shell.sh) -- the shell script is a shell wrapper for the R script.
+Usage information for each plotting script is provided in the script/ script usage.
+
 CHANGELOG
 ===
 This is DRISEE version 1.2 (April 2012)
-
+- Debugged 11-13-12
+- Added plotting scripts 11-19-12
 
 OTHER INFORMATION
 ===
