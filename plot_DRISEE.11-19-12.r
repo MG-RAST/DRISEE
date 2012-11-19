@@ -19,7 +19,7 @@ plot_DRISEE <- function(
      Script to plot DRISEE *.DRISEE or *.DRISEE.per files as a line graph
 
      USAGE: plot_DRISEE(
-          file_in = no default arg             # (string)  input data file
+          file_in = no default arg             # (string)  input data file (*.DRISEE or *.DRISEE.per)
           bps_indexed                 = 1      # integer boolean indicating if the bp's are indexed or not
           figure_width                = 1000,  # usually pixels, inches if eps is selected; png is default
           figure_height               = 1000,  # usually pixels, inches if eps is selected; png is default
