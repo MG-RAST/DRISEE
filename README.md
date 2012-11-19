@@ -286,6 +286,12 @@ This is DRISEE version 1.2 (April 2012)
 - Debugged 11-13-12
 - Added plotting scripts 11-19-12
 
+CITATION
+==
+          Keegan KP, Trimble WL, Wilkening J, Wilke A, Harrison T, et al. (2012)
+          A Platform-Independent Method for Detecting Errors in Metagenomic Sequencing Data: DRISEE. 
+          PLoS Comput Biol 8(6): e1002541. doi:10.1371/journal.pcbi.1002541
+
 OTHER INFORMATION
 ===
 DRISEE was designed to run on a Unix platform, preferably with access to multiple processors.  
