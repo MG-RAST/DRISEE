@@ -2,8 +2,7 @@ plot_DRISEE <- function(
                         file_in,
                         bps_indexed = 1,
                         figure_width = 500,
-                        figure_height = 500,
-                        figure_res = NA
+                        figure_height = 500
                         )
   
 {
@@ -17,6 +16,10 @@ plot_DRISEE <- function(
 
      DESCRIPTION: (plot_DRISEE):
      Script to plot DRISEE *.DRISEE or *.DRISEE.per files as a line graph
+     Script will detect if file is *.DRISEE or *.DRISEE.per.
+     Other files will be treated as if they were *.DRISEE
+     Note that the key always show error as percentage (this is not a bug), but that the y-axis
+     will display percent error (for *.DRISEE.per) or error abundance (all other).
 
      USAGE: plot_DRISEE(
           file_in = no default arg             # (string)  input data file (*.DRISEE or *.DRISEE.per)
@@ -37,9 +40,9 @@ plot_DRISEE <- function(
   if ( nargs() == 0 ){
     func_usage()
   }
-  
-  image_out = gsub(" ", "", paste(file_in, ".DRISEE.png"))
 
+  image_out = gsub(" ", "", paste(file_in, ".png")) # create filename with extension for output image
+  
   if (  bps_indexed == 1 ){
     my_data <<- data.matrix(read.table(file_in, row.names=1, header=TRUE, sep="\t", comment.char="", quote="", skip=2))
   }else if ( bps_indexed == 0 ) {
@@ -59,29 +62,38 @@ plot_DRISEE <- function(
   Total_err <- (dimnames(my_data)[[2]])[num_header_fields]
   sum_err = (my_data[,A_err] + my_data[,T_err] + my_data[,C_err] + my_data[,G_err] + my_data[,N_err] + my_data[,InDel_err])
   
-  test_header =   as.matrix(strsplit(gsub("#", "", readLines(con=file_in, n=2)),"\t"))
+  test_header <<-   as.matrix(strsplit(gsub("#", "", readLines(con=file_in, n=2)),"\t"))
   
-  CairoPNG(image_out, width = figure_width, height = figure_height, pointsize = 12, res = fiure_res , units = "px")
+  png(filename = image_out, width = figure_width, height = figure_height)
 
+  if (  length(grep(".per$",file_in)) == 1 ){
+    my_title = gsub(" ", "", paste(file_in, "::DRISEE.percent_profile"))
+    y_axis_max = 100
+    my_ylab = "error percent"
+  }else{
+    my_title = gsub(" ", "", paste(file_in, "::DRISEE.abundance_profile"))
+    y_axis_max = max(my_data) + (max(my_data)/10)
+    my_ylab = "error abundance"
+  }
 
-  plot(sum_err,  type="l", col="darkmagenta", main = gsub(" ", "", paste(file_in, "::DRISEE_profile")), xlab = "bp position", ylab = "error abundance", ylim=c(0,100))
-  lines(my_data[,A_err], type="l", col="green")
-  lines(my_data[,T_err], type="l", col="red")
-  lines(my_data[,C_err], type="l", col="blue")
-  lines(my_data[,G_err], type="l", col="yellow")
-  lines(my_data[,N_err], type="l", col="black")
-  lines(my_data[,InDel_err], type="l", col="brown")
+  plot(sum_err,  type="l", col="darkmagenta", main = my_title, xlab = "bp position", ylab = my_ylab, ylim=c(0,y_axis_max))
+  lines( my_data[,A_err], type="l", col="green" )
+  lines( my_data[,T_err], type="l", col="red" )
+  lines( my_data[,C_err], type="l", col="blue" )
+  lines( my_data[,G_err], type="l", col="yellow" )
+  lines( my_data[,N_err], type="l", col="black" )
+  lines( my_data[,InDel_err], type="l", col="brown" )
   
   legend( 
-         max(100), 
+         max(y_axis_max), 
          c(
-           paste("Total_err", "=", test_header[[2]][8], sep="\t"), # total Err
-           paste(test_header[[1]][2], "=", test_header[[2]][2], sep="\t"),
-           paste(test_header[[1]][3], "=", test_header[[2]][3], sep="\t"),
-           paste(test_header[[1]][4], "=", test_header[[2]][4], sep="\t"),
-           paste(test_header[[1]][5], "=", test_header[[2]][5], sep="\t"),
-           paste(test_header[[1]][6], "=", test_header[[2]][6], sep="\t"),
-           paste("InDel_err",  "=", test_header[[2]][7], sep="\t") #InDel Err
+           paste("Total_err", "=", round( as.numeric(test_header[[2]][8]), digits = 2 ), "%", sep=" "), # total Err
+           paste(test_header[[1]][2], "=      ", round( as.numeric(test_header[[2]][2]), digits = 2 ), "%", sep=" "),
+           paste(test_header[[1]][3], "=      ", round( as.numeric(test_header[[2]][3]), digits = 2 ), "%", sep=" "),
+           paste(test_header[[1]][4], "=      ", round( as.numeric(test_header[[2]][4]), digits = 2 ), "%", sep=" "),
+           paste(test_header[[1]][5], "=      ", round( as.numeric(test_header[[2]][5]), digits = 2 ), "%", sep=" "),
+           paste(test_header[[1]][6], "=      ", round( as.numeric(test_header[[2]][6]), digits = 2 ), "%", sep=" "),
+           paste("InDel_err",  "=", round( as.numeric(test_header[[2]][7]), digits = 2 ), "%", sep=" ") #InDel Err
            ),
          col=c("darkmagenta", "green", "red", "blue", "yellow", "black", "brown"),
          lty=1
