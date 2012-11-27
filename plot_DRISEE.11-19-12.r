@@ -66,7 +66,7 @@ plot_DRISEE <- function(
   test_header <<-   as.matrix(strsplit(gsub("#", "", readLines(con=file_in, n=2)),"\t"))
   
   png(filename = image_out, width = figure_width, height = figure_height)
-  #pdf(file = image_out, width = figure_width, height = figure_height)
+  #pdf(file = image_out, width = figure_width, height = figure_height, type = "Xlib")
 
   if (  length(grep(".per$",file_in)) == 1 ){
     my_title = gsub(" ", "", paste(file_in, "::DRISEE.percent_profile"))
