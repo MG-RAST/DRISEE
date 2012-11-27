@@ -7,7 +7,7 @@ plot_DRISEE <- function(
   
 {
   # load packages
-  #suppressPackageStartupMessages(library(Cairo))
+  suppressPackageStartupMessages(library(Cairo))
   
   # define sub functions
   func_usage <- function() {
@@ -65,7 +65,7 @@ plot_DRISEE <- function(
   
   test_header <<-   as.matrix(strsplit(gsub("#", "", readLines(con=file_in, n=2)),"\t"))
   
-  png(filename = image_out, width = figure_width, height = figure_height, type ="Xlib")
+  png(filename = image_out, width = figure_width, height = figure_height)
   #names(pdfFonts())
   #pdf(file = image_out, width = figure_width, height = figure_height, fonts="Helvetica")
 
