@@ -41,8 +41,8 @@ plot_DRISEE <- function(
     func_usage()
   }
 
-  #image_out = gsub(" ", "", paste(file_in, ".png")) # create filename with extension for output image
-  image_out = gsub(" ", "", paste(file_in, ".pdf")) # create filename with extension for output image
+  image_out = gsub(" ", "", paste(file_in, ".png")) # create filename with extension for output image
+  #image_out = gsub(" ", "", paste(file_in, ".pdf")) # create filename with extension for output image
   
   if (  bps_indexed == 1 ){
     my_data <<- data.matrix(read.table(file_in, row.names=1, header=TRUE, sep="\t", comment.char="", quote="", skip=2))
@@ -65,9 +65,9 @@ plot_DRISEE <- function(
   
   test_header <<-   as.matrix(strsplit(gsub("#", "", readLines(con=file_in, n=2)),"\t"))
   
-  #png(filename = image_out, width = figure_width, height = figure_height, type = "Xlib")
+  png(filename = image_out, width = figure_width, height = figure_height)
   #names(pdfFonts())
-  pdf(file = image_out, width = figure_width, height = figure_height, fonts="Helvetica")
+  #pdf(file = image_out, width = figure_width, height = figure_height, fonts="Helvetica")
 
   if (  length(grep(".per$",file_in)) == 1 ){
     my_title = gsub(" ", "", paste(file_in, "::DRISEE.percent_profile"))
