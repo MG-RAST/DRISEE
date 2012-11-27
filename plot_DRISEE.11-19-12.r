@@ -7,7 +7,7 @@ plot_DRISEE <- function(
   
 {
   # load packages
-  suppressPackageStartupMessages(library(Cairo))
+  #suppressPackageStartupMessages(library(Cairo))
   
   # define sub functions
   func_usage <- function() {
