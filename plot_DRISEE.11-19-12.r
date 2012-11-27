@@ -42,6 +42,7 @@ plot_DRISEE <- function(
   }
 
   image_out = gsub(" ", "", paste(file_in, ".png")) # create filename with extension for output image
+  #image_out = gsub(" ", "", paste(file_in, ".pdf")) # create filename with extension for output image
   
   if (  bps_indexed == 1 ){
     my_data <<- data.matrix(read.table(file_in, row.names=1, header=TRUE, sep="\t", comment.char="", quote="", skip=2))
@@ -51,20 +52,21 @@ plot_DRISEE <- function(
     stop("invalid bps_indexed value specified --- has to be 0 or 1")
   }
 
-  num_header_fields = dim(as.matrix(dimnames(my_data)[[2]]))[1]
+  num_header_fields <<- dim(as.matrix(dimnames(my_data)[[2]]))[1]
 
-  A_err <- (dimnames(my_data)[[2]])[num_header_fields-6] # get data headers for error containing columns
-  T_err <- (dimnames(my_data)[[2]])[num_header_fields-5]
-  C_err <- (dimnames(my_data)[[2]])[num_header_fields-4]
-  G_err <- (dimnames(my_data)[[2]])[num_header_fields-3]
-  N_err <- (dimnames(my_data)[[2]])[num_header_fields-2]
-  InDel_err <- (dimnames(my_data)[[2]])[num_header_fields-1]
-  Total_err <- (dimnames(my_data)[[2]])[num_header_fields]
+  A_err <<- (dimnames(my_data)[[2]])[num_header_fields-5] # get data headers for error containing columns
+  T_err <- (dimnames(my_data)[[2]])[num_header_fields-4]
+  C_err <- (dimnames(my_data)[[2]])[num_header_fields-3]
+  G_err <- (dimnames(my_data)[[2]])[num_header_fields-2]
+  N_err <<- (dimnames(my_data)[[2]])[num_header_fields-2]
+  InDel_err <<- (dimnames(my_data)[[2]])[num_header_fields]
+  #Total_err <- (dimnames(my_data)[[2]])[num_header_fields]
   sum_err = (my_data[,A_err] + my_data[,T_err] + my_data[,C_err] + my_data[,G_err] + my_data[,N_err] + my_data[,InDel_err])
   
   test_header <<-   as.matrix(strsplit(gsub("#", "", readLines(con=file_in, n=2)),"\t"))
   
   png(filename = image_out, width = figure_width, height = figure_height)
+  #pdf(file = image_out, width = figure_width, height = figure_height)
 
   if (  length(grep(".per$",file_in)) == 1 ){
     my_title = gsub(" ", "", paste(file_in, "::DRISEE.percent_profile"))
