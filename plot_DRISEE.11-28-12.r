@@ -1,14 +1,17 @@
 plot_DRISEE <- function(
                         file_in,
+                        image_type = c("png", "pdf"),
                         bps_indexed = 1,
-                        figure_width = 500,
-                        figure_height = 500
+                        image_width = 0,
+                        image_height = 0,
+                        debug = 0
                         )
   
 {
   # load packages
   # suppressPackageStartupMessages(library(Cairo))
-  
+  #require(ggplot2)
+
   # define sub functions
   func_usage <- function() {
     writeLines("
@@ -22,11 +25,12 @@ plot_DRISEE <- function(
      will display percent error (for *.DRISEE.per) or error abundance (all other).
 
      USAGE: plot_DRISEE(
-          file_in = no default arg             # (string)  input data file (*.DRISEE or *.DRISEE.per)
-          bps_indexed                 = 1      # integer boolean indicating if the bp's are indexed or not
-          figure_width                = 1000,  # usually pixels, inches if eps is selected; png is default
-          figure_height               = 1000,  # usually pixels, inches if eps is selected; png is default
-          figure_res                  = NA     # usually pixels, inches if eps is selected; png is default
+          file_in                     = no default # (string) # input data file (*.DRISEE or *.DRISEE.per)
+          image_type                  = pdf        # (string) # c(\"pdf\", \"png\") # specifiy the image type
+          image_width                 = 6|500      # (int):   # image width:  default = 6 inches for pdf or 1000 pixels for png
+          image_height                = 6|500      # (int):   # image height: default = 6 inches for pdf or 1000 pixels for png
+          bps_indexed                 = 1          # integer boolean indicating if the bp's are indexed or not
+          debug                       = 0          # 1 for debug mode
 
      CITATION: 
           Keegan KP, Trimble WL, Wilkening J, Wilke A, Harrison T, et al. (2012)
@@ -37,12 +41,32 @@ plot_DRISEE <- function(
     stop("plot_DRISEE stopped\n\n")
   }
 
+  # give the usage if the function is called with no arguments
   if ( nargs() == 0 ){
     func_usage()
   }
 
-  image_out = gsub(" ", "", paste(file_in, ".png")) # create filename with extension for output image
-  #image_out = gsub(" ", "", paste(file_in, ".pdf")) # create filename with extension for output image
+  # set pdf as the image_type if none was specified
+  if( length(image_type) == 2 ){ image_type = "pdf" }
+  
+  # set output names and defaults for png and pdf output types
+  if ( length(grep("png",image_type) ) == 1 ){
+    image_out <<- gsub(" ", "", paste(file_in, ".png")) # set the output file name
+    if ( as.integer(image_width + image_height) == 0 ){ # set defaults for width and height if none are selected
+      image_width = 500
+      image_height = 500
+    }
+  }else if ( length(grep("pdf",image_type) ) == 1 ){
+    image_out <<- gsub(" ", "", paste(file_in, ".pdf")) # set the output file name
+    if ( as.integer(image_width + image_height) == 0 ){ # set defaults for width and height if none are selected
+      image_width = 6 
+      image_height = 6
+    }
+  }else{
+    paste("image_type:", image_type)
+    stop("could not specifiy an image type")
+  }
+
   
   if (  bps_indexed == 1 ){
     my_data <<- data.matrix(read.table(file_in, row.names=1, header=TRUE, sep="\t", comment.char="", quote="", skip=2))
@@ -60,14 +84,9 @@ plot_DRISEE <- function(
   G_err <- (dimnames(my_data)[[2]])[num_header_fields-2]
   N_err <<- (dimnames(my_data)[[2]])[num_header_fields-2]
   InDel_err <<- (dimnames(my_data)[[2]])[num_header_fields]
-  #Total_err <- (dimnames(my_data)[[2]])[num_header_fields]
   sum_err = (my_data[,A_err] + my_data[,T_err] + my_data[,C_err] + my_data[,G_err] + my_data[,N_err] + my_data[,InDel_err])
   
   test_header <<-   as.matrix(strsplit(gsub("#", "", readLines(con=file_in, n=2)),"\t"))
-  
-  png(filename = image_out, width = figure_width, height = figure_height)
-  #names(pdfFonts())
-  #pdf(file = image_out, width = figure_width, height = figure_height, fonts="Helvetica")
 
   if (  length(grep(".per$",file_in)) == 1 ){
     my_title = gsub(" ", "", paste(file_in, "::DRISEE.percent_profile"))
@@ -75,11 +94,20 @@ plot_DRISEE <- function(
     my_ylab = "error percent"
   }else{
     my_title = gsub(" ", "", paste(file_in, "::DRISEE.abundance_profile"))
-    y_axis_max = max(my_data) + (max(my_data)/10)
+    y_axis_max = max(my_data)
     my_ylab = "error abundance"
   }
 
-  plot(sum_err,  type="l", col="darkmagenta", main = my_title, xlab = "bp position", ylab = my_ylab, ylim=c(0,y_axis_max))
+
+  if (  length(grep("png",image_type)) == 1 ){
+    png(filename = image_out, width = image_width, height = image_height)
+  } else if (  length(grep("pdf",image_type)) == 1 ){
+    pdf(file = image_out, width = image_width, height = image_height, fonts="Helvetica")
+  }
+   
+  #plot(sum_err,  type="l", col="darkmagenta", main = my_title, xlab = "bp position", ylab = my_ylab, ylim=c(0,y_axis_max))
+  plot(sum_err,  type="l", col="darkmagenta", xlab = "bp position", ylab = my_ylab, ylim=c(0,y_axis_max))
+  title(my_title, cex.main = 1)
   lines( my_data[,A_err], type="l", col="green" )
   lines( my_data[,T_err], type="l", col="red" )
   lines( my_data[,C_err], type="l", col="blue" )
