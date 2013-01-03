@@ -58,9 +58,10 @@ def random_str(size=6):
     return ''.join(random.choice(chars) for x in range(size))
 
 # kk 11-9-12 # def seq_stats(in_file, fformat, verb):
-def seq_stats(in_file, opts.seq_type, verb):
+#def seq_stats(in_file, opts.seq_type, verb):
+def seq_stats(in_file, fformat, verb):
     #fout, ferr = run_cmd(['seq_length_stats.py', '-f', '-i', in_file, '-t', fformat])
-    fout, ferr = run_cmd(['seq_length_stats.py', '-f', '-i', in_file, '-t', opts.seq_type])
+    fout, ferr = run_cmd(['seq_length_stats.py', '-f', '-i', in_file, '-t', fformat])
     if LOG_FILE and (fout or ferr):
         write_file("\n".join([fout, ferr]), LOG_FILE, 1)
     if verb and (fout or ferr):
@@ -73,7 +74,9 @@ def seq_stats(in_file, opts.seq_type, verb):
     return stats
 
 # kk 11-9-12 # def filter_seqs(in_file, out_file, stats, seqper, ambig_max, stdev_multi, filter_min, fformat):
-def filter_seqs(in_file, out_file, stats, seqper, ambig_max, stdev_multi, filter_min, opts.seq_type):
+
+#def filter_seqs(in_file, out_file, stats, seqper, ambig_max, stdev_multi, filter_min, opts.seq_type):
+def filter_seqs(in_file, out_file, stats, seqper, ambig_max, stdev_multi, filter_min, fformat):
     # get stats
     avg_len = float(stats['average_length'])
     sdv_len = float(stats['standard_deviation_length'])
@@ -87,7 +90,7 @@ def filter_seqs(in_file, out_file, stats, seqper, ambig_max, stdev_multi, filter
     new_num = 0
     try:
         # kk 11-9-12 # for rec in SeqIO.parse(input_hdl, fformat):
-        for rec in SeqIO.parse(input_hdl, opts.seq_type):
+        for rec in SeqIO.parse(input_hdl, fformat):
             rnd_num = random.random()
             if seqper < rnd_num:
                 continue
@@ -227,6 +230,7 @@ def main(args):
     global TMP_DIR, LOG_FILE, ITER_MAX, CONV_MIN, PREF_LEN
     parser = OptionParser(usage=usage, version=version)
     parser.add_option("-p", "--processes", dest="processes", type="int", default=8, help="Number of processes to use [default '8']")
+    #parser.add_option("-t", "--seq_type", dest="seq_type", default='fasta', help="Sequence type: fasta, fastq [default 'fasta']")
     parser.add_option("-t", "--seq_type", dest="seq_type", default='fasta', help="Sequence type: fasta, fastq [default 'fasta']")
     parser.add_option("-f", "--filter_seq", dest="filter", action="store_true", default=False, help="Run sequence filtering, length and ambig bp [default off]")
     parser.add_option("-r", "--replicate_file", dest="rep_file", default=None, help="File with sorted replicate bins (bin_id, seq_id) [default to calculate replicates]")
