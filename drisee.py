@@ -20,6 +20,53 @@ ITER_MAX = 0
 CONV_MIN = 0
 PREF_LEN = 0
 
+def ip (a,b, d):   # takes two sequences and offset and returns (number of matches, overlap length)
+   assert len(b) >= len(a)
+   if d < 0:
+      r = len(a) + d
+   elif (len(a) + d) > len(b):
+      r =  len(b) - d
+   else:
+      r= len(a)
+   c=0
+   for i in range( 0, r ) :
+      if (a[i] == b[i+d] and a[i] != "N") :
+         c+=1
+   if r==0:  r=1
+   return c ,r
+
+def align ( sequence, adapter ):  # takes two sequences, returns best alignment (number of matches, alignlength, offset)
+   if len(sequence) > len(adapter) :
+      a, b = adapter, sequence
+   else:
+      a, b = sequence, adapter
+   assert len(b) >= len(a)
+   la = len(a)
+   lb = len(b)
+   bestm = 0
+   bestr = 0
+   besto = 0
+   for i in range(-len(a), len(b)):
+      (m,r) = ip(a, b, i )
+      c = float(m)/float(r)
+      if m > bestm and c >= MINALIGNID and r >= MINOVERLAP :
+         bestm = m
+         besto = i
+         bestr = r
+   return (bestm , bestr, besto)
+
+def bestalign( sequence, adapters):
+   type(sequence)
+   type(adapters)
+   besta = 0
+   bestk = 0
+   for key in adapters.keys():
+      (m,r,o) = align(sequence, adapters[key])
+      if m > besta:
+         besta = m
+         bestk = key
+   return (besta, bestk)
+
 def write_file(text, fname, append=None):
     if append:
         mode = 'a'
@@ -108,6 +155,21 @@ def filter_seqs(in_file, out_file, stats, seqper, ambig_max, stdev_multi, filter
         input_hdl.close()
         output_hdl.close()
     return new_num
+
+def get_contaminated_md5_prefixes_from_fasta(in_file, prefix_len, adapters):
+    contaminated_md5s = {}
+    input_hdl = open(in_file, 'rU')
+    try:
+        for rec in SeqIO.parse(input_hdl, 'fasta'):
+            seq = str(rec.seq).upper()
+            prefix = seq[:prefix_len]
+            md5 = hashlib.md5( prefix ).hexdigest()
+            (a,b) = bestalign( rec.seq, adapters )
+            if a > 0:
+                contaminated_md5s[md5] = 1
+    finally:
+        input_hdl.close()
+    return contaminated_md5s
 
 def bin_replicate_seqs(in_file, out_file, tmp_dir, prefix_len, nodes):
     tmp_file = os.path.join(tmp_dir, os.path.basename(out_file)+'.tmp')
@@ -227,7 +289,7 @@ usage = "usage: %prog [options] input_seq_file output_stat_file\n" + __doc__
 version = "%prog 1.2"
 
 def main(args):
-    global TMP_DIR, LOG_FILE, ITER_MAX, CONV_MIN, PREF_LEN
+    global TMP_DIR, LOG_FILE, ITER_MAX, CONV_MIN, PREF_LEN, MINALIGNID, MINOVERLAP
     parser = OptionParser(usage=usage, version=version)
     parser.add_option("-p", "--processes", dest="processes", type="int", default=8, help="Number of processes to use [default '8']")
     #parser.add_option("-t", "--seq_type", dest="seq_type", default='fasta', help="Sequence type: fasta, fastq [default 'fasta']")
@@ -246,6 +308,10 @@ def main(args):
     parser.add_option("-b", "--bin_num_max", dest="num_max", type="int", default=1000, help="Maximum number of bins to process (chosen randomly) [default 1000]")
     parser.add_option("-i", "--iter_max", dest="iter_max", type="int", default=10, help="Maximum number of iterations if alignment does not converge [default 10]")
     parser.add_option("-c", "--converge_min", dest="conv_min", type="int", default=3, help="Minimum number of iterations to identify convergence [default 3]")
+    parser.add_option("-j", "--check_contam", dest="check_contam", action="store_true", default=False, help="Separate results for seqs with adapter contamination [default off]")
+    parser.add_option("-o", "--minoverlap", dest="MINOVERLAP", type="int", default=10, help="Minimum overlap paramter for identifying adapter contamination [default 10]")
+    parser.add_option("-e", "--fractionid", dest="MINALIGNID", type="float", default=0.9, help="Minimum alignment id for identifying adapter contamination [default 0.9]")
+    parser.add_option("-g", "--database", dest="database", default="adapterDB.fna", help="Database fasta of adapter sequences [default adapterDB.fna]")
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=False, help="Write runtime summary stats to STDOUT [default off]")
 
     start_time = time.time()
@@ -274,6 +340,17 @@ def main(args):
     ITER_MAX = opts.iter_max
     CONV_MIN = opts.conv_min
     PREF_LEN = opts.prefix
+    MINOVERLAP = opts.MINOVERLAP
+    MINALIGNID = opts.MINALIGNID
+    DBFILE = opts.database
+
+    removeambigtable= string.maketrans('RYWSMKHBVDNrywsmkhbvdn','N'* 22)
+    adapters = {}
+    adapters[0] = ""
+    for seq_record in SeqIO.parse(DBFILE, "fasta"):
+        adapters[seq_record.description] =        string.upper(str(seq_record.seq).translate(removeambigtable))
+        adapters["%s.R"%seq_record.description] = string.upper(str(seq_record.seq.reverse_complement()).translate(removeambigtable))
+
     os.mkdir(TMP_DIR)
     
     if opts.verbose: sys.stdout.write("Version:\t%s\n"%version)
@@ -341,6 +418,24 @@ def main(args):
         return 0
     if opts.verbose: sys.stdout.write("Done, %s bins found\n"%size)
 
+    # check for adapter contamination in one sequence for each md5 in filtered set
+    if opts.check_contam:
+        # bins_to_rep_ids will contain a dictionary of each md5 in filtered set to one sequence of the sequence ids
+        bins_to_rep_ids = {}
+        dhdl = open(opts.rep_file, 'rU')
+	try:
+	    for line in dhdl:
+		(bid, sid) = line.split()
+                if bid in bins:
+                    bins_to_rep_ids[bid] = sid
+	finally:
+	    dhdl.close()
+        # generate sequence file for list of sequence ids
+        rep_seqs_fasta = os.path.join(TMP_DIR, "rep_seqs.fasta")
+        get_sub_fasta(bins_to_rep_ids.values(), index_seq, in_seq, rep_seqs_fasta)
+        contaminated_md5s = get_contaminated_md5_prefixes_from_fasta(rep_seqs_fasta, opts.prefix, adapters)
+        os.remove(rep_seqs_fasta)
+
     # create trimmed bin fasta files
     to_process = []
     total_ids = 0
@@ -383,7 +478,7 @@ def main(args):
         min_proc = opts.processes
     if len(to_process) < min_proc:
         min_proc = len(to_process)
-    if opts.verbose: sys.stdout.write("Processing %d bins (%d sequences total) using %d threades ... "%(size,total_ids,min_proc))
+    if opts.verbose: sys.stdout.write("Processing %d bins (%d sequences total) using %d threads ... "%(size,total_ids,min_proc))
     pool = Pool(processes=min_proc)
     finish = pool.map(process_bin, to_process, 1)
     pool.close()
@@ -400,6 +495,14 @@ def main(args):
     bases = []
     match = []
     error = []
+    # if check_contam is on, create stats for contaminated and non-contaminated seqs in addition to stats for all seqs
+    if opts.check_contam:
+        cbases = []
+        cmatch = []
+        cerror = []
+        ncbases = []
+        ncmatch = []
+        ncerror = []
     if opts.verbose: sys.stdout.write("Merging scores from %d bins ... "%len(finish))
     for bid in finish:
         bin_score = os.path.join(TMP_DIR, bid+'.score')
@@ -411,21 +514,49 @@ def main(args):
         if os.path.isfile(bin_score):
             shdl = open(bin_score, 'rU')
             data = shdl.read().split("\n")
-            bases, match, error = process_data(data, match, error)
+            data_copy = list(data)
+            bases, match, error = process_data(data_copy, match, error)
+            if opts.check_contam:
+                if bid in contaminated_md5s:
+                    data_copy = list(data)
+                    cbases, cmatch, cerror = process_data(data_copy, cmatch, cerror)
+                else:
+                    data_copy = list(data)
+                    ncbases, ncmatch, ncerror = process_data(data_copy, ncmatch, ncerror)
             shdl.close()
     if opts.verbose: sys.stdout.write("Done\n")
     
+    contam = len(contaminated_md5s)
+    ncontam = len(finish) - len(contaminated_md5s)
+
     err_score, score_text = create_output(bases, match, error, 0)
     write_file(score_text, out_stat)
+    if opts.check_contam:
+        if contam > 0:
+            cerr_score, cscore_text = create_output(cbases, cmatch, cerror, 0)
+            write_file(cscore_text, out_stat+".contaminated")
+        if ncontam > 0:
+            ncerr_score, ncscore_text = create_output(ncbases, ncmatch, ncerror, 0)
+            write_file(ncscore_text, out_stat+".non_contaminated")
+
     if opts.percent:
         _err, per_text = create_output(bases, match, error, 1)
         write_file(per_text, out_stat+'.per')
+        if opts.check_contam:
+            if contam > 0:
+                _err, cper_text = create_output(cbases, cmatch, cerror, 1)
+                write_file(cper_text, out_stat+'.contaminated.per')
+            if ncontam > 0:
+                _err, ncper_text = create_output(ncbases, ncmatch, ncerror, 1)
+                write_file(ncper_text, out_stat+'.non_contaminated.per')
 
     # cleanup
     shutil.rmtree(TMP_DIR)
     end_time = time.time() - start_time
     if opts.verbose: sys.stdout.write("Completed in %s\n" %str(datetime.timedelta(seconds=end_time)))
     if opts.verbose: sys.stdout.write("Input seqs\t%d\nProcessed bins\t%d\nProcessed seqs\t%d\nDrisee score\t%f\n"%(seqmax,size,total_ids,err_score))
+    if opts.verbose and contam > 0: sys.stdout.write("\nContaminated bins\t%d\nDrisee score\t%f\n"%(contam, cerr_score))
+    if opts.verbose and ncontam > 0: sys.stdout.write("\nNon-contaminated bins\t%d\nDrisee score\t%f\n"%(ncontam, ncerr_score))
     return 0
     
 
