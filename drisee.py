@@ -550,8 +550,6 @@ def main(args):
                 _err, ncper_text = create_output(ncbases, ncmatch, ncerror, 1)
                 write_file(ncper_text, out_stat+'.non_contaminated.per')
 
-    ############if opts.check_contam:
-
     # cleanup
     shutil.rmtree(TMP_DIR)
     end_time = time.time() - start_time
