@@ -532,15 +532,16 @@ def main(args):
             shdl.close()
     if opts.verbose: sys.stdout.write("Done\n")
     
-    contam = len(contaminated_md5s)
-    ncontam = len(finish) - len(contaminated_md5s)
-    contam_seq_count = 0
-    ncontam_seq_count = 0
-    for md5 in bins_to_seq_count:
-        if md5 in contaminated_md5s:
-            contam_seq_count += bins_to_seq_count[md5]
-        elif md5 in finish:
-            ncontam_seq_count += bins_to_seq_count[md5]
+    if opts.check_contam:
+        contam = len(contaminated_md5s)
+        ncontam = len(finish) - len(contaminated_md5s)
+        contam_seq_count = 0
+        ncontam_seq_count = 0
+        for md5 in bins_to_seq_count:
+            if md5 in contaminated_md5s:
+                contam_seq_count += bins_to_seq_count[md5]
+            elif md5 in finish:
+                ncontam_seq_count += bins_to_seq_count[md5]
 
     err_score, score_text = create_output(bases, match, error, 0)
     write_file(score_text, out_stat)
@@ -568,8 +569,8 @@ def main(args):
     end_time = time.time() - start_time
     if opts.verbose: sys.stdout.write("Completed in %s\n" %str(datetime.timedelta(seconds=end_time)))
     if opts.verbose: sys.stdout.write("Input seqs\t%d\nProcessed bins\t%d\nProcessed seqs\t%d\nDrisee score\t%f\n"%(seqmax,size,total_ids,err_score))
-    if opts.verbose and contam > 0: sys.stdout.write("\nContam bins\t%d\nContam seqs\t%d\nDrisee score\t%f\n"%(contam,contam_seq_count,cerr_score))
-    if opts.verbose and ncontam > 0: sys.stdout.write("\nNon-contam bins\t%d\nNon-contam seqs\t%d\nDrisee score\t%f\n"%(ncontam,ncontam_seq_count,ncerr_score))
+    if opts.verbose and opts.check_contam and contam > 0: sys.stdout.write("\nContam bins\t%d\nContam seqs\t%d\nDrisee score\t%f\n"%(contam,contam_seq_count,cerr_score))
+    if opts.verbose and opts.check_contam and ncontam > 0: sys.stdout.write("\nNon-contam bins\t%d\nNon-contam seqs\t%d\nDrisee score\t%f\n"%(ncontam,ncontam_seq_count,ncerr_score))
     return 0
     
 
