@@ -66,10 +66,11 @@ Options:
 
 	-h, --help		show help/usage and exit
 
-	-p PROCESSES, --processes=PROCESSES			[default '1']
+	-p PROCESSES, --processes=PROCESSES			[default '8']
 		Number of processes to use. With this option you can select the number of processers 
 		to use on a multiprocessor system. When more than 1 processor is selected, processing 
-		of bins of duplicate reads is split among the specified number of processors.
+		of bins of duplicate reads is split among the specified number of processors. Default
+		is 8 -- this reflects the number of CPUs on a typical Magellan VM (http://www.alcf.anl.gov/magellan).
 
 	-t SEQ_TYPE, --seq_type=SEQ_TYPE			[default 'fasta']
 		Sequence type: fasta, fastq 
@@ -159,6 +160,18 @@ Options:
 		Minimum number of iterations to identify convergence.  Multiple alignments are iterated until 
 		convergence is observed for CONV_MIN consecutive iterations, or when ITER_MAX (see above) has 
 		been reached. 
+		
+	-j, --check_contam    					[default off]
+		Produce separate results for seqs with adapter contamination.
+                        
+  	-o MINOVERLAP, --minoverlap==MINOVERLAP			[default 10]
+                (Requires -j) Minimum overlap paramter for identifying adapter contamination 
+                
+  	-e MINALIGNID, --fractionid=MINALIGNID			[default 0.9]
+                (Requires -j) Minimum alignment id for identifying adapter contamination 
+                        
+  	-g DATABASE, --database=DATABASE			[default adapterDB.fna]
+                (Requires -j) Database fasta of adapter sequences 
                       
 	-v, --verbose 						[default off]
 		Write runtime summary stats to STDOUT
