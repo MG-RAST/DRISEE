@@ -3,7 +3,7 @@
 import os, sys, pprint, subprocess
 from optparse import OptionParser
 from Bio import SeqIO
-from qiime.pycogent_backports.uclust import Uclust
+from cogent.app.uclust import Uclust
 
 usage = "usage: %prog [options]\n"
 
