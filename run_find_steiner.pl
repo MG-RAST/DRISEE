@@ -54,8 +54,12 @@ ML: for ($i = 1; $i <= $max_iter; $i++) {
   }
 
   # get qiime-uclust score and seed seq
-  system("qiime-uclust --sort $fa_file --output $fa_file.sort --tmpdir $tmp_dir > /dev/null 2>&1");
-  $log_text .= `qiime-uclust --input $fa_file.sort --uc $uc_file --id 0 --tmpdir $tmp_dir --rev 2>&1`;
+  system("qiime-uclust.py --sort $fa_file --output $fa_file.sort --tmpdir $tmp_dir > /dev/null 2>&1");
+  my $cmd_output = `qiime-uclust.py --input $fa_file.sort --uc $uc_file --id 0 --tmpdir $tmp_dir --rev 2>&1`;
+  if($cmd_output) {
+      chomp $cmd_output;
+      $log_text .= $cmd_output;
+  }
   ($score, $seed_seq) = &get_steiner($fasta_hash, $seed_head, $seed_seq, $uc_file);
 
   # test if converged
