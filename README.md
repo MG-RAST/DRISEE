@@ -1,7 +1,7 @@
 DRISEE: Duplicate Read Inferred Sequencing Error Estimation
 ===
 
-Contributors: Kevin Keegan, William Trimble, Jared Wilkening, Andreas Wilke, Travis Harrison, Mark D'souza, & Folker Meyer
+Contributors: Kevin Keegan, William Trimble, Jared Wilkening, Jared Bischof, Travis Harrison, Andreas Wilke, Mark D'souza, & Folker Meyer
 
 
 DESCRIPTION
