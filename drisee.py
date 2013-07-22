@@ -286,7 +286,7 @@ def create_output(bps, match, error, per):
 
 
 usage = "usage: %prog [options] input_seq_file output_stat_file\n" + __doc__
-version = "%prog 1.4"
+version = "%prog 1.5"
 
 def main(args):
     global TMP_DIR, LOG_FILE, ITER_MAX, CONV_MIN, PREF_LEN, MINALIGNID, MINOVERLAP
