@@ -95,7 +95,7 @@ Options:
 	
 	-d TMPDIR, --tmp_dir=TMPDIR				[default '/tmp']
 		Directory for intermediate files (must be full path), 			
-		deleted at the end of analysis. Directory must already exist.
+		deleted at the end of analysis. Specified directory must already exist.
 
 	-l LOGFILE, --log_file=LOGFILE				[default '/dev/null']
 		A detailed log of processing related statistics
