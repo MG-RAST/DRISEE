@@ -323,8 +323,9 @@ def main(args):
     (in_seq, out_stat) = args
     if not (os.path.isfile(in_seq) and os.path.isdir(opts.tmpdir)):
        #parser.error("Invalid input files and/or tmp dir")
-       if not (os.path.isfile(in_seq)): parser.error( "Invalid input file (" + in_seq + ")" )
-       if not (os.path.isdir(opts.tmpdir)): parser.error( "Invalid tmp dir (" + opts.tmpdir + ")" )     
+       if not (os.path.isfile(in_seq)): error_string = ( "Invalid input file (" + in_seq + ")\n" )
+       if not (os.path.isdir(opts.tmpdir)): error_string( error_string + "Invalid tmp dir (" + opts.tmpdir + ")\n" )
+       parser.error(error_string)
     if opts.processes < 1: opts.processes = 1
     if opts.ambig_max < 0: opts.ambig_max = 0
     if opts.stdev_multi <=0: opts.stdev_multi = 2
