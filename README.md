@@ -94,8 +94,8 @@ Options:
 		two columns indicating the bin and sequence id for the read 
 	
 	-d TMPDIR, --tmp_dir=TMPDIR				[default '/tmp']
-		Directory for intermediate files (must be full path), 			
-		deleted at the end of analysis. Specified directory must already exist.
+		DIR for intermediate files (must be full path). Specified directory must already exist. 
+		Files are automatically deleted at analysis completion.
 
 	-l LOGFILE, --log_file=LOGFILE				[default '/dev/null']
 		A detailed log of processing related statistics
