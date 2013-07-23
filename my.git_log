@@ -1,0 +1,832 @@
+commit d07bcae410c67df3e7cf4a7eb0ff5c24b5949982
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Wed Mar 20 17:35:59 2013 -0500
+
+    version number consistent with tag - 1.4
+
+commit d9fdcd0eb53ea4d0a6da35ba37217e16c3b01f48
+Merge: 64bbb4c 3861684
+Author: teharrison <guumby@gmail.com>
+Date:   Tue Mar 19 07:09:28 2013 -0700
+
+    Merge pull request #5 from teharrison/master
+    
+    added seq_length_stats.py updates, made extensions consistant
+
+commit 386168409a95c723bcbde5f54d6a0c3aa934acb9
+Author: Travis Harrison <guumby@gmail.com>
+Date:   Tue Mar 19 09:06:19 2013 -0500
+
+    gave python script .py ending
+
+commit 087943252f49a9397aa316a6ff893e14f7bdf9da
+Author: Travis Harrison <guumby@gmail.com>
+Date:   Tue Mar 19 09:05:42 2013 -0500
+
+    added performace updates and better error messages (from MG-RAST pipeline version)
+
+commit 64bbb4cab29f7aca11e21a7b1bbb1c5028a88e08
+Merge: 46cd1cd 23f4269
+Author: teharrison <guumby@gmail.com>
+Date:   Mon Feb 11 19:53:58 2013 -0800
+
+    Merge pull request #4 from jaredbischof/master
+    
+    Added the number of adapter contaminated and non-contaminated sequences to the output.
+
+commit 23f4269c51f58221bf49805b90ec89caaea4dfa0
+Author: Jared Bischof <jbischof@gmail.com>
+Date:   Mon Feb 11 12:52:06 2013 -0600
+
+    Fixed some code that was out of scope.
+
+commit 2044a2f51296d473fb8410811d7f56e3f34e68b9
+Author: Jared Bischof <jbischof@gmail.com>
+Date:   Mon Feb 11 12:26:11 2013 -0600
+
+    Added the number of adapter contaminated and non-contaminated sequences to the output.
+
+commit 46cd1cde4bb905bc6c60cfaf0973919659749270
+Merge: 8e7578d 067ac1f
+Author: teharrison <guumby@gmail.com>
+Date:   Wed Feb 6 12:56:56 2013 -0800
+
+    Merge pull request #3 from jaredbischof/master
+    
+    Modified code to include option for checking the sequence prefixes for adapter contamination.
+
+commit 067ac1fe173f1fea14802bd6d662f2da96944387
+Author: Jared Bischof <jbischof@gmail.com>
+Date:   Wed Feb 6 14:49:28 2013 -0600
+
+    Fixed typo.
+
+commit 8ec3a9d31bd86710ca5831cf2f2b6f6b5e1cdc0a
+Author: Jared Bischof <jbischof@gmail.com>
+Date:   Wed Feb 6 14:44:13 2013 -0600
+
+    Modified code to include option for checking the sequence prefixes (first 50bp) for adapter contamination.  When turned on, statistics and output files are generated for both contaminated and non-contaminated bins, in addition to the combined statistics for all bins.
+
+commit 8e7578d98a7c24eab4b096b01b02c9c408c933ac
+Merge: 19b8a06 1829867
+Author: teharrison <guumby@gmail.com>
+Date:   Wed Jan 30 13:05:57 2013 -0800
+
+    Merge pull request #2 from jaredbischof/master
+    
+    Added a file of adapter sequences that we will use to look for adapter contamination.
+
+commit 1829867be43853c4d3619a1b4b66aadec426efed
+Author: Jared Bischof <jbischof@gmail.com>
+Date:   Wed Jan 30 14:59:06 2013 -0600
+
+    Added this list of adapters that we will use for assessing whether or not sequences have been adapter contaminated.
+
+commit 19b8a066c67d9dbd2bef85c397a38e0866807034
+Author: Kevin Keegan <kevin.p.keegan@gmail.com>
+Date:   Thu Jan 3 11:29:23 2013 -0600
+
+    debugged main script
+
+commit 8f564f39e7d6ddd1337c30b00c2ecc6292a90fcb
+Author: Kevin Keegan <kevin.p.keegan@gmail.com>
+Date:   Thu Nov 29 14:39:59 2012 -0600
+
+    improved graphining scripts
+
+commit 45b6a8d5b782ce9e1166deba608b65b2f46592a0
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Nov 26 18:56:07 2012 -0600
+
+    Update plot_DRISEE.11-19-12.r
+
+commit 30aa8377960f7d7169f4925f34f297333e96d503
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Nov 26 18:52:30 2012 -0600
+
+    Update plot_DRISEE.11-19-12.r
+
+commit d171d420aa90c9e644bba610ddf3c7a7106ed665
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Nov 26 18:51:37 2012 -0600
+
+    Update plot_DRISEE.11-19-12.r
+
+commit 0ae3f766171414d1c2e6703da1075e13e3347210
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Nov 26 18:48:35 2012 -0600
+
+    Update plot_DRISEE.11-19-12.r
+
+commit f28a3bcf3c643c1ef8417f0f948ddf8306322216
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Nov 26 18:47:13 2012 -0600
+
+    Update plot_DRISEE.11-19-12.r
+
+commit f09661afc06c52598ea1240d28cabbc70de2d942
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Nov 26 18:45:21 2012 -0600
+
+    Update plot_DRISEE.11-19-12.r
+
+commit 5b5a7c79a38737eecf60681bab4df8288a1b6aaa
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Nov 26 18:44:37 2012 -0600
+
+    Update plot_DRISEE.11-19-12.r
+
+commit 6f4d8cfad8e47559ba169125a9d1d8a6d21b04ff
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Nov 26 18:27:58 2012 -0600
+
+    Update plot_DRISEE.11-19-12.r
+
+commit d41d33f502a35eb50bbb667e23161c322d1d21af
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Nov 26 18:26:53 2012 -0600
+
+    Update plot_DRISEE.11-19-12.r
+
+commit 81b847ffdb45a0718d8cc990bb3061cc43ecfc35
+Author: Kevin Keegan <kevin.p.keegan@gmail.com>
+Date:   Mon Nov 26 18:16:14 2012 -0600
+
+    fixed incorrect plotting plot_DRISEE.11-19-12.r
+
+commit 0bec1ce15bb7bb9a6c9a4ce02410fa0330bf28cd
+Author: Kevin Keegan <kevin.p.keegan@gmail.com>
+Date:   Mon Nov 26 17:10:02 2012 -0600
+
+    improved plot_DRISEE.11-19-12.r
+
+commit ec3a418d4d5408025b42844da5f74b861bfd97da
+Author: Kevin Keegan <kevin.p.keegan@gmail.com>
+Date:   Mon Nov 19 17:40:58 2012 -0600
+
+    minor changes to plot function (R) usage
+
+commit e265e97939be83df6238a84e1aeb3c9dc1ce1e1c
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Nov 19 17:38:26 2012 -0600
+
+    Update README.md
+
+commit e761558477dce78e648814642c83b9c2d553e007
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Nov 19 17:37:05 2012 -0600
+
+    Update README.md
+
+commit ba31d89f2d07ed78cbb89a623511abd60b4c473e
+Author: Kevin Keegan <kevin.p.keegan@gmail.com>
+Date:   Mon Nov 19 17:29:09 2012 -0600
+
+    update plot scripts
+
+commit 04a5821adc02dff2bea5b233c8b7db5f5c366b28
+Author: Kevin Keegan <kevin.p.keegan@gmail.com>
+Date:   Mon Nov 19 16:26:28 2012 -0600
+
+    added plot_DRISEE scripts
+
+commit fdaec295bcbb9b70dbcfc40c9ef75cdcae40eadd
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Nov 9 17:28:00 2012 -0600
+
+    Update drisee.py
+
+commit abd93d579cbcdb4220fedc7f47547e69f1adcd51
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Nov 9 16:44:11 2012 -0600
+
+    Update drisee.py
+
+commit cc365bee8c45f0786968c45ecfb44587a163890d
+Author: Travis Harrison <guumby@gmail.com>
+Date:   Thu Aug 16 16:52:01 2012 -0700
+
+    fixed error when skipping filtering
+
+commit 6c3105490850d330b18c96a6e9d3235b4cbddab1
+Merge: 524178c e155f99
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Wed Aug 1 12:21:15 2012 -0700
+
+    Merge pull request #1 from teharrison/master
+    
+    updates to get code in line with changes in pipeline/bin - Thanks Travis - K
+
+commit e155f99f40249d5b6b748426ecb078c5faa91e40
+Author: Travis Harrison <tharriso@dieppe-1.mcs.anl.gov>
+Date:   Wed Aug 1 09:17:11 2012 -0500
+
+    changed defaults of option paramters that had reverse logic
+
+commit 33e9aa6f93541cb9dbe3150771feccdca1cf4ff7
+Author: Travis Harrison <tharriso@dieppe-1.mcs.anl.gov>
+Date:   Wed Aug 1 09:13:37 2012 -0500
+
+    added more excpetion handeling, fixed bug with header sorting
+
+commit 7645ca8f9c3fcabb5f53ff9eb9597807d02b240b
+Author: Travis Harrison <tharriso@dieppe-1.mcs.anl.gov>
+Date:   Wed Aug 1 09:07:28 2012 -0500
+
+    updated text in help blurb
+
+commit d3b7858aff5b75f37a9ff8ad07db60e0b38a95e8
+Author: Travis Harrison <tharriso@dieppe-1.mcs.anl.gov>
+Date:   Wed Aug 1 09:05:34 2012 -0500
+
+    updated text in help blurb
+
+commit 4584185f16ca1586ed7c86b7fdf880d82293e98d
+Author: Travis Harrison <tharriso@dieppe-1.mcs.anl.gov>
+Date:   Wed Aug 1 09:04:16 2012 -0500
+
+    added better error handeling/reporting, fixed bug with fastq record counting
+
+commit 524178c06c2c4ccbaf3ebcc89d1fd65de02eedc7
+Merge: 598e335 7572821
+Author: Kevin Keegan <keegan@kursk-2.mcs.anl.gov>
+Date:   Fri May 11 14:50:27 2012 -0500
+
+    Merge branch 'master' of git@github.com:MG-RAST/DRISEE
+
+commit 598e335d80c2b1ce71b945ca8307046962055e05
+Author: Kevin Keegan <keegan@kursk-2.mcs.anl.gov>
+Date:   Fri May 11 14:47:07 2012 -0500
+
+    added license
+
+commit 3b211a862f5c5e5eb08371da11aa9bde1af4b17f
+Author: Kevin Keegan <keegan@kursk-2.mcs.anl.gov>
+Date:   Fri May 11 14:41:32 2012 -0500
+
+    added license as a separate txt file
+
+commit 7572821bcc65e74ceb1af1638bdf3b3e572c58cd
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri May 11 14:35:42 2012 -0500
+
+    Update README.md
+
+commit 3eddeefd4fbcfc87c56633174f922c3252e9cf04
+Author: Kevin Keegan <keegan@kursk-2.mcs.anl.gov>
+Date:   Fri May 11 14:32:56 2012 -0500
+
+    added the license as a separate file
+
+commit 2142b38863bbdc7fbd0c954fbfe6a61727611ec2
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Wed May 9 01:22:37 2012 -0500
+
+    Update drisee.py
+
+commit be65959cf39333ea4895309175cf2db998d25b04
+Author: Jared Wilkening <jared.wilkening@gmail.com>
+Date:   Thu May 3 11:37:31 2012 -0500
+
+    Added License to README.md
+
+commit 019585570a6b25a7757e418f9cf31859ad4c4738
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Apr 2 17:34:15 2012 -0500
+
+    Update README.md
+
+commit f81dc08f906f5ed14883321cd819be50502870e8
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Apr 2 17:32:49 2012 -0500
+
+    Update README.md
+
+commit 10ceaaddf2232414934fb3e1491c03b40025aae2
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Apr 2 17:32:36 2012 -0500
+
+    Update README.md
+
+commit bb840c59123c094f8291c141fd1a21071b6b58f8
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Apr 2 17:32:18 2012 -0500
+
+    Update README.md
+
+commit 307a23c8455cf411d0847908b45c9f1bea041c8f
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Apr 2 17:31:55 2012 -0500
+
+    Update README.md
+
+commit b1c7eef9e6fa1d6debe296fd0831fccf7c37c90b
+Author: Kevin Keegan <keegan@kursk-2.mcs.anl.gov>
+Date:   Mon Apr 2 17:29:06 2012 -0500
+
+    add qiime-uclust
+
+commit bf2c249f2cff14fa834fe7e2d288d497497ad222
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Apr 2 16:50:16 2012 -0500
+
+    Update README.md
+
+commit bcd3951a284ce0c5e813e00737702aff1e56c974
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Apr 2 16:49:00 2012 -0500
+
+    Update README.md
+
+commit 5a6186c5b3a3df423d489ecfb444deaa3cb9dee2
+Author: Kevin Keegan <keegan@kursk-2.mcs.anl.gov>
+Date:   Mon Apr 2 16:47:39 2012 -0500
+
+    Edited the scripts
+
+commit 4d658722b58ebaceb13ec337375b1bbd80578e11
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Apr 2 13:37:33 2012 -0500
+
+    Update README.md
+
+commit 80ed7f88ff11f9e190660ef4a1678fda0420878c
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Sat Mar 24 13:46:47 2012 -0500
+
+    Update DRISEE_requirements_check.sh
+
+commit 28e85cc67f53a0769169674fd51802ea791c9a5b
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Sat Mar 24 13:39:53 2012 -0500
+
+    Update README.md
+
+commit 977cf0fb2edaf5d39a31830ccaa961ce91868cde
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Mar 23 13:31:24 2012 -0500
+
+    Update README.md
+
+commit 8e1c8f671e4e7b40f677168c92cb8ce7a16c363d
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Mar 23 13:31:02 2012 -0500
+
+    Update README.md
+
+commit f09645696afb5a77ca9831ab62f2c85fb29663f0
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Mar 23 13:29:25 2012 -0500
+
+    Update README.md
+
+commit d2b3de9701e99ceb3daaeb72292ceeed51e7bcd0
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Mar 23 11:33:38 2012 -0500
+
+    Update README.md
+
+commit 11c477df53ca8a39a066e5a03da155ca39914e7f
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Mar 23 11:32:59 2012 -0500
+
+    Update README.md
+
+commit 417d8bfc2efb9a18c69afcd1c5c2bf062940e2c1
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Mar 23 11:29:39 2012 -0500
+
+    Update README.md
+
+commit 5be5b321a16c302e328edb6ecabf28dae1503e5e
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Mar 23 11:28:48 2012 -0500
+
+    Update README.md
+
+commit d8536e96bb49d55122017b87fd1205f5a22621cb
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Mar 23 11:27:44 2012 -0500
+
+    Update README.md
+
+commit 5be5334831eff2893928ab1c955aa65a7da52e2b
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Thu Mar 1 10:01:03 2012 -0600
+
+    Update README.md
+
+commit 752b41dac093525a72fe6560673fc4721baa8097
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Thu Mar 1 09:53:21 2012 -0600
+
+    Update README.md
+
+commit ea7cd25d1aa09f3d1b3f3fead35fc34a7d5704a9
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Thu Mar 1 09:51:38 2012 -0600
+
+    Update README.md
+
+commit d71ab5b62dfbb807a6255f34a056bfeadd96fd70
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Thu Mar 1 09:51:00 2012 -0600
+
+    Update README.md
+
+commit bfdf54cc2a4ce968c8a734c0056aef0803eacf89
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Thu Mar 1 09:50:29 2012 -0600
+
+    Update README.md
+
+commit b6f9ff05640765dc923b23f843f69090c598cd99
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Thu Mar 1 09:49:41 2012 -0600
+
+    Update README.md
+
+commit 2f6a83cc9a0ab2fd23ff288620d211e83180b3e2
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Thu Mar 1 09:48:57 2012 -0600
+
+    Update README.md
+
+commit b1f812cb62a6381d38385f264dc548fabb7fe2f5
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Thu Mar 1 09:48:00 2012 -0600
+
+    Update README.md
+
+commit 8fb6f898c18128ad07423d73d05fb2b0d37c3153
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Thu Mar 1 09:47:07 2012 -0600
+
+    Update README.md
+
+commit 867ca57ef38f3bf98115c9a89752c8f448cb1c50
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Thu Mar 1 09:45:59 2012 -0600
+
+    Update README.md
+
+commit a62ef4588322151f443ac6d9be66ec3d5b55ffb6
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Wed Feb 29 18:15:45 2012 -0600
+
+    Update README.md
+
+commit 03caf0645fb45b7d63ca5cf0042284cfb5d5a713
+Merge: 46ec011 a55310f
+Author: Kevin <kevin@Kevin-MacBook-Pro.local>
+Date:   Wed Feb 29 18:11:54 2012 -0600
+
+    Merge branch 'master' of github.com:MG-RAST/DRISEE
+
+commit 46ec011718cabef8ef5e6c19f0185cbb4766d497
+Author: Kevin <kevin@Kevin-MacBook-Pro.local>
+Date:   Wed Feb 29 18:10:51 2012 -0600
+
+    add some zipped example files
+
+commit a55310fd01aa02995752aae932ff107c9b1df909
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Wed Feb 29 05:24:34 2012 -0500
+
+    Update README.md
+
+commit 388a85b06ecd3f92762d4a1ec909ef792768dd50
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Wed Feb 29 05:22:40 2012 -0500
+
+    Update README.md
+
+commit d466ea9cb32bba456899969224dd724614ea3dd9
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Wed Feb 29 05:21:42 2012 -0500
+
+    Update README.md
+
+commit abaf934e9fe9a630903e91c4aff3175d70eb5b6a
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Wed Feb 29 05:19:27 2012 -0500
+
+    Update README.md
+
+commit 6992f1e85a6638dbbb5ac0836fe129ac32c6d408
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Mon Feb 27 15:45:35 2012 -0500
+
+    Update README.md
+
+commit 8ba4d5f0a36220b38853807a164e4120271ec328
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Sat Feb 25 00:59:33 2012 -0600
+
+    Update README.md
+
+commit c075ca6c28b2bc8d4c51efb3adbc0b19fbb3ba27
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Sat Feb 25 00:55:23 2012 -0600
+
+    Update README.md
+
+commit 2f0461d9265ad71e55b4e758d6b1fbb59a92ce02
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Sat Feb 25 00:54:20 2012 -0600
+
+    Update README.md
+
+commit 9d1a428de3138c93f2d96880c0b751e1afaaeff1
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Sat Feb 25 00:51:40 2012 -0600
+
+    Update README.md
+
+commit 043dcdae9e8b8c03ea00c5a69e01e0225ece6f21
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 17:31:17 2012 -0600
+
+    Update README.md
+
+commit d10944015d1d299bb1040526d92552bb69104dd7
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 17:30:29 2012 -0600
+
+    Update README.md
+
+commit d8a23b09840f9998b201fbeddbdce68ff0a6c15d
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 17:30:02 2012 -0600
+
+    Update README.md
+
+commit a8d04f6f37fd0ee23e2edcf00a9baa395781825f
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 17:28:23 2012 -0600
+
+    Update README.md
+
+commit a8df984b0e05cce272773ca8be0173f1f5a55655
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 17:26:38 2012 -0600
+
+    Update README.md
+
+commit b0f186981597c5f5087893db0020c4d0317b31d0
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 17:24:31 2012 -0600
+
+    Update README.md
+
+commit 099265161e05dbfa85288c8cf38202038765f42f
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 17:23:39 2012 -0600
+
+    Update README.md
+
+commit 15df8a703f7c29f26f6eb4ec8dbe6b17248e76a9
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 17:23:09 2012 -0600
+
+    Update README.md
+
+commit 605b41edb6e1a1d6639b04e1afa3bf82dbb49450
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 17:22:41 2012 -0600
+
+    Update README.md
+
+commit 41de8407356cab45cb8307e877012f6a63c416b6
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 17:22:04 2012 -0600
+
+    Update README.md
+
+commit fc7bbdea2531fd382c02c51a9c21e72c77940f28
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 17:21:36 2012 -0600
+
+    Update README.md
+
+commit db52b97ba37d007cc207a211ed5bb2ccd8db5669
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 17:16:20 2012 -0600
+
+    Update README.md
+
+commit ae49615037ac2c45281e5d82af4ad63a2518e2a2
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 17:14:28 2012 -0600
+
+    Update README.md
+
+commit f8251d48fca1123469b7308ca093bfb7207d643b
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 17:07:56 2012 -0600
+
+    Update README.md
+
+commit f894198fea00e222903c00a1a896da8e8a1b38da
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 17:06:59 2012 -0600
+
+    Update README.md
+
+commit 2316d111f38b4a1b54789ef50d29879369fcd7ed
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 17:04:19 2012 -0600
+
+    Update README.md
+
+commit 21410538e0b440b9c80168b9572fabffb329657b
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 17:01:53 2012 -0600
+
+    Update README.md
+
+commit 67e76c0eeca6ce481504faf63a1a2df37b2b2bf8
+Author: Kevin <kevin@keegan.mcs.anl.gov>
+Date:   Fri Feb 24 16:59:56 2012 -0600
+
+    editing the readme
+
+commit 64a4c681ca0284e414cce570ef06d4fc17d49012
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 16:57:12 2012 -0600
+
+    Update DRISEE_readme.md
+
+commit 0ceba828da21b0d4d984c35927312b24cf0b96cc
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 16:56:04 2012 -0600
+
+    Update DRISEE_readme.md
+
+commit c8c0de33e1b5a2152ac02b0f28526507695f0a89
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 16:55:01 2012 -0600
+
+    Update DRISEE_readme.md
+
+commit ca565813f647f6ce9faa3905efbb4b1e3e803363
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 16:54:25 2012 -0600
+
+    Update DRISEE_readme.md
+
+commit 905b6bc091b147e90a86e7c702471d852ef1f96d
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 16:53:51 2012 -0600
+
+    Update DRISEE_readme.md
+
+commit 617f8c4dd854c63161009c9fc8314254c631b408
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 16:52:57 2012 -0600
+
+    Update DRISEE_readme.md
+
+commit 4d051c15eeb6930f44994a63eb30124c0e1a78fc
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 16:52:28 2012 -0600
+
+    Update DRISEE_readme.md
+
+commit f59a06a6301373c7ec8fffb131cd32ca0b3adb71
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 16:52:01 2012 -0600
+
+    Update DRISEE_readme.md
+
+commit e6f9b9ec5dd5bc792825f6bdc0852ec57e8e35eb
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 16:45:29 2012 -0600
+
+    Update DRISEE_readme.md
+
+commit a2acd7e5263f03a37007c4b37fc0a5381e98d00b
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 16:33:17 2012 -0600
+
+    Update DRISEE_readme.md
+
+commit 329a096ed79af588f5af9f0ae190d63a16747e28
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 16:31:10 2012 -0600
+
+    Update DRISEE_readme.md
+
+commit aa947c772d142ce607a40259aff3c6ddce701503
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 16:25:09 2012 -0600
+
+    Update DRISEE_readme.md
+
+commit 3f400dd19f24a5c472ac745477ce9bf42e4a03eb
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 16:23:34 2012 -0600
+
+    Update DRISEE_readme.md
+
+commit 2713c95d0bf316d468d42cfc5ce6bc20127e1455
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 16:21:29 2012 -0600
+
+    Update DRISEE_readme.md
+
+commit c9d03461f162a09b44170c9dc6781ecf87249935
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 16:20:23 2012 -0600
+
+    Update DRISEE_readme.md
+
+commit 7da860a808b4aa445bed2682c6d532031ec481a9
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Fri Feb 24 16:18:03 2012 -0600
+
+    "edit readme"
+
+commit e5a25db5fcf499facb98c36aa4e8b210c46830d6
+Author: Kevin <kevin@keegan.mcs.anl.gov>
+Date:   Fri Feb 24 16:14:27 2012 -0600
+
+    edited and reformatted readme
+
+commit e720f19d6a0f4a46496f16d0a78182e89d578426
+Author: Kevin <kevin@keegan.mcs.anl.gov>
+Date:   Fri Feb 24 15:59:59 2012 -0600
+
+    DRISEE 1 - 1.1 update; changes suggested by review.  Major change, driving script is now Python-based.  Command line access to all parameters was added -- you no longer have to edit shell/script files - Kevin 2-24-12
+
+commit a658a893243321ea7e8bdf58daf9851af62156a5
+Author: Kevin <kevin@keegan.mcs.anl.gov>
+Date:   Fri Feb 24 15:49:15 2012 -0600
+
+    DRISEE 1 - 1.1 update; changes suggested by review.  Major change, driving script is now Python-based.  Command line access to all parameters was added -- you no longer have to edit shell/script files - Kevin 2-24-12
+
+commit c04a4a47f1616d61b5550289851825f059fbef56
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Wed Oct 19 17:29:13 2011 -0500
+
+    Update drisee
+
+commit 6a1dc15873e0b4d29d9c57b06a9c4f6c41a978ed
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Wed Oct 19 17:01:45 2011 -0500
+
+    Update README.md
+
+commit bededbcd6ca217db0a79614533daf77dc5b9714f
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Wed Oct 19 16:55:47 2011 -0500
+
+    Update scripts/seq_err_calc
+
+commit ff6ee2c93bc93585b24e372ac886c07505339ba2
+Author: DrOppenheimer <kevin.p.keegan@gmail.com>
+Date:   Wed Oct 19 16:47:37 2011 -0500
+
+    Update scripts/dereplication
+
+commit 1ea50e74958571c4b5193acc23baead31ecbba3c
+Author: Jared Wilkening <jared.wilkening@gmail.com>
+Date:   Tue Sep 6 15:42:35 2011 -0500
+
+    modified README
+
+commit c7090441205f9aeabc3a69954b577b793d060352
+Author: Jared Wilkening <jared.wilkening@gmail.com>
+Date:   Tue Sep 6 15:42:18 2011 -0500
+
+    modified README
+
+commit 8188e0ce4c7f29fc1e8060ffe16a6cfd7c8afa37
+Author: Jared Wilkening <jared.wilkening@gmail.com>
+Date:   Tue Sep 6 15:41:43 2011 -0500
+
+    modified README
+
+commit aab9a574ed63f2e5eadf80c3b1b4884c956395c3
+Author: jared <jared@mcs.anl.gov>
+Date:   Tue Sep 6 15:39:30 2011 -0500
+
+    modified README format
+
+commit fd0e5b51af6fe29419a0d2882a14d3da14a3a5bf
+Author: jared <jared@mcs.anl.gov>
+Date:   Tue Sep 6 15:38:58 2011 -0500
+
+    modified README format
+
+commit a5fdc82d1aa41e646b5f9a0b15fc651c2b9d71f2
+Author: jared <jared@mcs.anl.gov>
+Date:   Tue Sep 6 15:37:59 2011 -0500
+
+    modified README format
+
+commit 774d9c674b9adde7edc284c91e49d86cd35cccce
+Author: jared <jared@mcs.anl.gov>
+Date:   Tue Sep 6 15:34:09 2011 -0500
+
+    first commit
