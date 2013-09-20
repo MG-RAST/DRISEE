@@ -298,7 +298,7 @@ def main(args):
     parser.add_option("-r", "--replicate_file", dest="rep_file", default=None, help="File with sorted replicate bins (bin_id, seq_id) [default to calculate replicates]")
     parser.add_option("-d", "--tmp_dir", dest="tmpdir", default="/tmp", help="DIR for intermediate files (must be full path). Specified directory must already exist. Files are automatically deleted at analysis completion. [default '/tmp']")
     parser.add_option("-l", "--log_file", dest="logfile", default=None, help="Detailed processing related stats [default '/dev/null']")
-    parser.add_option("", "--percent", dest="percent", action="store_true", default=False, help="Additional output (output_stat_file.per) with percent values [default off]")
+    parser.add_option("", "--percent", dest="percent", action="store_true", default=True, help="Additional output (output_stat_file.per) with percent values [default off]")
     parser.add_option("", "--prefix_length", dest="prefix", type="int", default=50, help="Prefix length for replicate bins [default 50]")
     parser.add_option("-s", "--seq_max", dest="seq_max", type="int", default=1000000, help="Maximum number of reads to process (chosen randomly) [default 1000000]")
     parser.add_option("-a", "--ambig_bp_max", dest="ambig_max", type="int", default=0, help="Maximum number of ambiguity characters before rejection [default 0]")
