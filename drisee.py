@@ -571,10 +571,28 @@ def main(args):
     # cleanup
     shutil.rmtree(TMP_DIR)
     end_time = time.time() - start_time
-    if opts.verbose: sys.stdout.write("Completed in %s\n" %str(datetime.timedelta(seconds=end_time)))
-    if opts.verbose: sys.stdout.write("Input seqs\t%d\nProcessed bins\t%d\nProcessed seqs\t%d\nDrisee score\t%f\n"%(seqmax,size,total_ids,err_score))
-    if opts.verbose and opts.check_contam and contam > 0: sys.stdout.write("\nContam bins\t%d\nContam seqs\t%d\nDrisee score\t%f\n"%(contam,contam_seq_count,cerr_score))
-    if opts.verbose and opts.check_contam and ncontam > 0: sys.stdout.write("\nNon-contam bins\t%d\nNon-contam seqs\t%d\nDrisee score\t%f\n"%(ncontam,ncontam_seq_count,ncerr_score))
+    summary = "\nCompleted in " + str(datetime.timedelta(seconds=end_time)) + "\n"
+    summary += "Input seqs\t" + str(seqmax) + "\n"
+    summary += "Processed bins\t" + str(size) + "\n"
+    summary += "Processed seqs\t" + str(total_ids) + "\n"
+    summary += "Drisee score\t" + str(err_score) + "\n"
+    write_file(summary, LOG_FILE, 1)
+    if opts.verbose: sys.stdout.write(summary)
+
+    if opts.check_contam and contam > 0:
+        contam_summary = "\nContam bins\t" + str(contam) + "\n"
+        contam_summary += "Contam seqs\t" + str(contam_seq_count) + "\n"
+        contam_summary += "Drisee score\t" + str(cerr_score) + "\n"
+        write_file(contam_summary, LOG_FILE, 1)
+        if opts.verbose: sys.stdout.write(contam_summary)
+
+    if opts.check_contam and ncontam > 0:
+        ncontam_summary = "\nNon-contam bins\t" + str(ncontam) + "\n"
+        ncontam_summary += "Non-contam seqs\t" + str(ncontam_seq_count) + "\n"
+        ncontam_summary += "Drisee score\t" + str(ncerr_score) + "\n"
+        write_file(ncontam_summary, LOG_FILE, 1)
+        if opts.verbose: sys.stdout.write(ncontam_summary)
+
     return 0
     
 
