@@ -311,7 +311,7 @@ def main(args):
     parser.add_option("-j", "--check_contam", dest="check_contam", action="store_true", default=True, help="Separate results for seqs with adapter contamination [default on]")
     parser.add_option("-o", "--minoverlap", dest="MINOVERLAP", type="int", default=10, help="Minimum overlap paramter for identifying adapter contamination [default 10]")
     parser.add_option("-e", "--fractionid", dest="MINALIGNID", type="float", default=0.9, help="Minimum alignment id for identifying adapter contamination [default 0.9]")
-    parser.add_option("-g", "--database", dest="database", default="adapterDB.fna", help="Database fasta of adapter sequences [default adapterDB.fna]")
+    parser.add_option("-g", "--database", dest="database", default="~/DRISEE/adapterDB.fna", help="Database fasta of adapter sequences [default ~/DRISEE/adapterDB.fna]")
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=False, help="Write runtime summary stats to STDOUT [default off]")
 
     start_time = time.time()
