@@ -3,7 +3,14 @@
 import os, sys, pprint, subprocess
 from optparse import OptionParser
 from Bio import SeqIO
-from cogent.app.uclust import Uclust
+try:
+    from qiime.pycogent_backports.uclust import Uclust
+except ImportError:
+    try:
+        from cogent.app.uclust import Uclust
+    except ImportError:
+        sys.stderr.write("Error: QIIME is missing\n")
+        sys.exit(1)
 
 usage = "usage: %prog [options]\n"
 
@@ -43,6 +50,9 @@ def uc2fasta(infasta, inclust, outfasta, types, nameonly, tmpdir):
             continue
         parts = line.split("\t")
         (ctype, cname, pid, sname) = (parts[0], parts[1], parts[3], parts[8])
+        sname_fields = sname.split(" ")
+        sname = sname_fields[0]
+        
         if ctype not in typeSet:
             continue
         while sname != curFasta.id:
