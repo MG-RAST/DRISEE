@@ -96,7 +96,7 @@ INSTALL DRISEE (CLONE THE DRISEE REPOSITORY)
 Add qiime and DRISEE to the PATH of the envrionment
 
 	# source the activation script; among other things, this will add everything that qiime has installed to your PATH variable
-	source ~/qiime/activate.sh
+	source ~/qiime_software/activate.sh
 	# add the DRISEE directory to the PATH variable
 	export PATH=$PATH:~/DRISEE
 	# NOTE: you can add the path info for DRISEE and Qiime to your .profile and/or .bashrc so it will load every time you log into your machine
