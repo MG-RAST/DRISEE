@@ -41,14 +41,14 @@ Note: This installation procedure has be tested on multiple ubuntu releases. It 
 
 CHANGE TEMP DIRECTORY TO SOMEPLACE WITH MORE SPACE (May not be necessary for your configuration, 10Gb free for DRISEE to use)
 
-       # first remove the existing temp directory
-       sudo rm -rf /tmp
-       # create a directory that has more space
-       sudo mkdir /mnt/my_temp_dir
-       # then create symbolic link to the newly created directory  
-       sudo ln -s /mnt/my_temp_dir /tmp
-       # open permissions
-       sudo chmod -R 777 /mnt/
+	# first remove the existing temp directory
+	sudo rm -rf /tmp
+	# create a directory that has more space
+	sudo mkdir /mnt/my_temp_dir
+	# then create symbolic link to the newly created directory  
+	sudo ln -s /mnt/my_temp_dir /tmp
+	# open permissions
+	sudo chmod -R 777 /mnt/
 
 
 INSTALL qiime_deploy and R dependencies
@@ -69,18 +69,18 @@ INSTALL Qiime (1.8.0) # from https://github.com/qiime/qiime-deploy
 
 Uncomment the universe and multiverse repositories from /etc/apt/sources.list
 
-clone the deploy and configuration repos:
+clone the deploy and configuration repos
 
-      # move to home directory
-      cd ~
-      # clone the qiime deploy repo
-      git clone git://github.com/qiime/qiime-deploy.git
-      # clone the qiime deploy configuration repo
-      git clone git://github.com/qiime/qiime-deploy-conf.git
-      # install qiime, in this case using the default configuration for 1.8.0
-      sudo python ~/qiime-deploy/qiime-deploy.py ~/qiime_software/ -f ~/qiime-deploy-conf/qiime-1.8.0/qiime.conf --force-remove-failed-dirs
-      # source the activation script; among other things, this will add everything that qiime has installed to your PATH variable
-      source /qiime_software/activate.sh
+	# move to home directory
+	cd ~
+	# clone the qiime deploy repo
+	git clone git://github.com/qiime/qiime-deploy.git
+	# clone the qiime deploy configuration repo
+	git clone git://github.com/qiime/qiime-deploy-conf.git
+	# install qiime, in this case using the default configuration for 1.8.0
+	sudo python ~/qiime-deploy/qiime-deploy.py ~/qiime_software/ -f ~/qiime-deploy-conf/qiime-1.8.0/qiime.conf --force-remove-failed-dirs
+	# source the activation script; among other things, this will add everything that qiime has installed to your PATH variable
+	source /qiime_software/activate.sh
 
 ---
 
