@@ -38,6 +38,19 @@ FULL INSTALLATION
 Note: This installation procedure has be tested on multiple ubuntu releases. It has not been rigorously tested on other platforms
 ---
 
+
+CHANGE TEMP DIRECTORY TO SOMEPLACE WITH MORE SPACE (May not be necessary for your configuration, 10Gb free for DRISEE to use)
+
+       # first remove the existing temp directory
+       sudo rm -rf /tmp
+       # create a directory that has more space
+       sudo mkdir /mnt/my_temp_dir
+       # then create symbolic link to the newly created directory  
+       sudo ln -s /mnt/my_temp_dir /tmp
+       # open permissions
+       sudo chmod -R 777 /mnt/
+
+
 INSTALL qiime_deploy and R dependencies
 
 	cd ~
