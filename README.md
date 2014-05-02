@@ -39,7 +39,6 @@ Note: This installation procedure has be tested on multiple ubuntu releases. It 
 ---
 
 INSTALL qiime_deploy and R dependencies
----
 
 	cd ~
 
@@ -51,8 +50,7 @@ INSTALL qiime_deploy and R dependencies
 
 ---
 
-INSTALL Qiime # also see https://github.com/qiime/qiime-deploy
-This will perform a complete installation of Qiime version 1.8.0
+INSTALL Qiime (1.8.0) # from https://github.com/qiime/qiime-deploy
 ---
 
 Uncomment the universe and multiverse repositories from /etc/apt/sources.list
@@ -71,7 +69,7 @@ clone the deploy and configuration repos:
 
 ---
 
-INSTALL DRISEE
+INSTALL DRISEE (CLONE THE DRISEE REPOSITORY)
 
 	cd ~
 
