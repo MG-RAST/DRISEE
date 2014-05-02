@@ -34,19 +34,20 @@ Software:
 
 FULL INSTALLATION
 ===
+
 Note: This installation procedure has be tested on multiple ubuntu releases. It has not been rigorously tested on other platforms
 ---
 
 INSTALL qiime_deploy and R dependencies
 ---
 
-cd ~
+	cd ~
 
-sudo apt-get update
+	sudo apt-get update
 
-sudo apt-get upgrade 
+	sudo apt-get upgrade 
 
-sudo apt-get --force-yes -y install python-dev libncurses5-dev libssl-dev libzmq-dev libgsl0-dev openjdk-6-jdk libxml2 libxslt1.1 libxslt1-dev ant git subversion build-essential zlib1g-dev libpng12-dev libfreetype6-dev mpich2 libreadline-dev gfortran unzip libmysqlclient18 libmysqlclient-dev ghc sqlite3 libsqlite3-dev libc6-i386 libbz2-dev libx11-dev libcairo2-dev libcurl4-openssl-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev xorg openbox emacs r-cran-rgl xorg-dev
+	sudo apt-get --force-yes -y install python-dev libncurses5-dev libssl-dev libzmq-dev libgsl0-dev openjdk-6-jdk libxml2 libxslt1.1 libxslt1-dev ant git subversion build-essential zlib1g-dev libpng12-dev libfreetype6-dev mpich2 libreadline-dev gfortran unzip libmysqlclient18 libmysqlclient-dev ghc sqlite3 libsqlite3-dev libc6-i386 libbz2-dev libx11-dev libcairo2-dev libcurl4-openssl-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev xorg openbox emacs r-cran-rgl xorg-dev
 
 ---
 
@@ -71,20 +72,18 @@ clone the deploy and configuration repos:
 ---
 
 INSTALL DRISEE
+
+	cd ~
+
+	git clone https://github.com/MG-RAST/DRISEE.git
+
 ---
 
-cd ~
+Add qiime and DRISEE to the PATH of the envrionment
 
-git clone https://github.com/MG-RAST/DRISEE.git
+	source /opt/qiime/activate.sh
 
----
-
-Add qiime and DRISEE to the path
----
-
-source /opt/qiime/activate.sh
-
-export PATH=$PATH:~/DRISEE
+	export PATH=$PATH:~/DRISEE
 
 ---
 
