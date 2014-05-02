@@ -29,21 +29,56 @@ Software:
 - cdbfasta & cdbyank (http://sourceforge.net/projects/cdbfasta/) *1
 
 *1 Please note that users are responsible for making sure that their use of required software
-   products is compliant with existing licenses and/or user agreements.  
+   products is compliant with existing licenses and/or user agreements. A full installation
+   procedure for all requirements is provided below.  
 
-INSTALLATION
+FULL INSTALLATION
 ===
 
-Download and place the four script files (listed below) into your folder of choice.  
-A location in your exisiting PATH makes the most sense; alternatively, you can add the 
-selected folder to your exisiting PATH. 
+Note: This installation procedure has be tested on multiple ubuntu releases.
+It has not been rigorously tested on other platforms
 
+INSTALL qiime_deploy and R dependencies
+---
+cd ~
+sudo apt-get update
+sudo apt-get upgrade 
+sudo apt-get --force-yes -y install python-dev libncurses5-dev libssl-dev libzmq-dev libgsl0-dev openjdk-6-jdk libxml2 libxslt1.1 libxslt1-dev ant git subversion build-essential zlib1g-dev libpng12-dev libfreetype6-dev mpich2 libreadline-dev gfortran unzip libmysqlclient18 libmysqlclient-dev ghc sqlite3 libsqlite3-dev libc6-i386 libbz2-dev libx11-dev libcairo2-dev libcurl4-openssl-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev xorg openbox emacs r-cran-rgl xorg-dev
+---
+
+INSTALL Qiime # also see https://github.com/qiime/qiime-deploy
+This will perform a complete installation of Qiime version 1.8.0
+---
+Uncomment the universe and multiverse repositories from /etc/apt/sources.list
+clone the deploy and configuration repos
+---
+cd ~
+git clone git://github.com/qiime/qiime-deploy.git
+git clone git://github.com/qiime/qiime-deploy-conf.git
+# perform complete install
+cd ~
+sudo python ~/qiime-deploy-conf/qiime-1.8.0 ~/qiime_software/ -f ~/qiime-deploy-conf/qiime-1.8.0/qiime.conf --force-remove-failed-dirs
+source /opt/qiime/activate.sh #<--
+---
+
+INSTALL DRISEE
+---
+cd ~
+git clone https://github.com/MG-RAST/DRISEE.git
+---
+Add qiime and DRISEE to the path
+---
+source /opt/qiime/activate.sh
+export PATH=$PATH:~/DRISEE
+---
+
+DESCRIPTION OF MAIN DRISEE SCRIPTS
+===
        drisee.py           		(the main driving script - a main script file)
        seq_length_stats.py 		(an accessory script - generates sequence related stats)
        run_find_steiner.pl 		(an accessory script - performs iterative consensus sequence construction)
        qiime-uclust				(an accessory script - runs qiime-integrated uclust)
        
-
 RUNNING DRISEE
 ===
 DRISEE utilizes three scripts to perform its analyses.  All options and input parameters are passed to 
