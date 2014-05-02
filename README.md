@@ -51,7 +51,7 @@ CHANGE TEMP DIRECTORY TO SOMEPLACE WITH MORE SPACE (May not be necessary for you
 	sudo chmod -R 777 /mnt/
 
 
-INSTALL qiime_deploy and R dependencies
+INSTALL QIIME
 
 	# install pip
 	sudo apt-get install python-pip
@@ -59,24 +59,6 @@ INSTALL qiime_deploy and R dependencies
 	sudo pip install numpy==1.7.1
 	# use pip to install qiime
 	sudo pip install qiime
-
----
-
-INSTALL Qiime (1.8.0) # from https://github.com/qiime/qiime-deploy
----
-
-Clone the deploy and configuration repos, and then perform the installation:
-
-	# move to home directory
-	cd ~
-	# clone the qiime deploy repo
-	git clone git://github.com/qiime/qiime-deploy.git
-	# clone the qiime deploy configuration repo
-	git clone git://github.com/qiime/qiime-deploy-conf.git
-	# install qiime, in this case using the default configuration for 1.8.0
-	sudo python ~/qiime-deploy/qiime-deploy.py ~/qiime_software/ -f ~/qiime-deploy-conf/qiime-1.8.0/qiime.conf --force-remove-failed-dirs
-	# source the activation script; among other things, this will add everything that qiime has installed to your PATH variable
-	source ~/qiime_software/activate.sh
 
 ---
 
