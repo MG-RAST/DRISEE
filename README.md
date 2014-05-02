@@ -53,12 +53,13 @@ CHANGE TEMP DIRECTORY TO SOMEPLACE WITH MORE SPACE (May not be necessary for you
 
 INSTALL qiime_deploy and R dependencies
 
+	# move to home directory
 	cd ~
-
+	# udpate
 	sudo apt-get update
-
+	# upgrade
 	sudo apt-get upgrade 
-
+	# install all of the dependencies
 	sudo apt-get --force-yes -y install python-dev libncurses5-dev libssl-dev libzmq-dev libgsl0-dev openjdk-6-jdk libxml2 libxslt1.1 libxslt1-dev ant git subversion build-essential zlib1g-dev libpng12-dev libfreetype6-dev mpich2 libreadline-dev gfortran unzip libmysqlclient18 libmysqlclient-dev ghc sqlite3 libsqlite3-dev libc6-i386 libbz2-dev libx11-dev libcairo2-dev libcurl4-openssl-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev xorg openbox emacs r-cran-rgl xorg-dev
 
 ---
@@ -70,31 +71,35 @@ Uncomment the universe and multiverse repositories from /etc/apt/sources.list
 
 clone the deploy and configuration repos:
 
+      # move to home directory
       cd ~
-
+      # clone the qiime deploy repo
       git clone git://github.com/qiime/qiime-deploy.git
-
+      # clone the qiime deploy configuration repo
       git clone git://github.com/qiime/qiime-deploy-conf.git
-
+      # install qiime, in this case using the default configuration for 1.8.0
       sudo python ~/qiime-deploy/qiime-deploy.py ~/qiime_software/ -f ~/qiime-deploy-conf/qiime-1.8.0/qiime.conf --force-remove-failed-dirs
-
+      # source the activation script; among other things, this will add everything that qiime has installed to your PATH variable
       source /qiime_software/activate.sh
 
 ---
 
 INSTALL DRISEE (CLONE THE DRISEE REPOSITORY)
 
+	# move to home directory
 	cd ~
-
+	# clone the DRISEE repository
 	git clone https://github.com/MG-RAST/DRISEE.git
 
 ---
 
 Add qiime and DRISEE to the PATH of the envrionment
 
+	# source the activation script; among other things, this will add everything that qiime has installed to your PATH variable
 	source /opt/qiime/activate.sh
-
+	# add the DRISEE directory to the PATH variable
 	export PATH=$PATH:~/DRISEE
+	# NOTE: you can add the path info for DRISEE and Qiime to your .profile and/or .bashrc so it will load every time you log into your machine
 
 ---
 
