@@ -51,12 +51,12 @@ sudo apt-get --force-yes -y install python-dev libncurses5-dev libssl-dev libzmq
 ---
 
 INSTALL Qiime # also see https://github.com/qiime/qiime-deploy
----
 This will perform a complete installation of Qiime version 1.8.0
 ---
-Uncomment the universe and multiverse repositories from /etc/apt/sources.list
-clone the deploy and configuration repos
 
+Uncomment the universe and multiverse repositories from /etc/apt/sources.list
+
+clone the deploy and configuration repos:
 ---
 
 cd ~
@@ -68,6 +68,7 @@ git clone git://github.com/qiime/qiime-deploy-conf.git
 sudo python ~/qiime-deploy-conf/qiime-1.8.0 ~/qiime_software/ -f ~/qiime-deploy-conf/qiime-1.8.0/qiime.conf --force-remove-failed-dirs
 
 source /opt/qiime/activate.sh #<--
+
 ---
 
 INSTALL DRISEE
@@ -76,6 +77,7 @@ INSTALL DRISEE
 cd ~
 
 git clone https://github.com/MG-RAST/DRISEE.git
+
 ---
 
 Add qiime and DRISEE to the path
@@ -84,6 +86,7 @@ Add qiime and DRISEE to the path
 source /opt/qiime/activate.sh
 
 export PATH=$PATH:~/DRISEE
+
 ---
 
 DESCRIPTION OF MAIN DRISEE SCRIPTS
