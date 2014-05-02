@@ -57,17 +57,16 @@ This will perform a complete installation of Qiime version 1.8.0
 Uncomment the universe and multiverse repositories from /etc/apt/sources.list
 
 clone the deploy and configuration repos:
----
 
-cd ~
+      cd ~
 
-git clone git://github.com/qiime/qiime-deploy.git
+      git clone git://github.com/qiime/qiime-deploy.git
 
-git clone git://github.com/qiime/qiime-deploy-conf.git
+      git clone git://github.com/qiime/qiime-deploy-conf.git
 
-sudo python ~/qiime-deploy-conf/qiime-1.8.0 ~/qiime_software/ -f ~/qiime-deploy-conf/qiime-1.8.0/qiime.conf --force-remove-failed-dirs
+      sudo python ~/qiime-deploy/qiime-deploy.py ~/qiime_software/ -f ~/qiime-deploy-conf/qiime-1.8.0/qiime.conf --force-remove-failed-dirs
 
-source /opt/qiime/activate.sh #<--
+      source /qiime_software/activate.sh
 
 ---
 
