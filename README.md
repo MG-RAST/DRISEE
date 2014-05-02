@@ -69,7 +69,7 @@ INSTALL Qiime (1.8.0) # from https://github.com/qiime/qiime-deploy
 
 Uncomment the universe and multiverse repositories from /etc/apt/sources.list
 
-clone the deploy and configuration repos
+clone the deploy and configuration repos, and then perform the installation:
 
 	# move to home directory
 	cd ~
